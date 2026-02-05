@@ -833,7 +833,7 @@ function initEngagementSlider() {
   if (pdfBtn && pdfModal && pdfFrame) {
     pdfBtn.addEventListener("click", () => {
       // #toolbar=0&navpanes=0&scrollbar=0 discourages some download/print controls in many browsers
-      pdfFrame.src = "/assets/pdf/catalogo.pdf#toolbar=0&navpanes=0";
+      pdfFrame.src = "/pdf/catalogo.pdf#toolbar=0&navpanes=0";
       pdfModal.showModal();
     });
   }
