@@ -173,9 +173,9 @@ if (viewMoreBtn) {
 
 // --- CART LOGIC ---
 const cart = [];
-const cartCount = document.getElementById("cart-count");
-const cartModal = document.getElementById("cart-modal");
+const mobileCartCount = document.getElementById("mobile-cart-count");
 const openCartBtn = document.getElementById("cart-btn");
+const openMobileCartBtn = document.getElementById("mobile-cart-btn");
 const closeCartBtn = document.getElementById("close-cart-modal");
 const cartItemsContainer = document.getElementById("cart-items");
 const cartTotalEl = document.getElementById("cart-total");
@@ -183,6 +183,7 @@ const checkoutBtn = document.getElementById("checkout-btn");
 
 function updateCartUI() {
   if (cartCount) cartCount.textContent = cart.length;
+  if (mobileCartCount) mobileCartCount.textContent = cart.length;
   if (!cartItemsContainer) return;
 
   if (cart.length === 0) {
@@ -226,6 +227,7 @@ function addToCart(product) {
 }
 
 if (openCartBtn) openCartBtn.addEventListener("click", () => cartModal.showModal());
+if (openMobileCartBtn) openMobileCartBtn.addEventListener("click", (e) => { e.preventDefault(); cartModal.showModal(); });
 if (closeCartBtn) closeCartBtn.addEventListener("click", () => cartModal.close());
 
 if (checkoutBtn) {

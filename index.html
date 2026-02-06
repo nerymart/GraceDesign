@@ -67,8 +67,10 @@
             name="arrow-forward-outline"></ion-icon></button>
       </div>
 
-      <ion-icon name="search-outline" class="search-icon"></ion-icon>
-      <input type="text" placeholder="Search jewelry..." id="search-input">
+      <div class="hero-search-container">
+        <ion-icon name="search-outline" class="search-icon"></ion-icon>
+        <input type="text" placeholder="Search jewelry..." id="search-input">
+      </div>
     </div>
     </div>
     </div>
@@ -433,6 +435,14 @@
             name="chevron-forward-outline"></ion-icon></a></li>
       <li><a href="#contact" class="drawer-link"><span class="drawer-text">Contacto</span><ion-icon
             name="chevron-forward-outline"></ion-icon></a></li>
+      <li>
+        <a href="#" class="drawer-link" id="mobile-cart-btn">
+          <span class="drawer-text">Ver Carrito</span>
+          <span id="mobile-cart-count" class="badge"
+            style="background:var(--primary-gold); color:white; padding:2px 6px; border-radius:50%; font-size:0.8rem; margin-left:10px;">0</span>
+          <ion-icon name="cart-outline"></ion-icon>
+        </a>
+      </li>
     </ul>
     <!-- Login Modal -->
     <dialog id="login-modal" class="admin-dialog">
