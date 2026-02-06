@@ -850,7 +850,20 @@ function initEngagementSlider() {
         loadingTask.promise.then(pdf => {
           viewerContainer.innerHTML = ''; // Clear loading text
 
-          // Render all pages
+          // Create placeholders First to guarantee order
+          const canvasContainers = [];
+          for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+            const container = document.createElement('div');
+            container.id = `pdf-page-${pageNum}`;
+            container.style.marginBottom = "20px";
+            container.style.display = "flex";
+            container.style.justifyContent = "center";
+            container.style.width = "100%";
+            viewerContainer.appendChild(container);
+            canvasContainers.push(container);
+          }
+
+          // Render pages into their respective placeholders
           for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
             pdf.getPage(pageNum).then(page => {
               const scale = 1.5;
@@ -860,7 +873,6 @@ function initEngagementSlider() {
               const context = canvas.getContext('2d');
               canvas.height = viewport.height;
               canvas.width = viewport.width;
-              canvas.style.marginBottom = "10px";
               canvas.style.boxShadow = "0 4px 8px rgba(0,0,0,0.3)";
               canvas.style.maxWidth = "95%"; // Responsive width
               canvas.style.height = "auto";  // Maintain aspect ratio
@@ -869,8 +881,13 @@ function initEngagementSlider() {
                 canvasContext: context,
                 viewport: viewport
               };
-              page.render(renderContext);
-              viewerContainer.appendChild(canvas);
+
+              const container = document.getElementById(`pdf-page-${pageNum}`);
+              if (container) {
+                container.innerHTML = ''; // Clear any potential loading state if added
+                container.appendChild(canvas);
+                page.render(renderContext);
+              }
             });
           }
         }).catch(err => {
