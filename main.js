@@ -173,6 +173,8 @@ if (viewMoreBtn) {
 
 // --- CART LOGIC ---
 const cart = [];
+const cartCount = document.getElementById("cart-count");
+const cartModal = document.getElementById("cart-modal");
 const mobileCartCount = document.getElementById("mobile-cart-count");
 const openCartBtn = document.getElementById("cart-btn");
 const openMobileCartBtn = document.getElementById("mobile-cart-btn");
