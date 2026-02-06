@@ -832,16 +832,21 @@ function initEngagementSlider() {
 
   if (pdfBtn && pdfModal && pdfFrame) {
     pdfBtn.addEventListener("click", () => {
-      // #toolbar=0&navpanes=0&scrollbar=0 discourages some download/print controls in many browsers
-      pdfFrame.src = "/pdf/catalogo.pdf#toolbar=0&navpanes=0";
+      // Get the base path from the current page location
+      const basePath = window.location.pathname.includes('/GraceDesign/') ? '/GraceDesign/' : '/';
+      const pdfPath = basePath + 'pdf/catalogo.pdf';
+
+      // Use the modal instead of window.open to prevent auto-download
+      pdfFrame.src = pdfPath;
       pdfModal.showModal();
     });
   }
 
+  // Keep close button functional even though we're not using the modal
   if (closePdfBtn && pdfModal) {
     closePdfBtn.addEventListener("click", () => {
       pdfModal.close();
-      pdfFrame.src = ""; // Clear src to stop loading/processing when closed
+      pdfFrame.src = "";
     });
   }
 }
