@@ -286,19 +286,26 @@ header nav,
   margin-left: 0.5rem;
 }
 
-/* Header Cart Button */
-.header-cart-btn {
+/* Nav Cart Button */
+.nav-cart-btn {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #333;
+  color: #fff;
+  /* White to match nav links */
   font-size: 1.5rem;
-  padding: 0 0.5rem;
+  padding: 0;
   position: relative;
   display: flex;
   align-items: center;
-  margin-left: 0.5rem;
-  border-left: 1px solid #ddd;
+  margin-left: 0;
+  /* Inside li, no extra margin needed */
+  transition: opacity 0.3s ease;
+}
+
+.nav-cart-btn:hover {
+  opacity: 1;
+  color: var(--primary-gold);
 }
 
 .cart-count-badge {
