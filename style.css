@@ -644,6 +644,27 @@ section {
   /* Contrast on hover */
 }
 
+/* Custom PDF Button (Dark & Gold) */
+.btn-pdf {
+  background-color: #1A1A1A;
+  color: #D4AF37;
+  border: 1px solid #D4AF37;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 50px;
+  /* Pill shape */
+  padding: 1rem 2.5rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-pdf:hover {
+  background-color: #D4AF37;
+  color: #1A1A1A;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+}
+
 #view-more-container {
   display: flex;
   justify-content: flex-end;
