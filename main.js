@@ -827,26 +827,67 @@ function initEngagementSlider() {
 
   const pdfBtn = document.getElementById("view-engagement-pdf");
   const pdfModal = document.getElementById("pdf-modal");
-  const pdfFrame = document.getElementById("pdf-frame");
   const closePdfBtn = document.getElementById("close-pdf-modal");
+  const viewerContainer = document.getElementById("pdf-viewer-container");
 
-  if (pdfBtn && pdfModal && pdfFrame) {
+  if (pdfBtn && pdfModal && viewerContainer) {
+    // Set worker source for PDF.js
+    if (window.pdfjsLib) {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    }
+
     pdfBtn.addEventListener("click", () => {
-      // Get the base path from the current page location
       const basePath = window.location.pathname.includes('/GraceDesign/') ? '/GraceDesign/' : '/';
       const pdfPath = basePath + 'pdf/catalogo.pdf';
 
-      // Use the modal instead of window.open to prevent auto-download
-      pdfFrame.src = pdfPath;
       pdfModal.showModal();
+
+      // Clear previous content
+      viewerContainer.innerHTML = '<p style="color:white; text-align:center; margin-top: 50px;">Cargando catálogo...</p>';
+
+      if (window.pdfjsLib) {
+        const loadingTask = pdfjsLib.getDocument(pdfPath);
+        loadingTask.promise.then(pdf => {
+          viewerContainer.innerHTML = ''; // Clear loading text
+
+          // Render all pages
+          for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+            pdf.getPage(pageNum).then(page => {
+              const scale = 1.5;
+              const viewport = page.getViewport({ scale: scale });
+
+              const canvas = document.createElement('canvas');
+              const context = canvas.getContext('2d');
+              canvas.height = viewport.height;
+              canvas.width = viewport.width;
+              canvas.style.marginBottom = "10px";
+              canvas.style.boxShadow = "0 4px 8px rgba(0,0,0,0.3)";
+              canvas.style.maxWidth = "95%"; // Responsive width
+              canvas.style.height = "auto";  // Maintain aspect ratio
+
+              const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+              };
+              page.render(renderContext);
+              viewerContainer.appendChild(canvas);
+            });
+          }
+        }).catch(err => {
+          console.error('Error loading PDF:', err);
+          viewerContainer.innerHTML = '<p style="color:white; text-align:center;">Error al cargar el catálogo. Intenta nuevamente.</p>';
+        });
+      } else {
+        viewerContainer.innerHTML = '<p style="color:white; text-align:center;">Librería PDF no cargada.</p>';
+      }
     });
   }
 
-  // Keep close button functional even though we're not using the modal
+  // Keep close button functional
   if (closePdfBtn && pdfModal) {
     closePdfBtn.addEventListener("click", () => {
       pdfModal.close();
-      pdfFrame.src = "";
+      if (viewerContainer) viewerContainer.innerHTML = ''; // Cleanup to save memory
     });
   }
 }

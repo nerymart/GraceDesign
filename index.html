@@ -396,11 +396,14 @@
   </dialog>
 
   <!-- PDF Viewer Modal -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <dialog id="pdf-modal" class="pdf-viewer-dialog">
     <div class="pdf-modal-container">
       <button class="close-modal" id="close-pdf-modal">&times;</button>
-      <div class="pdf-wrapper">
-        <iframe id="pdf-frame" src="" frameborder="0" width="100%" height="100%"></iframe>
+      <div class="pdf-wrapper" id="pdf-wrapper">
+        <div id="pdf-viewer-container"
+          style="overflow-y: auto; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; background: #525659; padding: 20px 0;">
+        </div>
       </div>
     </div>
   </dialog>
