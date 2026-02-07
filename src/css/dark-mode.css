@@ -1,0 +1,55 @@
+/* DARK MODE */
+   ========================================= */
+
+body.dark-mode {
+  --dark-black: #121212;
+  --text-main: #F5F5F5;
+  --text-muted: #AAAAAA;
+  --card-bg: #1E1E1E;
+  --section-bg: #121212;
+  --dark-blue: #050E17;
+}
+
+/* Base Dark Mode text flips */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode p,
+body.dark-mode li,
+body.dark-mode span:not(.cart-badge),
+body.dark-mode div:not(.modal-content div) {
+  /* color: #F5F5F5; */
+}
+
+/* Global Dark Mode Overrides */
+body.dark-mode section,
+body.dark-mode .hero-section {
+  background-color: #121212;
+}
+
+body.dark-mode .service-card,
+body.dark-mode .product-card,
+body.dark-mode .feature-card,
+body.dark-mode .about-card,
+body.dark-mode .contact-card {
+  background-color: #1E1E1E !important;
+  border-color: #333;
+}
+
+body.dark-mode body,
+body.dark-mode main {
+  background-color: #121212;
+}
+
+/* Fix for existing section text that might still be dark */
+body.dark-mode section h2,
+body.dark-mode section p,
+body.dark-mode .hero-title,
+body.dark-mode .hero-subtitle {
+    color: #F5F5F5 !important;
+}
+
+

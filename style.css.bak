@@ -1,20 +1,12 @@
 :root {
-  --primary-gold: #0B1C2E;
-  --secondary-gold: #0B1C2E;
+  --primary-gold: #D4AF37;
+  --secondary-gold: #C5A028;
   --dark-black: #FCFAF7;
   --dark-blue: #0B1C2E;
-  --font-light: #F5F5F5;
-  /* Warm Off-White Background */
-  --dark-gray: #FFFFFF;
-  /* Cards are now pure White */
-  --light-gray: #1A1A1A;
-  /* Text is soft black */
-  --white: #000000;
-  --absolute-white: #FFFFFF;
+  --text-main: #1A1A1A;
   --text-muted: #555555;
-  --footer-bg: #1A1A1A;
-  /* Dark Footer */
-  --footer-text: #F5F5F5;
+  --card-bg: #FFFFFF;
+  --section-bg: #FCFAF7;
   --font-heading: 'Cinzel', serif;
   --font-body: 'Lato', sans-serif;
   --transition: all 0.3s ease;
@@ -51,9 +43,258 @@ a {
 }
 
 /* Header & Nav */
-header {
+/* Header Layout */
+.main-header {
   position: relative;
-  height: 100vh;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: var(--dark-blue);
+}
+
+/* Top Bar */
+.top-bar {
+  background-color: var(--dark-blue);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 3%;
+  height: 90px;
+  transition: background-color 0.3s ease;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header-logo {
+  height: 65px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.header-logo:hover {
+  transform: scale(1.05);
+}
+
+.home-icon-btn {
+  font-size: 1.5rem;
+  color: #fff;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+}
+
+.home-icon-btn:hover {
+  color: var(--primary-gold);
+}
+
+/* Central Search Bar */
+.search-bar-container {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 40%;
+  max-width: 500px;
+  height: 40px;
+}
+
+.search-input-icon {
+  color: #333;
+  font-size: 1.2rem;
+  padding-left: 10px;
+}
+
+.main-search-input {
+  border: none;
+  outline: none;
+  padding: 0 10px;
+  flex: 1;
+  height: 100%;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.search-btn {
+  background: var(--dark-blue);
+  color: #fff;
+  border: none;
+  padding: 0 1.5rem;
+  height: 100%;
+  font-weight: 600;
+  cursor: pointer;
+  border-left: 1px solid #000;
+  transition: var(--transition);
+}
+
+.search-btn:hover {
+  background: #1a3c5e;
+}
+
+/* Right Navigation & Tools */
+.right-nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.primary-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.primary-nav a {
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.primary-nav a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--primary-gold);
+  text-underline-offset: 5px;
+}
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tool-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: var(--transition);
+}
+
+.tool-btn:hover {
+  color: var(--primary-gold);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background: var(--primary-gold);
+  color: #fff;
+  font-size: 0.7rem;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Language Selector */
+.lang-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+/* Theme Toggle Switch */
+.theme-toggle {
+  width: 50px;
+  height: 26px;
+  background: #333;
+  border-radius: 20px;
+  padding: 2px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.toggle-track {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.toggle-sun, .toggle-moon {
+  font-size: 14px;
+  z-index: 1;
+}
+
+.toggle-sun { color: #FDB813; }
+.toggle-moon { color: #F5F3CE; }
+
+.toggle-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Category Bar */
+.category-nav {
+  background-color: #E8EBE9;
+  border-bottom: 1px solid #ddd;
+  padding: 0.8rem 5%;
+}
+
+.category-container {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.cat-link {
+  color: #333;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.cat-link:hover, .cat-link.active {
+  color: var(--dark-blue);
+}
+
+.cat-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--dark-blue);
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  height: calc(100vh - 140px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -129,21 +370,7 @@ header {
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
 }
 
-header nav,
-.main-nav {
-  position: absolute;
-  /* Changed from fixed to absolute to sit on top of hero as part of the section */
-  top: 0;
-  width: 100%;
-  padding: 20px 5% 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  z-index: 100;
-  background: transparent;
-  /* Transparent to blend with header bg */
-  border-bottom: none;
-}
+
 
 .logo-container {
   display: flex;
@@ -171,7 +398,7 @@ header nav,
 }
 
 /* Header Content Layout */
-.header-content {
+.hero-content {
   position: relative;
   height: 100%;
   display: flex;
@@ -241,21 +468,7 @@ header nav,
 }
 
 /* Search Container - Floating Top Right */
-.hero-search-container {
-  position: absolute;
-  top: 70px;
-  /* Perfectly below the nav links as requested */
-  right: 5%;
-  background: #fff;
-  padding: 0.8rem 1.5rem;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 300px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-}
+
 
 .search-icon {
   font-size: 1.2rem;
@@ -1747,11 +1960,261 @@ dialog::backdrop {
   margin-bottom: 2rem;
 }
 
-.admin-header {
+.admin-/* Header Layout */
+.main-header {
+  position: relative;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: var(--dark-blue);
+}
+
+/* Top Bar */
+.top-bar {
+  background-color: var(--dark-blue);
+  color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  padding: 0.5rem 3%;
+  height: 90px;
+  transition: background-color 0.3s ease;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header-logo {
+  height: 65px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.header-logo:hover {
+  transform: scale(1.05);
+}
+
+.home-icon-btn {
+  font-size: 1.5rem;
+  color: #fff;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+}
+
+.home-icon-btn:hover {
+  color: var(--primary-gold);
+}
+
+/* Central Search Bar */
+.search-bar-container {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 40%;
+  max-width: 500px;
+  height: 40px;
+}
+
+.search-input-icon {
+  color: #333;
+  font-size: 1.2rem;
+  padding-left: 10px;
+}
+
+.main-search-input {
+  border: none;
+  outline: none;
+  padding: 0 10px;
+  flex: 1;
+  height: 100%;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.search-btn {
+  background: var(--dark-blue);
+  color: #fff;
+  border: none;
+  padding: 0 1.5rem;
+  height: 100%;
+  font-weight: 600;
+  cursor: pointer;
+  border-left: 1px solid #000;
+  transition: var(--transition);
+}
+
+.search-btn:hover {
+  background: #1a3c5e;
+}
+
+/* Right Navigation & Tools */
+.right-nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.primary-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.primary-nav a {
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.primary-nav a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--primary-gold);
+  text-underline-offset: 5px;
+}
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tool-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: var(--transition);
+}
+
+.tool-btn:hover {
+  color: var(--primary-gold);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background: var(--primary-gold);
+  color: #fff;
+  font-size: 0.7rem;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Language Selector */
+.lang-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+/* Theme Toggle Switch */
+.theme-toggle {
+  width: 50px;
+  height: 26px;
+  background: #333;
+  border-radius: 20px;
+  padding: 2px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.toggle-track {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.toggle-sun, .toggle-moon {
+  font-size: 14px;
+  z-index: 1;
+}
+
+.toggle-sun { color: #FDB813; }
+.toggle-moon { color: #F5F3CE; }
+
+.toggle-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Category Bar */
+.category-nav {
+  background-color: #E8EBE9;
+  border-bottom: 1px solid #ddd;
+  padding: 0.8rem 5%;
+}
+
+.category-container {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.cat-link {
+  color: #333;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.cat-link:hover, .cat-link.active {
+  color: var(--dark-blue);
+}
+
+.cat-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--dark-blue);
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  height: calc(100vh - 140px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .admin-header h4 {
@@ -1994,28 +2457,14 @@ dialog::backdrop {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .header-content {
+  .hero-content {
     flex-direction: column;
     justify-content: center;
     padding-top: 80px;
     /* Space for Nav */
   }
 
-  .hero-search-container {
-    position: relative;
-    /* Make it static/relative part of flow */
-    top: auto;
-    right: auto;
-    width: 100%;
-    margin-bottom: 2rem;
-    /* Space between search and title */
-    order: -1;
-    /* Place at the top */
-    box-shadow: none;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.1);
-    /* Slightly transparent on mobile */
-  }
+  
 
 
 
@@ -2090,10 +2539,261 @@ dialog::backdrop {
   right: 0;
 }
 
-.drawer-header {
+.drawer-/* Header Layout */
+.main-header {
+  position: relative;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: var(--dark-blue);
+}
+
+/* Top Bar */
+.top-bar {
+  background-color: var(--dark-blue);
+  color: #fff;
   display: flex;
-  justify-content: flex-end;
-  margin-bottom: 2rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 3%;
+  height: 90px;
+  transition: background-color 0.3s ease;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header-logo {
+  height: 65px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.header-logo:hover {
+  transform: scale(1.05);
+}
+
+.home-icon-btn {
+  font-size: 1.5rem;
+  color: #fff;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+}
+
+.home-icon-btn:hover {
+  color: var(--primary-gold);
+}
+
+/* Central Search Bar */
+.search-bar-container {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 40%;
+  max-width: 500px;
+  height: 40px;
+}
+
+.search-input-icon {
+  color: #333;
+  font-size: 1.2rem;
+  padding-left: 10px;
+}
+
+.main-search-input {
+  border: none;
+  outline: none;
+  padding: 0 10px;
+  flex: 1;
+  height: 100%;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.search-btn {
+  background: var(--dark-blue);
+  color: #fff;
+  border: none;
+  padding: 0 1.5rem;
+  height: 100%;
+  font-weight: 600;
+  cursor: pointer;
+  border-left: 1px solid #000;
+  transition: var(--transition);
+}
+
+.search-btn:hover {
+  background: #1a3c5e;
+}
+
+/* Right Navigation & Tools */
+.right-nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.primary-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.primary-nav a {
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.primary-nav a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--primary-gold);
+  text-underline-offset: 5px;
+}
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tool-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: var(--transition);
+}
+
+.tool-btn:hover {
+  color: var(--primary-gold);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background: var(--primary-gold);
+  color: #fff;
+  font-size: 0.7rem;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Language Selector */
+.lang-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+/* Theme Toggle Switch */
+.theme-toggle {
+  width: 50px;
+  height: 26px;
+  background: #333;
+  border-radius: 20px;
+  padding: 2px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.toggle-track {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.toggle-sun, .toggle-moon {
+  font-size: 14px;
+  z-index: 1;
+}
+
+.toggle-sun { color: #FDB813; }
+.toggle-moon { color: #F5F3CE; }
+
+.toggle-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Category Bar */
+.category-nav {
+  background-color: #E8EBE9;
+  border-bottom: 1px solid #ddd;
+  padding: 0.8rem 5%;
+}
+
+.category-container {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.cat-link {
+  color: #333;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.cat-link:hover, .cat-link.active {
+  color: var(--dark-blue);
+}
+
+.cat-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--dark-blue);
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  height: calc(100vh - 140px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .close-drawer-btn {
@@ -2755,4 +3455,117 @@ dialog::backdrop {
 .pdf-viewer-dialog::backdrop {
   background: rgba(11, 28, 46, 0.85);
   backdrop-filter: blur(8px);
+}
+/* =========================================
+   DARK MODE REFINEMENT 
+   ========================================= */
+
+body.dark-mode {
+  --dark-black: #121212;
+  --text-main: #F5F5F5;
+  --text-muted: #AAAAAA;
+  --card-bg: #1E1E1E;
+  --section-bg: #121212;
+  --dark-blue: #050E17;
+}
+
+/* Base Dark Mode text flips */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode p,
+body.dark-mode li,
+body.dark-mode span:not(.cart-badge),
+body.dark-mode div:not(.modal-content div) {
+  /* color: #F5F5F5; */
+}
+
+/* Global Dark Mode Overrides */
+body.dark-mode section,
+body.dark-mode .hero-section {
+  background-color: #121212;
+}
+
+body.dark-mode .service-card,
+body.dark-mode .product-card,
+body.dark-mode .feature-card,
+body.dark-mode .about-card,
+body.dark-mode .contact-card {
+  background-color: #1E1E1E !important;
+  border-color: #333;
+}
+
+body.dark-mode body,
+body.dark-mode main {
+  background-color: #121212;
+}
+
+/* Fix for existing section text that might still be dark */
+body.dark-mode section h2,
+body.dark-mode section p,
+body.dark-mode .hero-title,
+body.dark-mode .hero-subtitle {
+    color: #F5F5F5 !important;
+}
+
+
+
+/* =========================================
+   UNIVERSAL LIGHT MODALS (Forced for all modes)
+   ========================================= */
+
+/* Base Dialog Styles - Forced to White */
+dialog, .modal-content, .login-container, .admin-dialog, .pdf-modal-container {
+  background-color: #FFFFFF !important;
+  color: #333333 !important;
+  border-radius: 12px !important;
+  border: 1px solid #ddd !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Ensure ALL text inside modals is dark, even in Dark Mode */
+dialog *, .modal-content *, .login-container *, .admin-dialog * {
+  color: #333333 !important;
+}
+
+/* Specific button text color preservation */
+dialog .btn, .modal-content .btn, .login-container .btn {
+  color: #FFFFFF !important;
+}
+
+/* Icons inside modals should be dark/gold as intended */
+dialog ion-icon, .modal-content ion-icon {
+  color: inherit !important;
+}
+
+/* Cart Specifics */
+#cart-items {
+  border-top: 1px solid #eeeeee !important;
+  border-bottom: 1px solid #eeeeee !important;
+}
+
+.cart-item-name, .cart-item-price, #cart-total {
+  color: #000000 !important;
+}
+
+/* Close Button Consistency */
+.close-modal, .close-btn, #close-cart-modal, #close-login-modal, #close-modal {
+  color: #000000 !important;
+  opacity: 0.8 !important;
+  background: transparent !important;
+  font-size: 2.5rem !important;
+  font-weight: 300 !important;
+}
+
+.close-modal:hover {
+  opacity: 1 !important;
+  color: #D4AF37 !important;
+}
+
+/* PDF Viewer Inner Container should keep its dark background for contrast with the paper */
+#pdf-viewer-container {
+  background: #525659 !important;
 }

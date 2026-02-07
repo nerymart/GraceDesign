@@ -1,0 +1,209 @@
+/* MODALS */
+/* Modal */
+dialog {
+  border: none;
+  background: var(--dark-gray);
+  color: var(--light-gray);
+  padding: 0;
+  border-radius: 10px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  width: 90%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.modal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-info {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--light-gray);
+  font-size: 2rem;
+  cursor: pointer;
+}
+/* --- WORK DETAIL MODAL --- */
+.work-detail-dialog {
+  max-width: 900px;
+  width: 90%;
+  padding: 0;
+  border-radius: 15px;
+}
+
+.work-modal-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 500px;
+}
+
+.work-modal-img-container {
+  height: 100%;
+  background: #f1f5f9;
+}
+
+.work-modal-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.work-modal-info {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.work-modal-info h2 {
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  border-bottom: 2px solid var(--primary-gold);
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.specs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  flex-grow: 1;
+}
+
+.spec-item {
+  font-size: 1.1rem;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.spec-item strong {
+  color: #555;
+}
+
+.btn-wa-quote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  font-size: 1.1rem;
+  padding: 1rem 2rem;
+}
+
+@media (max-width: 768px) {
+  .work-modal-layout {
+    grid-template-columns: 1fr;
+  }
+}
+/* --- PDF VIEWER MODAL --- */
+.pdf-viewer-dialog {
+  width: 95%;
+  max-width: 1200px;
+  height: 90vh;
+  padding: 0;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.pdf-modal-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f1f5f9;
+}
+
+.pdf-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.pdf-viewer-dialog::backdrop {
+  background: rgba(11, 28, 46, 0.85);
+  backdrop-filter: blur(8px);
+}
+/* =========================================
+   DARK MODE REFINEMENT 
+
+/* =========================================
+   UNIVERSAL LIGHT MODALS (Forced for all modes)
+   ========================================= */
+
+/* Base Dialog Styles - Forced to White */
+dialog, .modal-content, .login-container, .admin-dialog, .pdf-modal-container {
+  background-color: #FFFFFF !important;
+  color: #333333 !important;
+  border-radius: 12px !important;
+  border: 1px solid #ddd !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Ensure ALL text inside modals is dark, even in Dark Mode */
+dialog *, .modal-content *, .login-container *, .admin-dialog * {
+  color: #333333 !important;
+}
+
+/* Specific button text color preservation */
+dialog .btn, .modal-content .btn, .login-container .btn {
+  color: #FFFFFF !important;
+}
+
+/* Icons inside modals should be dark/gold as intended */
+dialog ion-icon, .modal-content ion-icon {
+  color: inherit !important;
+}
+
+/* Cart Specifics */
+#cart-items {
+  border-top: 1px solid #eeeeee !important;
+  border-bottom: 1px solid #eeeeee !important;
+}
+
+.cart-item-name, .cart-item-price, #cart-total {
+  color: #000000 !important;
+}
+
+/* Close Button Consistency */
+.close-modal, .close-btn, #close-cart-modal, #close-login-modal, #close-modal {
+  color: #000000 !important;
+  opacity: 0.8 !important;
+  background: transparent !important;
+  font-size: 2.5rem !important;
+  font-weight: 300 !important;
+}
+
+.close-modal:hover {
+  opacity: 1 !important;
+  color: #D4AF37 !important;
+}
+
+/* PDF Viewer Inner Container should keep its dark background for contrast with the paper */
+#pdf-viewer-container {
+  background: #525659 !important;
+}

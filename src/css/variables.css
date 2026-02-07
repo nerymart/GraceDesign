@@ -1,0 +1,44 @@
+:root {
+  --primary-gold: #D4AF37;
+  --secondary-gold: #C5A028;
+  --dark-black: #FCFAF7;
+  --dark-blue: #0B1C2E;
+  --text-main: #1A1A1A;
+  --text-muted: #555555;
+  --card-bg: #FFFFFF;
+  --section-bg: #FCFAF7;
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Lato', sans-serif;
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--dark-black);
+  color: var(--light-gray);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  color: var(--primary-gold);
+  margin-bottom: 1rem;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
