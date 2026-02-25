@@ -37,7 +37,9 @@ export function initEngagementSlider() {
             slides[currentSlide].classList.add('active');
         }, 5000);
     }
+}
 
+export function initPdfViewer() {
     const pdfBtn = document.getElementById("view-engagement-pdf");
     const pdfModal = document.getElementById("pdf-modal");
     const closePdfBtn = document.getElementById("close-pdf-modal");
@@ -84,11 +86,53 @@ export function initEngagementSlider() {
                 viewerContainer.innerHTML = '<p style="color:white; text-align:center; padding:2rem;">Error: Librería PDF no cargada.</p>';
             }
         });
-        closePdfBtn.onclick = () => pdfModal.close();
+        if (closePdfBtn) closePdfBtn.onclick = () => pdfModal.close();
+    }
+}
+
+export function initCategoryNavArrows() {
+    const container = document.querySelector('.category-container');
+    const prevBtn = document.getElementById('cat-prev');
+    const nextBtn = document.getElementById('cat-next');
+
+    if (container && prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+            container.scrollBy({ left: -200, behavior: 'smooth' });
+        });
+        nextBtn.addEventListener('click', () => {
+            container.scrollBy({ left: 200, behavior: 'smooth' });
+        });
+
+        // Optional: Hide arrows if not scrollable
+        const toggleArrows = () => {
+            prevBtn.style.opacity = container.scrollLeft <= 5 ? '0.3' : '1';
+            nextBtn.style.opacity = (container.scrollLeft + container.clientWidth >= container.scrollWidth - 5) ? '0.3' : '1';
+        };
+
+        container.addEventListener('scroll', toggleArrows);
+        window.addEventListener('resize', toggleArrows);
+        setTimeout(toggleArrows, 500); // Initial check
+    }
+}
+
+export function initServicesCarousel() {
+    const container = document.getElementById('services-list');
+    const prevBtn = document.getElementById('prev-service');
+    const nextBtn = document.getElementById('next-service');
+
+    if (container && prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+            container.scrollBy({ left: -320, behavior: 'smooth' });
+        });
+        nextBtn.addEventListener('click', () => {
+            container.scrollBy({ left: 320, behavior: 'smooth' });
+        });
     }
 }
 
 export function initGlobalFeatures() {
+    initCategoryNavArrows();
+    initServicesCarousel();
     const themeToggles = document.querySelectorAll('.theme-toggle');
     if (themeToggles.length > 0) {
         if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');

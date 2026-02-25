@@ -39,6 +39,57 @@
   </div>
 </dialog>
 
+<!-- Category/Jewelry Modal -->
+<dialog id="jewelry-detail-modal" class="jewelry-detail-dialog">
+  <div class="jewelry-modal-container">
+    <button class="close-modal" id="close-jewelry-modal">&times;</button>
+
+    <div class="jewelry-modal-header">
+      <h2 class="jewelry-main-title">DETALLES DEL DISEÑO</h2>
+    </div>
+
+    <div class="jewelry-modal-content-grid">
+      <!-- Left side: Image and Back link -->
+      <div class="jewelry-modal-left">
+        <button class="back-link-top" id="back-to-gallery-btn">
+          <ion-icon name="arrow-back-outline"></ion-icon> Volver a la Galería
+        </button>
+        <div class="jewelry-image-wrapper">
+          <img src="" alt="Joyas" id="jewelry-modal-img">
+        </div>
+      </div>
+
+      <!-- Right side: Details and CTA -->
+      <div class="jewelry-modal-right">
+        <h2 id="jewelry-modal-title" class="product-title-display">NOMBRE DEL PRODUCTO</h2>
+
+        <div class="specs-table">
+          <div class="spec-row">
+            <span class="spec-label">Peso:</span>
+            <span class="spec-value" id="jewelry-spec-weight">--</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Medida:</span>
+            <span class="spec-value" id="jewelry-spec-size">--</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Precio de Diseño:</span>
+            <span class="spec-value" id="jewelry-spec-price">--</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Dimensiones:</span>
+            <span class="spec-value" id="jewelry-spec-dims">--</span>
+          </div>
+        </div>
+
+        <button class="btn btn-adquirir" id="jewelry-buy-btn">
+          <ion-icon name="logo-whatsapp"></ion-icon> Adquirir Diseño
+        </button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
 <!-- Cart Modal -->
 <dialog id="cart-modal">
   <div style="padding: 2rem; max-width: 500px; width: 100%; position: relative;">
@@ -88,23 +139,25 @@
     <button class="close-drawer-btn" id="close-filter-drawer">&times;</button>
   </div>
   <ul class="drawer-list">
-    <li><a href="#services" class="drawer-link"><span class="drawer-text">Servicios Grace</span><ion-icon
+    <li><a href="index.html" class="drawer-link"><span class="drawer-text">Inicio</span><ion-icon
+          name="home-outline"></ion-icon></a></li>
+    <li><a href="index.html#services" class="drawer-link"><span class="drawer-text">Servicios Grace</span><ion-icon
           name="chevron-forward-outline"></ion-icon></a></li>
-    <li><a href="#products" class="drawer-link"><span class="drawer-text">Disponibles Ahora</span><ion-icon
+    <li><a href="index.html#products" class="drawer-link"><span class="drawer-text">Disponibles Ahora</span><ion-icon
           name="chevron-forward-outline"></ion-icon></a></li>
-    <li><a href="#about" class="drawer-link"><span class="drawer-text">Acerca de Nosotros</span><ion-icon
+    <li><a href="index.html#about" class="drawer-link"><span class="drawer-text">Acerca de Nosotros</span><ion-icon
           name="chevron-forward-outline"></ion-icon></a></li>
-    <li><a href="#" class="drawer-link"><span class="drawer-text">ANILLOS DE GRADUACION</span><ion-icon
+    <li><a href="graduacion.html" class="drawer-link"><span class="drawer-text">ANILLOS DE GRADUACION</span><ion-icon
           name="chevron-forward-outline"></ion-icon></a></li>
-    <li><a href="#" class="drawer-link"><span class="drawer-text">COMPROMISO & BODAS</span><ion-icon
+    <li><a href="bodas.html" class="drawer-link"><span class="drawer-text">COMPROMISO & BODAS</span><ion-icon
           name="chevron-forward-outline"></ion-icon></a></li>
-    <li><a href="#" class="drawer-link"><span class="drawer-text">PERSONALIZACION 3D</span><ion-icon
+    <li><a href="personalizacion.html" class="drawer-link"><span class="drawer-text">PERSONALIZACION 3D</span><ion-icon
           name="chevron-forward-outline"></ion-icon></a></li>
-    <li><a href="#" class="drawer-link"><span class="drawer-text">JOYAS EXTRANJERA</span><ion-icon
+    <li><a href="extranjera.html" class="drawer-link"><span class="drawer-text">JOYAS EXTRANJERA</span><ion-icon
           name="chevron-forward-outline"></ion-icon></a></li>
-    <li><a href="#" class="drawer-link"><span class="drawer-text">JOYAS NACIONALES</span><ion-icon
+    <li><a href="nacionales.html" class="drawer-link"><span class="drawer-text">JOYAS NACIONALES</span><ion-icon
           name="chevron-forward-outline"></ion-icon></a></li>
-    <li><a href="#contact" class="drawer-link"><span class="drawer-text">Contacto y Ubicación</span><ion-icon
+    <li><a href="index.html#contact" class="drawer-link"><span class="drawer-text">Contacto y Ubicación</span><ion-icon
           name="chevron-forward-outline"></ion-icon></a></li>
     <li>
       <a href="#" class="drawer-link" id="mobile-cart-btn">
@@ -157,6 +210,9 @@
       </button>
       <button class="nav-item" data-section="catalogo">
         <ion-icon name="book-outline"></ion-icon> Catálogo
+      </button>
+      <button class="nav-item" data-section="categories">
+        <ion-icon name="images-outline"></ion-icon> Categorías
       </button>
     </nav>
 

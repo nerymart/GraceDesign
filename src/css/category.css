@@ -1,0 +1,310 @@
+/* CATEGORY PAGES (e.g. Graduación) */
+
+.category-page {
+    min-height: 80vh;
+    background-color: var(--section-bg);
+}
+
+/* Category Hero */
+.category-hero {
+    padding: 6rem 5%;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 3rem;
+    /* Increased margin to separate options */
+}
+
+.grad-hero {
+    background: linear-gradient(rgba(11, 28, 46, 0.8), rgba(11, 28, 46, 0.9)), url('https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=2000') no-repeat center center/cover;
+}
+
+.category-hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.category-hero-content p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Subcategory Tabs */
+.subcategory-tabs {
+    padding: 0 5%;
+    margin-bottom: 3rem;
+}
+
+.tabs-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-bottom: 2px solid #E8EBE9;
+    padding-bottom: 1rem;
+}
+
+/* Tabs Carousel enhancements for many buttons */
+.tabs-carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 100%;
+    margin: 0 auto 2rem;
+    overflow: hidden;
+}
+
+.tabs-carousel {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0.2rem;
+    flex-wrap: wrap;
+    /* Allow wrapping */
+    justify-content: center;
+    /* Center rows */
+    width: 100%;
+    border-bottom: none;
+    /* Overriding border if wrapped */
+}
+
+.tabs-carousel-wrapper .tabs-container {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.tabs-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-btn {
+    background: var(--absolute-white);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--dark-blue);
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.scroll-btn.left {
+    margin-right: 0.5rem;
+}
+
+.scroll-btn.right {
+    margin-left: 0.5rem;
+}
+
+.scroll-btn:hover {
+    background: var(--primary-gold);
+    color: #fff;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    color: #666;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    /* Keep tab text inline */
+}
+
+.tab-btn:hover {
+    color: var(--dark-blue);
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.tab-btn.active,
+.tab-btn.selected {
+    color: #fff;
+    background: var(--dark-blue);
+    box-shadow: 0 4px 15px rgba(11, 28, 46, 0.3);
+}
+
+/* Dropdown specific styles */
+.dropdown-tab {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--absolute-white);
+    min-width: 200px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 0.5rem 0;
+    z-index: 100;
+    margin-top: 10px;
+}
+
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 0 8px 8px 8px;
+    border-style: solid;
+    border-color: transparent transparent var(--absolute-white) transparent;
+}
+
+.dropdown-tab:hover .dropdown-menu,
+.dropdown-tab.active .dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    animation: fadeInDown 0.3s ease forwards;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.sub-tab-btn {
+    width: 100%;
+    text-align: left;
+    border-radius: 0;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.sub-tab-btn:hover {
+    background-color: rgba(212, 175, 55, 0.1);
+    color: var(--dark-blue);
+}
+
+.sub-tab-btn.active {
+    background-color: var(--dark-blue);
+    color: #fff;
+    box-shadow: none;
+}
+
+/* Ensure empty states look okay */
+.category-products {
+    min-height: 400px;
+}
+
+.section-title-wrap {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+#current-category-title {
+    display: inline-block;
+    color: var(--dark-blue);
+    /* Reset from global .section-title to allow simple center alignment */
+    position: static;
+    transform: none;
+    left: auto;
+}
+
+#current-category-title::after {
+    background: var(--dark-blue);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Filter animations */
+.product-card {
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.product-card.hiding {
+    transform: scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.product-card.hidden-by-filter {
+    display: none;
+}
+
+/* --- Mobile Adjustments --- */
+@media (max-width: 768px) {
+    .dropdown-tab {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .dropdown-toggle {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .dropdown-menu {
+        position: static;
+        width: 100%;
+        transform: none;
+        box-shadow: none;
+        background-color: transparent;
+        margin-top: 0.5rem;
+        padding: 0;
+    }
+
+    .dropdown-menu::before {
+        display: none;
+    }
+
+    .dropdown-tab:hover .dropdown-menu,
+    .dropdown-tab.active .dropdown-menu {
+        animation: fadeIn 0.3s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .sub-tab-btn {
+        text-align: center;
+        border-radius: 30px;
+        margin-bottom: 0.5rem;
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+}

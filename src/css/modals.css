@@ -47,6 +47,7 @@ dialog::backdrop {
   font-size: 2rem;
   cursor: pointer;
 }
+
 /* --- WORK DETAIL MODAL --- */
 .work-detail-dialog {
   max-width: 900px;
@@ -120,6 +121,7 @@ dialog::backdrop {
     grid-template-columns: 1fr;
   }
 }
+
 /* --- PDF VIEWER MODAL --- */
 .pdf-viewer-dialog {
   width: 95%;
@@ -148,6 +150,7 @@ dialog::backdrop {
   background: rgba(11, 28, 46, 0.85);
   backdrop-filter: blur(8px);
 }
+
 /* =========================================
    DARK MODE REFINEMENT 
 
@@ -156,7 +159,11 @@ dialog::backdrop {
    ========================================= */
 
 /* Base Dialog Styles - Forced to White */
-dialog, .modal-content, .login-container, .admin-dialog, .pdf-modal-container {
+dialog,
+.modal-content,
+.login-container,
+.admin-dialog,
+.pdf-modal-container {
   background-color: #FFFFFF !important;
   color: #333333 !important;
   border-radius: 12px !important;
@@ -165,17 +172,23 @@ dialog, .modal-content, .login-container, .admin-dialog, .pdf-modal-container {
 }
 
 /* Ensure ALL text inside modals is dark, even in Dark Mode */
-dialog *, .modal-content *, .login-container *, .admin-dialog * {
+dialog *,
+.modal-content *,
+.login-container *,
+.admin-dialog * {
   color: #333333 !important;
 }
 
 /* Specific button text color preservation */
-dialog .btn, .modal-content .btn, .login-container .btn {
+dialog .btn,
+.modal-content .btn,
+.login-container .btn {
   color: #FFFFFF !important;
 }
 
 /* Icons inside modals should be dark/gold as intended */
-dialog ion-icon, .modal-content ion-icon {
+dialog ion-icon,
+.modal-content ion-icon {
   color: inherit !important;
 }
 
@@ -185,12 +198,18 @@ dialog ion-icon, .modal-content ion-icon {
   border-bottom: 1px solid #eeeeee !important;
 }
 
-.cart-item-name, .cart-item-price, #cart-total {
+.cart-item-name,
+.cart-item-price,
+#cart-total {
   color: #000000 !important;
 }
 
 /* Close Button Consistency */
-.close-modal, .close-btn, #close-cart-modal, #close-login-modal, #close-modal {
+.close-modal,
+.close-btn,
+#close-cart-modal,
+#close-login-modal,
+#close-modal {
   color: #000000 !important;
   opacity: 0.8 !important;
   background: transparent !important;
@@ -206,4 +225,192 @@ dialog ion-icon, .modal-content ion-icon {
 /* PDF Viewer Inner Container should keep its dark background for contrast with the paper */
 #pdf-viewer-container {
   background: #525659 !important;
+}
+
+/* --- ENHANCED JEWELRY DETAIL MODAL --- */
+.jewelry-detail-dialog {
+  max-width: 950px;
+  width: 95%;
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: #fff !important;
+}
+
+.jewelry-modal-container {
+  padding: 2.5rem;
+  position: relative;
+}
+
+.jewelry-modal-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.jewelry-main-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2.2rem;
+  color: #333 !important;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.jewelry-modal-content-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.jewelry-modal-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.back-link-top {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: #666 !important;
+  cursor: pointer;
+  padding: 0;
+  transition: var(--transition);
+}
+
+.back-link-top:hover {
+  color: var(--primary-gold) !important;
+}
+
+.jewelry-image-wrapper {
+  width: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.jewelry-image-wrapper img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  display: block;
+}
+
+.jewelry-modal-right {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.product-title-display {
+  font-family: 'Cinzel', serif;
+  font-size: 2.5rem;
+  color: #333 !important;
+  text-transform: uppercase;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 1rem;
+  margin: 0;
+}
+
+.specs-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid #eee;
+  font-size: 1.1rem;
+}
+
+.spec-label {
+  font-weight: 700;
+  color: #444 !important;
+}
+
+.spec-value {
+  color: #666 !important;
+}
+
+.btn-adquirir {
+  background-color: #2ecc71 !important;
+  /* Premium Green */
+  color: #fff !important;
+  width: 100%;
+  padding: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-adquirir:hover {
+  background-color: #27ae60 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+}
+
+@media (max-width: 900px) {
+  .jewelry-modal-container {
+    padding: 1.5rem;
+  }
+
+  .jewelry-modal-content-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .jewelry-main-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .product-title-display {
+    font-size: 1.8rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .jewelry-modal-container {
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .spec-row {
+    padding: 0.8rem 0;
+    font-size: 1rem;
+  }
+
+  .btn-adquirir {
+    font-size: 1.1rem;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .jewelry-detail-dialog {
+    width: 98%;
+  }
+
+  .jewelry-modal-container {
+    padding: 1rem;
+  }
+
+  .product-title-display {
+    font-size: 1.5rem;
+  }
+
+  .jewelry-main-title {
+    font-size: 1.2rem;
+  }
 }

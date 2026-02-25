@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GraceBoaco. - Personalización 3D</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- Project Styles -->
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .p3d-hero {
+            background: linear-gradient(rgba(11, 28, 46, 0.8), rgba(11, 28, 46, 0.95)), url('https://images.unsplash.com/photo-1628126235206-5260b9ea6441?auto=format&fit=crop&q=80&w=2000') no-repeat center center/cover;
+        }
+
+        /* 3D Process Specific CSS */
+        .process-steps {
+            padding: 4rem 5%;
+            background-color: var(--section-bg);
+            text-align: center;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .process-card {
+            background: var(--absolute-white);
+            padding: 2.5rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .process-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .process-icon {
+            font-size: 3.5rem;
+            color: var(--primary-gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .process-card h3 {
+            color: var(--dark-blue);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-family: var(--font-primary);
+        }
+
+        .process-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Gallery Showcase */
+        .showcase-section {
+            padding: 4rem 5%;
+            background-color: var(--absolute-white);
+        }
+
+        .before-after-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+
+        .ba-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        .ba-images {
+            display: flex;
+            height: 300px;
+        }
+
+        .ba-side {
+            flex: 1;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .ba-label {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(11, 28, 46, 0.8);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .ba-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .ba-info h3 {
+            color: var(--dark-blue);
+            font-family: var(--font-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .ba-info p {
+            color: #777;
+            font-size: 0.95rem;
+        }
+
+        .cta-3d {
+            text-align: center;
+            padding: 4rem 5%;
+            background: var(--dark-blue);
+            color: #fff;
+        }
+
+        .cta-3d h2 {
+            font-size: 2.2rem;
+            font-family: var(--font-primary);
+            margin-bottom: 1rem;
+        }
+
+        .cta-3d p {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .cta-3d .btn-primary {
+            background-color: var(--primary-gold);
+            color: var(--dark-blue);
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .cta-3d .btn-primary:hover {
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Placeholder -->
+    <div id="header-part"></div>
+
+    <main id="main-content">
+        <!-- Hero Category Section -->
+        <section class="category-hero p3d-hero">
+            <div class="category-hero-content">
+                <h1 class="hero-title">Diseño y Modelado 3D</h1>
+                <p class="hero-subtitle">Traemos tus ideas a la realidad con precisión milimétrica usando tecnología de
+                    vanguardia.</p>
+            </div>
+        </section>
+
+        <!-- Subcategory Navigation -->
+        <div class="subcategory-tabs">
+            <div class="tabs-container" id="nav-p3d">
+                <button class="tab-btn active" data-target="p3d-diseno">Diseño 3D</button>
+                <button class="tab-btn" data-target="p3d-modelado">Modelado 3D</button>
+                <button class="tab-btn" data-target="p3d-tejidos">Tejidos & Candados</button>
+                <button class="tab-btn" data-target="p3d-mesa">Anillos Mesa</button>
+                <button class="tab-btn" data-target="p3d-dijes">Dijes</button>
+                <button class="tab-btn" data-target="p3d-alfabeto">Alfabeto</button>
+                <button class="tab-btn" data-target="p3d-variado">Anillos Variados</button>
+                <button class="tab-btn" data-target="p3d-15">Anillos 15 Años</button>
+                <button class="tab-btn" data-target="p3d-figura">Anillos con Figura</button>
+                <button class="tab-btn" data-target="p3d-dijes-alfa">Dijes Alfabeto</button>
+                <button class="tab-btn" data-target="p3d-comp-finos">Compromiso Finos</button>
+                <button class="tab-btn" data-target="p3d-casuales">Anillos Casuales</button>
+            </div>
+        </div>
+
+        <div id="p3d-diseno" class="p3d-view active">
+            <!-- Process Steps -->
+            <section class="process-steps">
+                <div class="section-title-wrap" style="text-align: center; width: 100%;">
+                    <h2 class="section-title"
+                        style="color: var(--primary-gold); left: 0; transform: none; display: block; text-align: center; width: 100%;">
+                        DISEÑO 3D</h2>
+                </div>
+                <div class="steps-container">
+                    <div class="process-card">
+                        <ion-icon name="color-wand-outline" class="process-icon"></ion-icon>
+                        <h3>1. Diseño Conceptual</h3>
+                        <p>Cuéntanos tu idea o muéstranos bocetos. Nuestros expertos modelarán tu pieza en software CAD
+                            especializado (MatrixGold).</p>
+                    </div>
+                    <div class="process-card">
+                        <ion-icon name="cube-outline" class="process-icon"></ion-icon>
+                        <h3>2. Rendereado Muestra</h3>
+                        <p>Te enviamos imágenes digitales fotorrealistas con iluminación simulada para que apruebes o
+                            sugieras cambios de forma instantánea.</p>
+                    </div>
+                    <div class="process-card">
+                        <ion-icon name="laptop-outline" class="process-icon"></ion-icon>
+                        <h3>3. Ajustes y Aprobación</h3>
+                        <p>Afinamos grosores, tallas y posiciones de diamantes. Recibirás tu confirmación técnica del
+                            modelo listos para producción.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-3d">
+                <h2>¿Tienes un diseño en mente?</h2>
+                <p>Envíanos una foto y déjanos elaborar un presupuesto digital sin compromiso para tu joya única.</p>
+                <a href="./index.html#contact" class="btn-primary">Cotizar Diseño</a>
+            </section>
+        </div>
+
+        <div id="p3d-modelado" class="p3d-view" style="display:none;">
+            <!-- Showcase Slider/Grid -->
+            <section class="showcase-section">
+                <div class="section-title-wrap">
+                    <h2 class="section-title">De la Máquina a tus Manos</h2>
+                </div>
+
+                <div class="before-after-grid">
+                    <!-- Ejemplo 1 -->
+                    <div class="ba-card">
+                        <div class="ba-images">
+                            <div class="ba-side"
+                                style="background-image: url('https://images.unsplash.com/photo-1544391697-71c841e06fa5?auto=format&fit=crop&q=80&w=600'); filter: sepia(100%) hue-rotate(180deg) blur(1px);">
+                                <span class="ba-label">Impresión Cera</span>
+                            </div>
+                            <div class="ba-side"
+                                style="background-image: url('https://images.unsplash.com/photo-1605100804763-247f6793148e?auto=format&fit=crop&q=80&w=600');">
+                                <span class="ba-label">Resultado Final</span>
+                            </div>
+                        </div>
+                        <div class="ba-info">
+                            <h3>Anillo Elegance</h3>
+                            <p>Prototipo extruído en resina para moldes listos para recibir Micro Fusión en oro puro.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Ejemplo 2 -->
+                    <div class="ba-card">
+                        <div class="ba-images">
+                            <div class="ba-side"
+                                style="background-image: url('https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&q=80&w=600'); filter: grayscale(100%) blur(1px);">
+                                <span class="ba-label">Cera Calcinable</span>
+                            </div>
+                            <div class="ba-side"
+                                style="background-image: url('https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600');">
+                                <span class="ba-label">Oro 18k</span>
+                            </div>
+                        </div>
+                        <div class="ba-info">
+                            <h3>Sello Personalizado</h3>
+                            <p>Fabricación y corte de matriz a medida antes del pulido y ensamblaje final orfebre.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Product Catalog for the extra 10 categories -->
+        <section class="category-products p3d-view" id="p3d-products-section" style="display:none;">
+            <div class="section-title-wrap">
+                <h2 class="section-title" id="current-category-title">Catálogo</h2>
+            </div>
+            <div class="products-grid" id="p3d-grid">
+                <!-- Products injected by category.js -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-part"></div>
+    <!-- Modals Placeholder -->
+    <div id="modals-part"></div>
+
+    <!-- Modular Entry Script -->
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/js/category.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('#nav-p3d .tab-btn');
+            const views = document.querySelectorAll('.p3d-view');
+            const productsSection = document.getElementById('p3d-products-section');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update active tab styles (category.js also does this, but it's fine)
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Hide all static views
+                    const disenoView = document.getElementById('p3d-diseno');
+                    const modeladoView = document.getElementById('p3d-modelado');
+                    if (disenoView) disenoView.style.display = 'none';
+                    if (modeladoView) modeladoView.style.display = 'none';
+                    if (productsSection) productsSection.style.display = 'none';
+
+                    // Determine what to show
+                    const targetId = tab.getAttribute('data-target');
+                    if (targetId === 'p3d-diseno' || targetId === 'p3d-modelado') {
+                        const targetView = document.getElementById(targetId);
+                        if (targetView) targetView.style.display = 'block';
+                    } else {
+                        if (productsSection) productsSection.style.display = 'block';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

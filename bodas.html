@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GraceBoaco. - Compromiso & Bodas</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- Project Styles -->
+    <link rel="stylesheet" href="/src/style.css">
+    <!-- PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+    <style>
+        .bodas-hero {
+            background: linear-gradient(rgba(11, 28, 46, 0.7), rgba(11, 28, 46, 0.9)), url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=2000') no-repeat center center/cover;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Placeholder -->
+    <div id="header-part"></div>
+
+    <main id="main-content" class="category-page">
+        <!-- Hero Category Section -->
+        <section class="category-hero bodas-hero">
+            <div class="category-hero-content">
+                <h1 class="hero-title">Compromiso & Bodas</h1>
+                <p class="hero-subtitle">Sella tu amor eterno con nuestra exquisita colección de anillos para el "Sí,
+                    quiero".</p>
+            </div>
+        </section>
+
+        <!-- Subcategory Navigation -->
+        <div class="subcategory-tabs">
+            <div class="tabs-container" id="nav-bodas">
+                <button class="tab-btn active" data-target="bodas-compromiso">Anillos de Compromiso</button>
+                <button class="tab-btn" data-target="bodas-alianzas">Anillos de Boda</button>
+                <button class="tab-btn" id="view-engagement-pdf">Anillos Compromiso Modernos <ion-icon
+                        name="document-text-outline"></ion-icon></button>
+            </div>
+        </div>
+
+        <!-- Dynamic Product Area -->
+        <section class="category-products">
+            <div class="section-title-wrap">
+                <h2 class="section-title" id="current-category-title">Anillos Compromiso - Con Diamante</h2>
+            </div>
+
+            <div class="products-grid">
+                <!-- Products injected by JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-part"></div>
+    <!-- Modals Placeholder -->
+    <div id="modals-part"></div>
+
+    <!-- Modular Entry Script -->
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/js/category.js"></script>
+</body>
+
+</html>

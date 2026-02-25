@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GraceBoaco. - Joyas Nacionales</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- Project Styles -->
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .nacionales-hero {
+            background: linear-gradient(rgba(11, 28, 46, 0.7), rgba(11, 28, 46, 0.8)), url('https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80&w=2000') no-repeat center center/cover;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Placeholder -->
+    <div id="header-part"></div>
+
+    <main id="main-content" class="category-page">
+        <!-- Hero Category Section -->
+        <section class="category-hero nacionales-hero">
+            <div class="category-hero-content">
+                <h1 class="hero-title">Producción Nacional</h1>
+                <p class="hero-subtitle">Apoyamos el talento local con piezas artesanales orfebres creadas en nuestro
+                    país.</p>
+            </div>
+        </section>
+
+        <!-- Subcategory Navigation -->
+        <div class="subcategory-tabs">
+            <div class="tabs-container">
+                <!-- Pulseras -->
+                <div class="dropdown-tab">
+                    <button class="tab-btn dropdown-toggle selected">Pulseras <ion-icon
+                            name="chevron-down-outline"></ion-icon></button>
+                    <div class="dropdown-menu">
+                        <button class="tab-btn sub-tab-btn active" data-target="nac-pulseras-dama">Damas</button>
+                        <button class="tab-btn sub-tab-btn" data-target="nac-pulseras-caballero">Caballero</button>
+                        <button class="tab-btn sub-tab-btn" data-target="nac-pulseras-nino">Niño</button>
+                    </div>
+                </div>
+
+                <!-- Cadenas -->
+                <div class="dropdown-tab">
+                    <button class="tab-btn dropdown-toggle">Cadenas <ion-icon
+                            name="chevron-down-outline"></ion-icon></button>
+                    <div class="dropdown-menu">
+                        <button class="tab-btn sub-tab-btn" data-target="nac-cadenas-dama">Damas</button>
+                        <button class="tab-btn sub-tab-btn" data-target="nac-cadenas-caballero">Caballero</button>
+                        <button class="tab-btn sub-tab-btn" data-target="nac-cadenas-nino">Niño</button>
+                    </div>
+                </div>
+
+                <!-- Anillos -->
+                <div class="dropdown-tab">
+                    <button class="tab-btn dropdown-toggle">Anillos <ion-icon
+                            name="chevron-down-outline"></ion-icon></button>
+                    <div class="dropdown-menu">
+                        <button class="tab-btn sub-tab-btn" data-target="nac-anillos-dama">Damas</button>
+                        <button class="tab-btn sub-tab-btn" data-target="nac-anillos-caballero">Caballero</button>
+                        <button class="tab-btn sub-tab-btn" data-target="nac-anillos-nino">Niño</button>
+                    </div>
+                </div>
+
+                <!-- Dijes -->
+                <div class="dropdown-tab">
+                    <button class="tab-btn dropdown-toggle">Dijes <ion-icon
+                            name="chevron-down-outline"></ion-icon></button>
+                    <div class="dropdown-menu">
+                        <button class="tab-btn sub-tab-btn" data-target="nac-dijes-dama">Damas</button>
+                        <button class="tab-btn sub-tab-btn" data-target="nac-dijes-caballero">Caballero</button>
+                        <button class="tab-btn sub-tab-btn" data-target="nac-dijes-nino">Niño</button>
+                    </div>
+                </div>
+
+                <!-- Aretes -->
+                <button class="tab-btn" data-target="nac-aretes">Aretes</button>
+            </div>
+        </div>
+
+        <!-- Dynamic Product Area -->
+        <section class="category-products">
+            <div class="section-title-wrap">
+                <h2 class="section-title" id="current-category-title">Pulseras - Damas</h2>
+            </div>
+            <div class="products-grid">
+                <!-- Products injected by JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-part"></div>
+    <!-- Modals Placeholder -->
+    <div id="modals-part"></div>
+
+    <!-- Modular Entry Script -->
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/js/category.js"></script>
+</body>
+
+</html>

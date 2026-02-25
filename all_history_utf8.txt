@@ -1,0 +1,30 @@
+﻿file:///c:/Users/Owner/Desktop/prueba/prueba.html
+file:///c:/Users/Owner/Desktop/Sofware2/views/principal.ejs
+file:///c:/Users/Owner/Desktop/prueba wifi/app3.py
+file:///c:/Users/Owner/Desktop/prueba wifi/app2.py
+file:///c:/Users/Owner/Desktop/Sofware2/views/index.js
+file:///c:/Users/Owner/Desktop/prueba wifi/server.js
+file:///c:/Users/Owner/Desktop/Sofware2/index.js
+file:///c:/Users/Owner/Desktop/Sofware2/views/productos.ejs
+file:///c:/Users/Owner/Desktop/pr/index.js
+file:///c:/Users/Owner/Desktop/webGrace/script.js
+file:///c:/Users/Owner/Desktop/pr/index.html
+file:///c:/Users/Owner/Desktop/maps/index.html
+file:///c:/Users/Owner/Desktop/Sofware2/views/agregarCl.ejs
+file:///c:/Users/Owner/Desktop/prueba wifi/public/index.html
+file:///c:/Users/Owner/Desktop/mapa/index.html
+file:///c:/Users/Owner/Downloads/super-midu-bros-main/super-midu-bros-main/game.js
+file:///c:/Users/Owner/Desktop/prueba/index.js
+file:///c:/Users/Owner/Downloads/super-midu-bros-main/super-midu-bros-main/index.html
+file:///c:/Users/Owner/Desktop/prueba/inde.html
+file:///c:/Users/Owner/Desktop/prueba/index.css
+file:///c:/Users/Owner/Desktop/webGrace/styles.css
+file:///c:/Users/Owner/Downloads/super-midu-bros-main/super-midu-bros-main/animations.js
+vscode-userdata:/c:/Users/Owner/AppData/Roaming/Code/User/settings.json
+file:///c:/Users/Owner/Desktop/prueba/index.html
+file:///c:/Users/Owner/Desktop/prueba/prueba.py
+file:///c:/Users/Owner/Desktop/webGrace/index.html
+file:///c:/Users/Owner/Desktop/prueba wifi/app.py
+file:///c:/Users/Owner/Downloads/Proyecto/Proyecto/html/home.html
+file:///c:/Users/Owner/Desktop/Sofware2/views/staff.ejs
+

@@ -4,10 +4,10 @@
   <div class="top-bar">
     <!-- Logo Area -->
     <div class="logo-area">
-      <a href="#home" class="logo-link">
+      <a href="index.html#home" class="logo-link">
         <img src="grace_logo.png" alt="Grace Designs" class="header-logo">
       </a>
-      <a href="#home" class="home-icon-btn" aria-label="Ir a Inicio">
+      <a href="index.html#home" class="home-icon-btn" aria-label="Ir a Inicio">
         <ion-icon name="home-outline"></ion-icon>
       </a>
     </div>
@@ -22,9 +22,9 @@
     <!-- Right Nav -->
     <div class="right-nav">
       <nav class="primary-nav">
-        <a href="#services">Servicios</a>
-        <a href="#products">Disponible</a>
-        <a href="#about">Nosotros</a>
+        <a href="index.html#services">Servicios</a>
+        <a href="index.html#products">Disponible</a>
+        <a href="index.html#about">Nosotros</a>
       </nav>
 
       <div class="header-tools">
@@ -57,12 +57,22 @@
 
   <!-- Secondary Category Navigation -->
   <div class="category-nav">
-    <div class="category-container">
-      <a href="#" class="cat-link">GRADUACION</a>
-      <a href="#" class="cat-link">COMPROMISO & BODAS</a>
-      <a href="#" class="cat-link">PERSONALIZACION 3D</a>
-      <a href="#" class="cat-link">JOYAS EXTRANJERA</a>
-      <a href="#" class="cat-link active">JOYAS NACIONALES</a>
+    <div class="nav-carousel-wrapper">
+      <button class="nav-arrow prev" id="cat-prev" aria-label="Anterior">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+
+      <div class="category-container">
+        <a href="graduacion.html" class="cat-link">GRADUACION</a>
+        <a href="bodas.html" class="cat-link">COMPROMISO & BODAS</a>
+        <a href="personalizacion.html" class="cat-link">PERSONALIZACION 3D</a>
+        <a href="extranjera.html" class="cat-link">JOYAS EXTRANJERA</a>
+        <a href="nacionales.html" class="cat-link">JOYAS NACIONALES</a>
+      </div>
+
+      <button class="nav-arrow next" id="cat-next" aria-label="Siguiente">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </button>
     </div>
   </div>
 </header>

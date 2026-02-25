@@ -3,6 +3,22 @@ import { addToCart } from './cart.js';
 
 export let productsShown = 8;
 
+export function renderCategories() {
+  const container = document.getElementById('category-scroller');
+  if (!container) return;
+
+  if (siteData.categories) {
+    container.innerHTML = siteData.categories.map(cat => `
+      <a href="${cat.link}" class="cat-link with-img">
+        <div class="cat-img-wrapper">
+          <img src="${cat.image}" alt="${cat.name}">
+        </div>
+        <span class="cat-text">${cat.name}</span>
+      </a>
+    `).join('');
+  }
+}
+
 export function renderServices() {
   const servicesContainer = document.getElementById('services-list');
   if (!servicesContainer) return;

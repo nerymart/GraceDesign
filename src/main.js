@@ -12,9 +12,7 @@ import headerPart from './parts/header.html?raw';
 import heroPart from './parts/hero.html?raw';
 import servicesPart from './parts/services.html?raw';
 import productsPart from './parts/products.html?raw';
-import custom3dPart from './parts/custom-3d.html?raw';
 import finishedWorksPart from './parts/finished-works.html?raw';
-import engagementPart from './parts/engagement.html?raw';
 import aboutPart from './parts/about.html?raw';
 import contactPart from './parts/contact.html?raw';
 import footerPart from './parts/footer.html?raw';
@@ -26,9 +24,7 @@ function injectComponents() {
     'hero-part': heroPart,
     'services-part': servicesPart,
     'products-part': productsPart,
-    'custom-3d-part': custom3dPart,
     'finished-works-part': finishedWorksPart,
-    'engagement-part': engagementPart,
     'about-part': aboutPart,
     'contact-part': contactPart,
     'footer-part': footerPart,
@@ -47,6 +43,7 @@ injectComponents();
 // --- MODULE IMPORTS ---
 import { loadStorage } from './js/data.js';
 import {
+  renderCategories,
   renderServices,
   updateAboutSection,
   renderProducts,
@@ -59,13 +56,15 @@ import { initAdmin } from './js/admin.js';
 import {
   initDrawer,
   initHeaderSlider,
-  initEngagementSlider,
+  initPdfViewer,
+  initServicesCarousel,
   initGlobalFeatures
 } from './js/features.js';
 
 // --- BOOTSTRAP ---
 function bootstrap() {
   loadStorage();
+  renderCategories();
   renderServices();
   updateAboutSection();
   renderProducts();
@@ -77,7 +76,8 @@ function bootstrap() {
   initAdmin();
   initDrawer();
   initHeaderSlider();
-  initEngagementSlider();
+  initPdfViewer();
+  initServicesCarousel();
   initGlobalFeatures();
 }
 

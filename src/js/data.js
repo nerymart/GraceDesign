@@ -51,7 +51,14 @@ export let siteData = {
         { id: 101, name: "Anillo de Boda Real", category: "boda", images: ["https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=600"], peso: "6.2g", medida: "8", precioDiseno: "$750", dimensiones: "4mm ancho" },
         { id: 102, name: "Anillo Compromiso Eterno", category: "compromiso", images: ["https://images.unsplash.com/photo-1603561591411-07134e71a2a9?q=80&w=600"], peso: "4.8g", medida: "6", precioDiseno: "$1,200", dimensiones: "2mm base" }
     ],
-    finishedWorks: []
+    finishedWorks: [],
+    categories: [
+        { id: "graduacion", name: "GRADUACION", link: "./graduacion.html", image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=600" },
+        { id: "bodas", name: "COMPROMISO & BODAS", link: "./bodas.html", image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=600" },
+        { id: "personalizacion", name: "PERSONALIZACION 3D", link: "./personalizacion.html", image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600" },
+        { id: "extranjera", name: "JOYAS EXTRANJERAS", link: "./extranjera.html", image: "https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=600" },
+        { id: "nacionales", name: "JOYAS NACIONALES", link: "./nacionales.html", image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=600" }
+    ]
 };
 
 export function loadStorage() {
@@ -63,7 +70,8 @@ export function loadStorage() {
             ...siteData, // Keeps new hardcoded services/about
             products: savedData.products || siteData.products,
             catalogItems: savedData.catalogItems || siteData.catalogItems,
-            finishedWorks: savedData.finishedWorks || siteData.finishedWorks
+            finishedWorks: savedData.finishedWorks || siteData.finishedWorks,
+            categories: savedData.categories || siteData.categories
         };
     }
 

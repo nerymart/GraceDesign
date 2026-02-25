@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GraceBoaco. - Anillos de Graduación</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- Project Styles -->
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+    <!-- Header Placeholder -->
+    <div id="header-part"></div>
+
+    <main id="main-content" class="category-page">
+        <!-- Hero Category Section -->
+        <section class="category-hero grad-hero">
+            <div class="category-hero-content">
+                <h1 class="hero-title">Colección Graduación</h1>
+                <p class="hero-subtitle">Celebra tus logros con nuestra línea exclusiva de anillos.</p>
+            </div>
+        </section>
+
+        <!-- Subcategory Navigation -->
+        <div class="subcategory-tabs">
+            <div class="tabs-container">
+                <!-- Bachiller -->
+                <div class="dropdown-tab">
+                    <button class="tab-btn dropdown-toggle">Anillos Bachiller <ion-icon
+                            name="chevron-down-outline"></ion-icon></button>
+                    <div class="dropdown-menu">
+                        <button class="tab-btn sub-tab-btn active" data-target="bachiller-dama">Para Dama</button>
+                        <button class="tab-btn sub-tab-btn" data-target="bachiller-caballero">Para Caballero</button>
+                    </div>
+                </div>
+
+                <!-- Carreras (NUEVO) -->
+                <div class="dropdown-tab">
+                    <button class="tab-btn dropdown-toggle">Anillos Carreras <ion-icon
+                            name="chevron-down-outline"></ion-icon></button>
+                    <div class="dropdown-menu">
+                        <button class="tab-btn sub-tab-btn" data-target="carreras-dama">Para Dama</button>
+                        <button class="tab-btn sub-tab-btn" data-target="carreras-caballero">Para Caballero</button>
+                    </div>
+                </div>
+
+                <!-- 6to Grado -->
+                <div class="dropdown-tab">
+                    <button class="tab-btn dropdown-toggle">Anillos 6to Grado <ion-icon
+                            name="chevron-down-outline"></ion-icon></button>
+                    <div class="dropdown-menu">
+                        <button class="tab-btn sub-tab-btn" data-target="sexto-dama">Para Dama</button>
+                        <button class="tab-btn sub-tab-btn" data-target="sexto-caballero">Para Caballero</button>
+                    </div>
+                </div>
+
+                <!-- Preescolar -->
+                <div class="dropdown-tab">
+                    <button class="tab-btn dropdown-toggle">Anillos Preescolar <ion-icon
+                            name="chevron-down-outline"></ion-icon></button>
+                    <div class="dropdown-menu">
+                        <button class="tab-btn sub-tab-btn" data-target="preescolar-dama">Para Niña</button>
+                        <button class="tab-btn sub-tab-btn" data-target="preescolar-caballero">Para Niño</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Product Area -->
+        <section class="category-products">
+            <div class="section-title-wrap">
+                <h2 class="section-title" id="current-category-title">Anillos de Dama</h2>
+            </div>
+
+            <div class="products-grid" id="graduacion-grid">
+                <!-- Products will be injected or statically placed here based on active tab. For UI demonstration we place some placeholders. -->
+                <div class="product-card" data-category="dama">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1605100804763-247f6793148e?auto=format&fit=crop&q=80&w=500"
+                            alt="Anillo Dama 1" class="product-image">
+                        <span class="product-badge badge-sale">NUEVO</span>
+                    </div>
+                    <div class="product-details">
+                        <h3>Anillo Elegance Oro 18K</h3>
+                        <div class="price-container">
+                            <span class="current-price">$350</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="dama">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1599643478514-4a5202336336?auto=format&fit=crop&q=80&w=500"
+                            alt="Anillo Dama 2" class="product-image">
+                    </div>
+                    <div class="product-details">
+                        <h3>Anillo Corona Zafiro</h3>
+                        <div class="price-container">
+                            <span class="current-price">$420</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="dama">
+                    <div class="product-image-container">
+                        <img src="https://images.unsplash.com/photo-1604382354936-07c5d0ba4bea?auto=format&fit=crop&q=80&w=500"
+                            alt="Anillo Dama 3" class="product-image">
+                    </div>
+                    <div class="product-details">
+                        <h3>Clásico Diamante Simulado</h3>
+                        <div class="price-container">
+                            <span class="current-price">$280</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-part"></div>
+    <!-- Modals Placeholder -->
+    <div id="modals-part"></div>
+
+    <!-- Modular Entry Script -->
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/js/category.js"></script>
+</body>
+
+</html>

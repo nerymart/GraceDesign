@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GraceBoaco. - Joyas Extranjeras</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- Project Styles -->
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .extranjera-hero {
+            background: linear-gradient(rgba(11, 28, 46, 0.7), rgba(11, 28, 46, 0.8)), url('https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=2000') no-repeat center center/cover;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Placeholder -->
+    <div id="header-part"></div>
+
+    <main id="main-content" class="category-page">
+        <!-- Hero Category Section -->
+        <section class="category-hero extranjera-hero">
+            <div class="category-hero-content">
+                <h1 class="hero-title">Colección Extranjera</h1>
+                <p class="hero-subtitle">Importamos las últimas tendencias en joyería fina desde los principales
+                    talleres del mundo.</p>
+            </div>
+        </section>
+
+        <!-- Subcategory Navigation -->
+        <div class="subcategory-tabs">
+            <div class="tabs-container">
+                <!-- Pulseras -->
+                <div class="dropdown-tab">
+                    <button class="tab-btn dropdown-toggle selected">Pulseras <ion-icon
+                            name="chevron-down-outline"></ion-icon></button>
+                    <div class="dropdown-menu">
+                        <button class="tab-btn sub-tab-btn active" data-target="ext-pulseras-dama">Damas</button>
+                        <button class="tab-btn sub-tab-btn" data-target="ext-pulseras-caballero">Caballero</button>
+                        <button class="tab-btn sub-tab-btn" data-target="ext-pulseras-nino">Niño</button>
+                    </div>
+                </div>
+
+                <!-- Cadenas -->
+                <div class="dropdown-tab">
+                    <button class="tab-btn dropdown-toggle">Cadenas <ion-icon
+                            name="chevron-down-outline"></ion-icon></button>
+                    <div class="dropdown-menu">
+                        <button class="tab-btn sub-tab-btn" data-target="ext-cadenas-dama">Damas</button>
+                        <button class="tab-btn sub-tab-btn" data-target="ext-cadenas-caballero">Caballero</button>
+                        <button class="tab-btn sub-tab-btn" data-target="ext-cadenas-nino">Niño</button>
+                    </div>
+                </div>
+
+                <!-- Anillos -->
+                <div class="dropdown-tab">
+                    <button class="tab-btn dropdown-toggle">Anillos <ion-icon
+                            name="chevron-down-outline"></ion-icon></button>
+                    <div class="dropdown-menu">
+                        <button class="tab-btn sub-tab-btn" data-target="ext-anillos-dama">Damas</button>
+                        <button class="tab-btn sub-tab-btn" data-target="ext-anillos-caballero">Caballero</button>
+                        <button class="tab-btn sub-tab-btn" data-target="ext-anillos-nino">Niño</button>
+                    </div>
+                </div>
+
+                <!-- Dijes -->
+                <div class="dropdown-tab">
+                    <button class="tab-btn dropdown-toggle">Dijes <ion-icon
+                            name="chevron-down-outline"></ion-icon></button>
+                    <div class="dropdown-menu">
+                        <button class="tab-btn sub-tab-btn" data-target="ext-dijes-dama">Damas</button>
+                        <button class="tab-btn sub-tab-btn" data-target="ext-dijes-caballero">Caballero</button>
+                        <button class="tab-btn sub-tab-btn" data-target="ext-dijes-nino">Niño</button>
+                    </div>
+                </div>
+
+                <!-- Aretes -->
+                <button class="tab-btn" data-target="ext-aretes">Aretes</button>
+
+            </div>
+        </div>
+
+        <!-- Dynamic Product Area -->
+        <section class="category-products">
+            <div class="section-title-wrap">
+                <h2 class="section-title" id="current-category-title">Cadenas Italianas - Oro 18K</h2>
+            </div>
+            <div class="products-grid">
+                <!-- Products injected by JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer-part"></div>
+    <!-- Modals Placeholder -->
+    <div id="modals-part"></div>
+
+    <!-- Modular Entry Script -->
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/js/category.js"></script>
+</body>
+
+</html>
