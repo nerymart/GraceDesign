@@ -772,6 +772,19 @@ body.dark-mode .toggle-thumb {
     }
 
     .hero-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        line-height: 1.2;
+    }
+
+    .italic-text {
+        font-size: 3.5rem;
+        /* Reduced from 5.5rem */
+        margin: 0.3rem 0;
+        letter-spacing: 1px;
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
     }
 }
