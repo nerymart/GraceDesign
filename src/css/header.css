@@ -919,6 +919,8 @@ body.dark-mode .toggle-thumb {
         max-width: 100%;
         position: relative;
         z-index: 10;
+        display: flex;
+        justify-content: center;
     }
 
     .hero-search-container .search-bar-container {
@@ -927,6 +929,7 @@ body.dark-mode .toggle-thumb {
         border-radius: 30px;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         border: 1px solid rgba(212, 175, 55, 0.3);
+        margin: 0 auto;
     }
 
     .hero-search-container .main-search-input {
