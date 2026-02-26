@@ -62,8 +62,8 @@ import {
 } from './js/features.js';
 
 // --- BOOTSTRAP ---
-function bootstrap() {
-  loadStorage();
+async function bootstrap() {
+  await loadStorage();
   renderCategories();
   renderServices();
   updateAboutSection();

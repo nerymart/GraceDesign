@@ -1,4 +1,5 @@
-import { siteData, saveStorage } from './data.js';
+import { siteData, loadStorage } from './data.js';
+import { supabase } from './supabase.js';
 
 export function initAdmin() {
   const loginModal = document.getElementById('login-modal');
@@ -267,59 +268,114 @@ export function showForm(type, index = null, filter = null) {
 
 export function cancelEdit() { renderAdminSection(); }
 
-export function saveNosotros() {
-  siteData.about.title = document.getElementById('a-about-t').value;
-  siteData.about.desc = document.getElementById('a-about-d').value;
-  saveStorage();
-  location.reload();
+export async function saveNosotros() {
+  const title = document.getElementById('a-about-t').value;
+  const description = document.getElementById('a-about-d').value;
+
+  const { error } = await supabase.from('site_about').upsert({ id: 1, title, description });
+
+  if (error) {
+    alert('Error al guardar: ' + error.message);
+  } else {
+    alert('Información actualizada en Supabase');
+    await loadStorage();
+    renderAdminSection();
+  }
 }
 
-export function saveItem(type, index, filter = null) {
+export async function saveItem(type, index, filter = null) {
   const isEdit = index !== null;
   const items = siteData[type === 'catalogo' ? 'catalogItems' : type];
-  let newItem = isEdit ? { ...items[index] } : { id: Date.now() };
+  let itemData = {};
+
+  const tableMap = {
+    'servicios': 'services',
+    'productos': 'products',
+    'catalogo': 'catalog_items',
+    'categories': 'categories',
+    'finishedWorks': 'finished_works'
+  };
+
+  const table = tableMap[type];
+  if (!table) return;
+
   if (type === 'servicios') {
-    newItem.title = document.getElementById('edit-title').value;
-    newItem.image = document.getElementById('edit-image').value;
-    newItem.desc = document.getElementById('edit-desc').value;
+    itemData = {
+      title: document.getElementById('edit-title').value,
+      image: document.getElementById('edit-image').value,
+      description: document.getElementById('edit-desc').value
+    };
   }
   else if (type === 'productos') {
-    newItem.name = document.getElementById('edit-name').value;
-    newItem.image = document.getElementById('edit-image').value;
-    newItem.price = parseInt(document.getElementById('edit-price').value);
-    newItem.priceStr = `$${newItem.price.toLocaleString()}`;
+    itemData = {
+      name: document.getElementById('edit-name').value,
+      image: document.getElementById('edit-image').value,
+      price: parseInt(document.getElementById('edit-price').value)
+    };
   }
   else if (type === 'catalogo') {
-    newItem.name = document.getElementById('edit-name').value;
-    newItem.category = document.getElementById('edit-category').value;
-    newItem.images = [document.getElementById('edit-img1').value];
-    newItem.peso = document.getElementById('edit-peso').value;
-    newItem.precioDiseno = document.getElementById('edit-precioDiseno').value;
+    itemData = {
+      name: document.getElementById('edit-name').value,
+      category: document.getElementById('edit-category').value,
+      images: [document.getElementById('edit-img1').value],
+      peso: document.getElementById('edit-peso').value,
+      precio_diseno: document.getElementById('edit-precioDiseno').value
+    };
   }
   else if (type === 'categories') {
-    newItem.name = document.getElementById('edit-name').value;
-    newItem.link = document.getElementById('edit-link').value;
-    newItem.image = document.getElementById('edit-image').value;
+    itemData = {
+      id: isEdit ? items[index].id : document.getElementById('edit-name').value.toLowerCase().replace(/\s+/g, '-'),
+      name: document.getElementById('edit-name').value,
+      link: document.getElementById('edit-link').value,
+      image: document.getElementById('edit-image').value
+    };
   }
   else if (type === 'finishedWorks') {
-    newItem.name = document.getElementById('edit-name').value;
-    newItem.type = document.getElementById('edit-type').value;
-    newItem.weight = document.getElementById('edit-weight').value;
-    newItem.size = document.getElementById('edit-size').value;
-    newItem.metal = document.getElementById('edit-metal').value;
-    newItem.pearls = document.getElementById('edit-pearls').value;
-    newItem.image = document.getElementById('edit-image').value;
+    itemData = {
+      name: document.getElementById('edit-name').value,
+      type: document.getElementById('edit-type').value,
+      weight: document.getElementById('edit-weight').value,
+      size: document.getElementById('edit-size').value,
+      metal: document.getElementById('edit-metal').value,
+      pearls: document.getElementById('edit-pearls').value,
+      image: document.getElementById('edit-image').value
+    };
   }
-  if (isEdit) items[index] = newItem; else items.push(newItem);
-  saveStorage();
-  renderAdminSection(filter);
+
+  if (isEdit) {
+    itemData.id = items[index].id;
+  }
+
+  const { error } = await supabase.from(table).upsert(itemData);
+
+  if (error) {
+    alert('Error al guardar: ' + error.message);
+  } else {
+    await loadStorage();
+    renderAdminSection(filter);
+  }
 }
 
-export function deleteItem(type, index, filter = null) {
-  if (confirm('¿Eliminar?')) {
+export async function deleteItem(type, index, filter = null) {
+  if (confirm('¿Eliminar de forma permanente en la nube?')) {
     const items = siteData[type === 'catalogo' ? 'catalogItems' : type];
-    items.splice(index, 1);
-    saveStorage();
-    renderAdminSection(filter);
+    const item = items[index];
+
+    const tableMap = {
+      'servicios': 'services',
+      'productos': 'products',
+      'catalogo': 'catalog_items',
+      'categories': 'categories',
+      'finishedWorks': 'finished_works'
+    };
+
+    const { error } = await supabase.from(tableMap[type]).delete().eq('id', item.id);
+
+    if (error) {
+      alert('Error al eliminar: ' + error.message);
+    } else {
+      await loadStorage();
+      renderAdminSection(filter);
+    }
   }
 }
