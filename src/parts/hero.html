@@ -20,8 +20,16 @@
     <div class="hero-text-container">
       <h1 class="hero-title">Descubre la mejor<br><span class="italic-text">JOYERÍA</span><br>de nuestra colección</h1>
       <p class="hero-subtitle">Encuentra tus piezas ideales en nuestro catálogo majestuoso</p>
-      <button class="hero-cta-btn" id="open-catalog-btn">Ver catálogo <ion-icon
-          name="arrow-forward-outline"></ion-icon></button>
+
+      <!-- Mobile Hero Search -->
+      <div class="search-results-container hero-search-container mobile-only">
+        <div class="search-bar-container">
+          <ion-icon name="search-outline" class="search-input-icon"></ion-icon>
+          <input type="text" placeholder="Que deseas hoy?" class="main-search-input">
+          <button class="search-btn">Buscar</button>
+        </div>
+        <div class="search-results-dropdown"></div>
+      </div>
     </div>
   </div>
 </section>

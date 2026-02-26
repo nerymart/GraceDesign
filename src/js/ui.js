@@ -1,5 +1,5 @@
-import { siteData } from './data.js';
-import { addToCart } from './cart.js';
+import { siteData, formatCurrency, setCurrency } from './data.js';
+import { addToCart, updateCartUI } from './cart.js';
 
 export let productsShown = 8;
 
@@ -23,7 +23,7 @@ export function renderServices() {
   const servicesContainer = document.getElementById('services-list');
   if (!servicesContainer) return;
   servicesContainer.innerHTML = '';
-  siteData.services.forEach((service) => {
+  siteData.servicios.forEach((service) => {
     const card = document.createElement("div");
     card.className = "service-card";
 
@@ -64,25 +64,34 @@ export function renderProducts() {
   const productsContainer = document.getElementById("products-list");
   if (!productsContainer) return;
   const content = [];
-  content.push(`
-    <div class="feature-card tall">
-      <span class="tagline">Joyas con Alma</span>
-      <h2>Piezas atemporales hechas para brillar.</h2>
-      <button class="feature-btn">Explorar Accesorios</button>
-      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=600" class="feature-decor" alt="Decor">
-    </div>
-  `);
 
-  const visibleProducts = siteData.products.slice(0, productsShown);
+  // Render main promo (tall) if exists
+  const tallPromo = siteData.promos.find(p => p.type === 'tall');
+
+  if (tallPromo) {
+    content.push(`
+      <div class="feature-card tall">
+        <span class="tagline">${tallPromo.tagline}</span>
+        <h2>${tallPromo.title}</h2>
+        <img src="${tallPromo.image_url}" class="feature-decor promo-img-tall" alt="Promo">
+      </div>
+    `);
+  }
+
+  const visibleProducts = siteData.productos.slice(0, productsShown);
   visibleProducts.forEach((product, index) => {
     if (index === 7) {
-      content.push(`
-        <div class="feature-card wide">
-          <span class="tagline">Detalles que Enamoran</span>
-          <h2>Cada accesorio cuenta una historia única.</h2>
-          <button class="feature-btn">Ver Más</button>
-        </div>
-      `);
+      const widePromo = siteData.promos.find(p => p.type === 'wide');
+
+      if (widePromo) {
+        content.push(`
+          <div class="feature-card wide">
+            <span class="tagline">${widePromo.tagline}</span>
+            <h2>${widePromo.title}</h2>
+            <button class="feature-btn">${widePromo.button_text}</button>
+          </div>
+        `);
+      }
     }
 
     content.push(`
@@ -93,7 +102,7 @@ export function renderProducts() {
         <div class="product-details">
           <h3>${product.name}</h3>
           <div class="price-container">
-            <span class="current-price">${product.priceStr}</span>
+            <span class="current-price">${formatCurrency(product.price)}</span>
           </div>
           <button class="btn btn-outline add-to-cart-quick" data-id="${product.id}">
              <ion-icon name="cart-outline"></ion-icon>
@@ -108,7 +117,7 @@ export function renderProducts() {
 
   const viewMoreBtn = document.getElementById("view-more-btn");
   if (viewMoreBtn) {
-    viewMoreBtn.style.display = productsShown >= siteData.products.length ? "none" : "block";
+    viewMoreBtn.style.display = productsShown >= siteData.productos.length ? "none" : "block";
     // Avoid multiple listeners if called again
     viewMoreBtn.onclick = () => {
       productsShown += 8;
@@ -120,30 +129,34 @@ export function renderProducts() {
   document.querySelectorAll('.add-to-cart-quick').forEach(btn => {
     btn.onclick = (e) => {
       const id = parseInt(e.currentTarget.dataset.id);
-      const p = siteData.products.find(p => p.id === id);
+      const p = siteData.productos.find(p => p.id === id);
       if (p) addToCart(p);
     };
   });
 }
 
-export function attachProductModalListeners() {
+export function openProductModal(p) {
   const modal = document.getElementById('product-modal');
   const modalImg = document.getElementById('modal-img');
   const modalTitle = document.getElementById('modal-title');
   const modalDesc = document.getElementById('modal-desc');
   const modalPrice = document.getElementById('modal-price');
 
+  if (p && modal) {
+    modalImg.src = p.image;
+    modalTitle.textContent = p.name;
+    modalDesc.textContent = p.desc;
+    modalPrice.textContent = formatCurrency(p.price);
+    modal.showModal();
+  }
+}
+
+export function attachProductModalListeners() {
   document.querySelectorAll('.product-image').forEach(img => {
     img.addEventListener('click', (e) => {
       const id = parseInt(e.target.dataset.id);
-      const p = siteData.products.find(p => p.id === id);
-      if (p && modal) {
-        modalImg.src = p.image;
-        modalTitle.textContent = p.name;
-        modalDesc.textContent = p.desc;
-        modalPrice.textContent = p.priceStr;
-        modal.showModal();
-      }
+      const p = siteData.productos.find(p => p.id === id);
+      openProductModal(p);
     });
   });
 }
@@ -164,20 +177,24 @@ export function renderFinishedWorks() {
   attachWorkListeners();
 }
 
+export function openWorkModal(work) {
+  if (work) {
+    document.getElementById("work-modal-img").src = work.image;
+    document.getElementById("work-modal-title").textContent = work.name;
+    document.getElementById("work-spec-type").textContent = work.type;
+    document.getElementById("work-spec-weight").textContent = work.weight;
+    document.getElementById("work-spec-size").textContent = work.size;
+    document.getElementById("work-spec-metal").textContent = work.metal;
+    document.getElementById("work-spec-pearls").textContent = work.pearls;
+    document.getElementById("work-detail-modal").showModal();
+  }
+}
+
 function attachWorkListeners() {
   document.querySelectorAll('.work-card').forEach(card => {
     card.addEventListener('click', () => {
       const work = siteData.finishedWorks.find(w => w.id === parseInt(card.dataset.id));
-      if (work) {
-        document.getElementById("work-modal-img").src = work.image;
-        document.getElementById("work-modal-title").textContent = work.name;
-        document.getElementById("work-spec-type").textContent = work.type;
-        document.getElementById("work-spec-weight").textContent = work.weight;
-        document.getElementById("work-spec-size").textContent = work.size;
-        document.getElementById("work-spec-metal").textContent = work.metal;
-        document.getElementById("work-spec-pearls").textContent = work.pearls;
-        document.getElementById("work-detail-modal").showModal();
-      }
+      openWorkModal(work);
     });
   });
   const closeWorkModal = document.getElementById("close-work-modal");
@@ -189,6 +206,69 @@ const translations = {
   EN: { "nav.services": "Services", "nav.products": "Available", "nav.about": "About Us", "search.placeholder": "What are you looking for?", "hero.title1": "Discover the best", "hero.title2": "JEWELRY", "hero.title3": "from our collection" }
 };
 
+export function openJewelryModal(product) {
+  const jewelryModal = document.getElementById('jewelry-detail-modal');
+  const modalImg = document.getElementById('jewelry-modal-img');
+  const modalTitle = document.getElementById('jewelry-modal-title');
+  const specWeight = document.getElementById('jewelry-spec-weight');
+  const specSize = document.getElementById('jewelry-spec-size');
+  const specPrice = document.getElementById('jewelry-spec-price');
+  const specDims = document.getElementById('jewelry-spec-dims');
+  const jewelryBuyBtn = document.getElementById('jewelry-buy-btn');
+
+  if (!jewelryModal) return;
+
+  modalImg.src = product.img || product.image || (product.images ? product.images[0] : '');
+  modalTitle.textContent = product.title || product.name || 'Sin Título';
+  specWeight.textContent = product.peso || 'N/A';
+  specSize.textContent = product.medida || 'A medida';
+
+  // Dynamic price for jewelry modal
+  const basePrice = parseFloat(product.price || product.precioDiseno || 0);
+  specPrice.textContent = basePrice > 0 ? formatCurrency(basePrice) : 'Por cotizar';
+
+  specDims.textContent = product.dims || product.dimensiones || 'Variado';
+
+  // Configurar Link de WhatsApp
+  const phoneNumber = '50588673708';
+  const message = `Hola Grace Designs, me interesa adquirir el diseño "${product.title || product.name}" que vi en la galería web. ¿Me podrían brindar más detalles?`;
+  jewelryBuyBtn.onclick = () => {
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  jewelryModal.showModal();
+  document.body.style.overflow = 'hidden';
+}
+
+// Ensure jewelry modal closing logic is global
+export function initJewelryModalListeners() {
+  const jewelryModal = document.getElementById('jewelry-detail-modal');
+  const closeJewelryBtn = document.getElementById('close-jewelry-modal');
+  const backToGalleryBtn = document.getElementById('back-to-gallery-btn');
+
+  if (!jewelryModal) return;
+
+  const closeModal = () => {
+    jewelryModal.close();
+    document.body.style.overflow = '';
+  };
+
+  if (closeJewelryBtn) closeJewelryBtn.addEventListener('click', closeModal);
+  if (backToGalleryBtn) backToGalleryBtn.addEventListener('click', closeModal);
+
+  jewelryModal.addEventListener('click', (e) => {
+    const dialogDimensions = jewelryModal.getBoundingClientRect();
+    if (
+      e.clientX < dialogDimensions.left ||
+      e.clientX > dialogDimensions.right ||
+      e.clientY < dialogDimensions.top ||
+      e.clientY > dialogDimensions.bottom
+    ) {
+      closeModal();
+    }
+  });
+}
+
 export function updateLanguage(lang) {
   const t = translations[lang]; if (!t) return;
   const setText = (sel, k) => { const el = document.querySelector(sel); if (el) el.textContent = t[k]; };
@@ -199,4 +279,31 @@ export function updateLanguage(lang) {
   if (searchInput) searchInput.placeholder = t['search.placeholder'];
   const heroTitle = document.querySelector('.hero-title');
   if (heroTitle) heroTitle.innerHTML = `${t['hero.title1']}<br><span class="italic-text">${t['hero.title2']}</span><br>${t['hero.title3']}`;
+}
+
+// Inicializar selectores globales (Moneda)
+export function initGlobalUI() {
+  const currencyBtn = document.getElementById('currency-toggle');
+  const symbolSpan = document.getElementById('current-currency-symbol');
+  const textSpan = document.getElementById('current-currency-text');
+
+  const updateHeader = () => {
+    if (symbolSpan) symbolSpan.textContent = siteData.currentCurrency === 'USD' ? '$' : 'C$';
+    if (textSpan) textSpan.textContent = siteData.currentCurrency;
+  };
+
+  if (currencyBtn) {
+    currencyBtn.onclick = () => {
+      const newCurr = siteData.currentCurrency === 'USD' ? 'NIO' : 'USD';
+      setCurrency(newCurr);
+    };
+  }
+
+  document.addEventListener('currencyChanged', () => {
+    updateHeader();
+    renderProducts();
+    updateCartUI();
+  });
+
+  updateHeader();
 }

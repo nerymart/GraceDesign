@@ -1,4 +1,4 @@
-import { siteData } from './data.js';
+import { siteData, formatCurrency } from './data.js';
 
 export const cart = [];
 
@@ -14,7 +14,7 @@ export function updateCartUI() {
 
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = `<p style="text-align: center;">Tu carrito está vacío.</p>`;
-        if (cartTotalEl) cartTotalEl.textContent = "$0 MXN";
+        if (cartTotalEl) cartTotalEl.textContent = formatCurrency(0);
     } else {
         cartItemsContainer.innerHTML = "";
         let total = 0;
@@ -25,13 +25,13 @@ export function updateCartUI() {
             itemEl.innerHTML = `
         <div class="cart-item-info">
              <span class="cart-item-name">${item.name}</span>
-             <span class="cart-item-price">${item.priceStr}</span>
+             <span class="cart-item-price">${formatCurrency(item.price)}</span>
         </div>
         <button class="remove-item" data-index="${index}">&times;</button>
       `;
             cartItemsContainer.appendChild(itemEl);
         });
-        if (cartTotalEl) cartTotalEl.textContent = `$${total.toLocaleString()} MXN`;
+        if (cartTotalEl) cartTotalEl.textContent = formatCurrency(total);
 
         document.querySelectorAll(".remove-item").forEach(btn => {
             btn.addEventListener("click", (e) => {
@@ -67,8 +67,8 @@ export function initCartListeners() {
     if (checkoutBtn) {
         checkoutBtn.addEventListener("click", () => {
             if (cart.length === 0) return;
-            const phone = "523312345678";
-            let message = "Hola, me interesa comprar:\n" + cart.map(i => `- ${i.name} (${i.priceStr})`).join("\n");
+            const phone = "50585052032"; // Updated to match user's number
+            let message = "Hola, me interesa comprar:\n" + cart.map(i => `- ${i.name} (${formatCurrency(i.price)})`).join("\n");
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
         });
     }

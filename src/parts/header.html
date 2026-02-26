@@ -13,10 +13,13 @@
     </div>
 
     <!-- Search Bar -->
-    <div class="search-bar-container">
-      <ion-icon name="search-outline" class="search-input-icon"></ion-icon>
-      <input type="text" placeholder="Que deseas hoy?" id="search-input" class="main-search-input">
-      <button class="search-btn">Buscar</button>
+    <div class="search-results-container">
+      <div class="search-bar-container">
+        <ion-icon name="search-outline" class="search-input-icon"></ion-icon>
+        <input type="text" placeholder="Que deseas hoy?" id="search-input" class="main-search-input">
+        <button class="search-btn">Buscar</button>
+      </div>
+      <div id="search-results-dropdown" class="search-results-dropdown"></div>
     </div>
 
     <!-- Right Nav -->
@@ -33,11 +36,10 @@
           <span id="cart-count" class="cart-badge">0</span>
         </button>
 
-        <div class="language-selector">
-          <button class="lang-btn">
-            <span class="flag-icon">🇺🇸</span> ES <ion-icon name="caret-down-outline"></ion-icon>
+        <div class="currency-selector">
+          <button id="currency-toggle" class="tool-btn currency-btn">
+            <span id="current-currency-symbol">$</span> <span id="current-currency-text">USD</span>
           </button>
-          <!-- Dropdown could go here -->
         </div>
 
         <button id="theme-toggle" class="tool-btn theme-toggle" aria-label="Cambiar Tema">

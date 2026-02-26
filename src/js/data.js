@@ -6,7 +6,9 @@ export let siteData = {
         desc: "Utilizamos la última tecnología de impresión 3D y diseño CAD para materializar tus ideas más creativas. Desde el boceto inicial hasta la pieza final en oro o plata.",
         images: ["service-repair.png", "service-polishing.png"]
     },
-    services: [
+    currentCurrency: 'USD',
+    conversionRate: 36.5,
+    servicios: [
         {
             title: "Reparación de Joyas",
             image: "service_jewelry.jpg",
@@ -48,9 +50,10 @@ export let siteData = {
             ]
         }
     ],
-    products: [],
+    productos: [],
     catalogItems: [],
     finishedWorks: [],
+    promos: [],
     categories: [
         {
             id: "graduacion",
@@ -146,12 +149,14 @@ export async function loadStorage() {
         console.log('Intentando cargar datos de Supabase...');
         const [
             { data: about },
-            { data: services, error: sErr },
-            { data: products },
+            { data: servicios, error: sErr },
+            { data: productos },
             { data: catalogItems },
             { data: finishedWorks },
             { data: categories },
-            { data: subcategories }
+            { data: subcategories },
+            { data: promos },
+            { data: settings }
         ] = await Promise.all([
             supabase.from('site_about').select('*').single(),
             supabase.from('services').select('*'),
@@ -159,7 +164,9 @@ export async function loadStorage() {
             supabase.from('catalog_items').select('*'),
             supabase.from('finished_works').select('*'),
             supabase.from('categories').select('*'),
-            supabase.from('subcategories').select('*')
+            supabase.from('subcategories').select('*'),
+            supabase.from('promo_cards').select('*'),
+            supabase.from('site_settings').select('*').eq('id', 'global').single()
         ]);
 
         // Verificamos si realmente hay datos en la nube antes de sobreescribir los locales
@@ -170,10 +177,18 @@ export async function loadStorage() {
                 images: about.images || siteData.about.images
             };
         }
-        if (services && services.length > 0) siteData.services = services;
-        if (products && products.length > 0) siteData.products = products.map(p => ({ ...p, priceStr: `$${p.price.toLocaleString()}` }));
+        if (servicios && servicios.length > 0) siteData.servicios = servicios;
+        if (productos && productos.length > 0) siteData.productos = productos;
         if (catalogItems && catalogItems.length > 0) siteData.catalogItems = catalogItems.map(i => ({ ...i, precioDiseno: i.precio_diseno, images: i.images || [] }));
         if (finishedWorks && finishedWorks.length > 0) siteData.finishedWorks = finishedWorks;
+        if (promos && promos.length > 0) siteData.promos = promos;
+
+        if (settings) {
+            siteData.conversionRate = settings.conversion_rate;
+            console.log('Tasa de cambio cargada:', settings.conversion_rate);
+        } else {
+            console.warn('Tabla site_settings no encontrada o vacía. Usando tasa por defecto:', siteData.conversionRate);
+        }
 
         if (categories && categories.length > 0) {
             siteData.categories = categories.map(cat => ({
@@ -190,4 +205,26 @@ export async function loadStorage() {
 
 export async function saveStorage() {
     console.log('Supabase Mode: Los datos se guardan directamente en la nube desde el admin.');
+}
+
+// Helper para obtener el precio con formato según la moneda actual
+export function formatCurrency(priceInUSD) {
+    if (siteData.currentCurrency === 'NIO') {
+        const priceNIO = priceInUSD * siteData.conversionRate;
+        return `C$ ${priceNIO.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+    }
+    return `$ ${priceInUSD.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+}
+
+// Cambiar moneda y disparar evento de actualización
+export function setCurrency(currency) {
+    siteData.currentCurrency = currency;
+    localStorage.setItem('grace_currency', currency);
+    document.dispatchEvent(new CustomEvent('currencyChanged', { detail: { currency } }));
+}
+
+// Inicializar moneda desde localStorage
+const savedCurrency = localStorage.getItem('grace_currency');
+if (savedCurrency) {
+    siteData.currentCurrency = savedCurrency;
 }

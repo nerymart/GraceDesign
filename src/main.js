@@ -48,7 +48,8 @@ import {
   updateAboutSection,
   renderProducts,
   renderFinishedWorks,
-  initProductModalListeners
+  initProductModalListeners,
+  initGlobalUI
 } from './js/ui.js';
 import { initCartListeners } from './js/cart.js';
 import { initCatalogListeners } from './js/catalog.js';
@@ -58,8 +59,10 @@ import {
   initHeaderSlider,
   initPdfViewer,
   initServicesCarousel,
-  initGlobalFeatures
+  initGlobalFeatures,
+  initSearch
 } from './js/features.js';
+import { initJewelryModalListeners } from './js/ui.js';
 
 // --- BOOTSTRAP ---
 async function bootstrap() {
@@ -79,6 +82,9 @@ async function bootstrap() {
   initPdfViewer();
   initServicesCarousel();
   initGlobalFeatures();
+  initSearch();
+  initJewelryModalListeners();
+  initGlobalUI();
 }
 
 // Ensure bootstrap runs after DOM is ready and injection is processed

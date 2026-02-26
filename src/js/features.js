@@ -1,4 +1,86 @@
-import { updateLanguage } from './ui.js';
+import { updateLanguage, openProductModal, openWorkModal, openJewelryModal } from './ui.js';
+import { siteData } from './data.js';
+
+export function initSearch() {
+    const containers = document.querySelectorAll('.search-results-container');
+
+    containers.forEach(container => {
+        const searchInput = container.querySelector('.main-search-input');
+        const resultsDropdown = container.querySelector('.search-results-dropdown');
+        const searchBtn = container.querySelector('.search-btn');
+
+        if (!searchInput || !resultsDropdown) return;
+
+        const performSearch = () => {
+            const query = searchInput.value.toLowerCase().trim();
+            if (query.length < 2) {
+                resultsDropdown.classList.remove('active');
+                return;
+            }
+
+            // Search in productos
+            const prodResults = siteData.productos.filter(p =>
+                p.name.toLowerCase().includes(query) ||
+                (p.desc && p.desc.toLowerCase().includes(query))
+            ).map(p => ({ ...p, type: 'product' }));
+
+            // Search in catalogItems
+            const catalogResults = siteData.catalogItems.filter(item =>
+                item.name.toLowerCase().includes(query) ||
+                (item.category && item.category.toLowerCase().includes(query))
+            ).map(item => ({ ...item, type: 'catalog' }));
+
+            // Combine and limit
+            const allResults = [...prodResults, ...catalogResults].slice(0, 10);
+
+            renderSearchResults(allResults);
+        };
+
+        const renderSearchResults = (results) => {
+            resultsDropdown.innerHTML = '';
+            if (results.length === 0) {
+                resultsDropdown.innerHTML = '<div class="no-results">No se encontraron piezas con ese nombre.</div>';
+            } else {
+                results.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'search-result-item';
+                    const img = item.image || (item.images ? item.images[0] : '');
+                    const categoryLabel = item.type === 'product' ? 'Disponible' : (item.category || 'Catálogo');
+
+                    div.innerHTML = `
+                        <img src="${img}" class="search-result-img" alt="${item.name}">
+                        <div class="search-result-info">
+                            <h4>${item.name}</h4>
+                            <p>${categoryLabel.toUpperCase()}</p>
+                        </div>
+                    `;
+
+                    div.onclick = () => {
+                        if (item.type === 'product') {
+                            openProductModal(item);
+                        } else {
+                            openJewelryModal(item);
+                        }
+                        resultsDropdown.classList.remove('active');
+                        searchInput.value = '';
+                    };
+                    resultsDropdown.appendChild(div);
+                });
+            }
+            resultsDropdown.classList.add('active');
+        };
+
+        searchInput.addEventListener('input', performSearch);
+        if (searchBtn) searchBtn.addEventListener('click', performSearch);
+    });
+
+    // Hide dropdown on click outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-results-container')) {
+            document.querySelectorAll('.search-results-dropdown').forEach(d => d.classList.remove('active'));
+        }
+    });
+}
 
 export function initDrawer() {
     document.addEventListener('click', (e) => {

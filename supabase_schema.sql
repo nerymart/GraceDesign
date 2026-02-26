@@ -75,6 +75,17 @@ CREATE TABLE IF NOT EXISTS site_about (
     CHECK (id = 1)
 );
 
+-- 8. Tarjetas de Promoción
+CREATE TABLE IF NOT EXISTS promo_cards (
+    id SERIAL PRIMARY KEY,
+    tagline TEXT,
+    title TEXT,
+    button_text TEXT,
+    image_url TEXT,
+    type TEXT, -- 'tall' o 'wide'
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- POLÍTICAS DE SEGURIDAD (RLS) - Permite que cualquiera lea, pero solo tú edites
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE subcategories ENABLE ROW LEVEL SECURITY;
@@ -83,6 +94,7 @@ ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 ALTER TABLE finished_works ENABLE ROW LEVEL SECURITY;
 ALTER TABLE site_about ENABLE ROW LEVEL SECURITY;
+ALTER TABLE promo_cards ENABLE ROW LEVEL SECURITY;
 
 -- Crear políticas de lectura pública
 CREATE POLICY "Public Read Categories" ON categories FOR SELECT USING (true);
@@ -92,6 +104,24 @@ CREATE POLICY "Public Read Products" ON products FOR SELECT USING (true);
 CREATE POLICY "Public Read Services" ON services FOR SELECT USING (true);
 CREATE POLICY "Public Read Works" ON finished_works FOR SELECT USING (true);
 CREATE POLICY "Public Read About" ON site_about FOR SELECT USING (true);
+CREATE POLICY "Public All Promos" ON promo_cards FOR ALL USING (true);
+
+-- 9. Ajustes del Sitio (Tasa de cambio)
+CREATE TABLE IF NOT EXISTS site_settings (
+    id TEXT PRIMARY KEY DEFAULT 'global',
+    conversion_rate NUMERIC DEFAULT 36.5,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Habilitar seguridad
+ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public Read Settings" ON site_settings FOR SELECT USING (true);
+CREATE POLICY "Public All Settings" ON site_settings FOR ALL USING (true);
+
+-- Insertar configuración inicial
+INSERT INTO site_settings (id, conversion_rate) 
+VALUES ('global', 36.5)
+ON CONFLICT (id) DO NOTHING;
 
 -- Insertar datos iniciales de "Nosotros"
 INSERT INTO site_about (id, title, description) 

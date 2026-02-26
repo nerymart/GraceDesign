@@ -56,69 +56,102 @@ dialog::backdrop {
   border-radius: 15px;
 }
 
+.work-modal-container {
+  position: relative;
+  background: #fff !important;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
 .work-modal-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 500px;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: 550px;
 }
 
 .work-modal-img-container {
-  height: 100%;
   background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .work-modal-img-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  /* Don't cut off the jewelry piece */
+  display: block;
 }
 
 .work-modal-info {
-  padding: 3rem;
+  padding: 3.5rem 3rem;
   display: flex;
   flex-direction: column;
+  background: #fff;
 }
 
 .work-modal-info h2 {
+  margin-top: 0;
   margin-bottom: 2rem;
-  font-size: 1.8rem;
+  font-family: 'Cinzel', serif;
+  font-size: 2.2rem;
+  color: #333 !important;
   border-bottom: 2px solid var(--primary-gold);
-  padding-bottom: 0.5rem;
-  display: inline-block;
+  padding-bottom: 0.8rem;
+  text-transform: uppercase;
 }
 
 .specs-list {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.5rem;
   flex-grow: 1;
 }
 
 .spec-item {
-  font-size: 1.1rem;
-  color: #333;
+  font-size: 1.15rem;
+  color: #444 !important;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 0.8rem;
 }
 
 .spec-item strong {
-  color: #555;
+  color: #0b1c2e !important;
+  font-weight: 700;
 }
 
 .btn-wa-quote {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  font-size: 1.1rem;
-  padding: 1rem 2rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  transition: all 0.3s ease;
 }
 
-@media (max-width: 768px) {
+.btn-wa-quote:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+}
+
+@media (max-width: 900px) {
   .work-modal-layout {
     grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .work-modal-img-container {
+    height: 350px;
+  }
+
+  .work-modal-info {
+    padding: 2rem;
+  }
+
+  .work-modal-info h2 {
+    font-size: 1.6rem;
   }
 }
 

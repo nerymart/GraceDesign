@@ -1,13 +1,13 @@
 <!-- Finished Work Detail Modal -->
 <dialog id="work-detail-modal" class="work-detail-dialog">
-  <div class="modal-content">
-    <button class="close-modal" id="close-work-modal" style="top: 1rem; right: 1rem;">&times;</button>
+  <div class="work-modal-container">
+    <button class="close-modal" id="close-work-modal" style="z-index: 10;">&times;</button>
     <div class="work-modal-layout">
       <div class="work-modal-img-container">
         <img src="" alt="Prenda" id="work-modal-img">
       </div>
       <div class="work-modal-info">
-        <h2 id="work-modal-title">Detalles de la Prenda</h2>
+        <h2 id="work-modal-title">PULCERA</h2>
         <div class="specs-list">
           <div class="spec-item"><strong>Tipo de Prenda:</strong> <span id="work-spec-type"></span></div>
           <div class="spec-item"><strong>Peso:</strong> <span id="work-spec-weight"></span></div>
@@ -16,7 +16,7 @@
           <div class="spec-item"><strong>Perlas:</strong> <span id="work-spec-pearls"></span></div>
         </div>
         <button class="btn btn-wa-quote" id="work-quote-btn"
-          style="background-color: #25D366; width: 100%; margin-top: 2rem;">
+          style="background-color: #25D366; width: 100%; margin-top: 2rem; border-radius: 8px;">
           <ion-icon name="logo-whatsapp"></ion-icon> Cotizar por WhatsApp
         </button>
       </div>
@@ -216,6 +216,12 @@
       </button>
       <button class="nav-item" data-section="finishedWorks">
         <ion-icon name="ribbon-outline"></ion-icon> Trabajos Realizados
+      </button>
+      <button class="nav-item" data-section="promos">
+        <ion-icon name="megaphone-outline"></ion-icon> Promociones
+      </button>
+      <button class="nav-item" data-section="ajustes">
+        <ion-icon name="settings-outline"></ion-icon> Ajustes
       </button>
     </nav>
 
