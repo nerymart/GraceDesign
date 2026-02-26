@@ -1,31 +1,60 @@
 import { siteData, loadStorage } from './data.js';
 import { supabase, uploadImage } from './supabase.js';
 
-export function initAdmin() {
+export async function initAdmin() {
   const loginModal = document.getElementById('login-modal');
   const adminDashboard = document.getElementById('admin-dashboard');
   const openLoginBtn = document.getElementById('open-login-btn');
   const closeLoginBtn = document.getElementById('close-login-modal');
   const loginForm = document.getElementById('login-form');
 
+  // Check current session
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    if (adminDashboard) adminDashboard.classList.add('active');
+    renderAdminSection();
+  }
+
   if (openLoginBtn) openLoginBtn.onclick = (e) => { e.preventDefault(); if (loginModal) loginModal.showModal(); };
   if (closeLoginBtn) closeLoginBtn.onclick = () => loginModal && loginModal.close();
 
   if (loginForm) {
-    loginForm.onsubmit = (e) => {
+    loginForm.onsubmit = async (e) => {
       e.preventDefault();
-      const user = document.getElementById('login-user').value;
-      const pass = document.getElementById('login-pass').value;
-      if (user === 'nerys' && pass === '123') {
+      const email = document.getElementById('login-user').value;
+      const password = document.getElementById('login-pass').value;
+
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email,
+          password: password,
+        });
+
+        if (error) throw error;
+
         if (loginModal) loginModal.close();
         if (adminDashboard) adminDashboard.classList.add('active');
         renderAdminSection();
-      } else alert('Usuario o contraseña incorrectos');
+      } catch (error) {
+        alert('Error de acceso: ' + (error.message === 'Invalid login credentials' ? 'Usuario o contraseña incorrectos' : error.message));
+      }
+    };
+  }
+
+  const forgotPassBtn = document.querySelector('.forgot-password');
+  if (forgotPassBtn) {
+    forgotPassBtn.onclick = () => {
+      const phone = "50576911776";
+      const message = "Hola, olvidé mi contraseña del panel administrativo de Joyería Grace. ¿Podrían ayudarme a recuperarla?";
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
     };
   }
 
   const logoutBtn = document.getElementById('logout-btn');
-  if (logoutBtn) logoutBtn.onclick = () => { location.reload(); };
+  if (logoutBtn) logoutBtn.onclick = async () => {
+    await supabase.auth.signOut();
+    location.reload();
+  };
 
   const closeAdminBtn = document.getElementById('close-admin-btn');
   if (closeAdminBtn) closeAdminBtn.onclick = () => { if (adminDashboard) adminDashboard.classList.remove('active'); };

@@ -46,6 +46,8 @@ dialog::backdrop {
   color: var(--light-gray);
   font-size: 2rem;
   cursor: pointer;
+  z-index: 100 !important;
+  /* Ensure it's reachable */
 }
 
 /* --- WORK DETAIL MODAL --- */
@@ -406,7 +408,8 @@ dialog::backdrop {
 .product-modal-image img {
   width: 100%;
   height: 100%;
-  max-height: 450px;
+  max-height: 550px;
+  /* Increased from 450px */
   object-fit: contain;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.08));
   transition: transform 0.3s ease;
@@ -508,8 +511,9 @@ dialog::backdrop {
   }
 
   .product-modal-image {
-    padding: 1.5rem;
-    height: 350px;
+    padding: 1rem;
+    height: 450px;
+    /* Increased from 350px */
   }
 
   .product-modal-details {

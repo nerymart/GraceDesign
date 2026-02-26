@@ -135,6 +135,8 @@ export function renderProducts() {
   });
 }
 
+export let currentModalProduct = null;
+
 export function openProductModal(p) {
   const modal = document.getElementById('product-modal');
   const modalImg = document.getElementById('modal-img');
@@ -143,6 +145,7 @@ export function openProductModal(p) {
   const modalPrice = document.getElementById('modal-price');
 
   if (p && modal) {
+    currentModalProduct = p;
     modalImg.src = p.image;
     modalTitle.textContent = p.name;
     modalDesc.textContent = p.desc;
@@ -164,7 +167,49 @@ export function attachProductModalListeners() {
 export function initProductModalListeners() {
   const modal = document.getElementById('product-modal');
   const closeModalBtn = document.getElementById('close-modal');
-  if (closeModalBtn && modal) closeModalBtn.addEventListener('click', () => modal.close());
+  const buyBtn = document.getElementById('modal-buy-btn');
+  const addCartBtn = document.getElementById('modal-add-cart-btn');
+
+  if (!modal) return;
+
+  const closeAction = () => {
+    modal.close();
+    document.body.style.overflow = '';
+  };
+
+  if (closeModalBtn) closeModalBtn.addEventListener('click', closeAction);
+
+  if (buyBtn) {
+    buyBtn.addEventListener('click', () => {
+      if (!currentModalProduct) return;
+      const phone = "50585052032";
+      let message = `Hola, me interesa comprar:\n- ${currentModalProduct.name} (${formatCurrency(currentModalProduct.price)})`;
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
+    });
+  }
+
+  if (addCartBtn) {
+    addCartBtn.addEventListener('click', () => {
+      if (currentModalProduct) {
+        addToCart(currentModalProduct);
+        // Optional: Close modal or show feedback
+        // closeAction(); 
+      }
+    });
+  }
+
+  // Close when clicking outside
+  modal.addEventListener('click', (e) => {
+    const dialogDimensions = modal.getBoundingClientRect();
+    if (
+      e.clientX < dialogDimensions.left ||
+      e.clientX > dialogDimensions.right ||
+      e.clientY < dialogDimensions.top ||
+      e.clientY > dialogDimensions.bottom
+    ) {
+      closeAction();
+    }
+  });
 }
 
 export function renderFinishedWorks() {
@@ -177,8 +222,11 @@ export function renderFinishedWorks() {
   attachWorkListeners();
 }
 
+export let currentWorkModal = null;
+
 export function openWorkModal(work) {
   if (work) {
+    currentWorkModal = work;
     document.getElementById("work-modal-img").src = work.image;
     document.getElementById("work-modal-title").textContent = work.name;
     document.getElementById("work-spec-type").textContent = work.type;
@@ -197,8 +245,20 @@ function attachWorkListeners() {
       openWorkModal(work);
     });
   });
+
   const closeWorkModal = document.getElementById("close-work-modal");
   if (closeWorkModal) closeWorkModal.onclick = () => document.getElementById("work-detail-modal").close();
+
+  const quoteBtn = document.getElementById("work-quote-btn");
+  if (quoteBtn) {
+    quoteBtn.onclick = () => {
+      if (currentWorkModal) {
+        const phone = "50585052032";
+        const message = `Hola Grace Designs, me interesa cotizar un trabajo similar a: "${currentWorkModal.name}" (${currentWorkModal.type}). ¿Me podrían brindar más información?`;
+        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+      }
+    };
+  }
 }
 
 const translations = {

@@ -905,6 +905,14 @@ body.dark-mode .toggle-thumb {
         letter-spacing: 1px;
     }
 
+    .hero-text-container {
+        width: 100%;
+        max-width: 100%;
+        text-align: left;
+        /* Keep text left-aligned as requested */
+        padding: 0;
+    }
+
     .hero-subtitle {
         font-size: 0.95rem;
         margin-bottom: 2rem;
@@ -914,22 +922,26 @@ body.dark-mode .toggle-thumb {
 /* Hero Search Mobile Extra Styles */
 @media (max-width: 768px) {
     .hero-search-container {
-        margin-top: 1.5rem;
-        width: 100%;
-        max-width: 100%;
+        margin-top: 2rem;
+        width: 100% !important;
+        max-width: 100% !important;
         position: relative;
         z-index: 10;
-        display: flex;
-        justify-content: center;
+        display: flex !important;
+        justify-content: center !important;
+        left: 0 !important;
+        transform: none !important;
     }
 
     .hero-search-container .search-bar-container {
         background: rgba(255, 255, 255, 0.95);
         height: 50px;
+        width: 90% !important;
+        max-width: 500px !important;
         border-radius: 30px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         border: 1px solid rgba(212, 175, 55, 0.3);
-        margin: 0 auto;
+        margin: 0 auto !important;
     }
 
     .hero-search-container .main-search-input {
