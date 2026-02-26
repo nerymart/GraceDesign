@@ -25,16 +25,29 @@
 </dialog>
 
 <!-- Product Modal -->
-<dialog id="product-modal">
-  <div class="modal-content">
-    <img src="" alt="Product" id="modal-img" class="modal-img">
-    <div class="modal-info">
-      <button class="close-modal" id="close-modal">&times;</button>
-      <h2 id="modal-title"></h2>
-      <p id="modal-desc" style="margin-bottom: 2rem; color: var(--text-muted);"></p>
-      <h3 id="modal-price" style="margin-bottom: 2rem;"></h3>
-      <button class="btn" id="modal-buy-btn"><ion-icon name="logo-whatsapp"></ion-icon> Comprar ahora</button>
-      <button class="btn btn-outline" id="modal-add-cart-btn" style="margin-top: 1rem;">Añadir al Carrito</button>
+<dialog id="product-modal" class="product-detail-dialog">
+  <div class="product-modal-container">
+    <button class="close-modal" id="close-modal">&times;</button>
+    <div class="product-modal-layout">
+      <div class="product-modal-image">
+        <img src="" alt="Product" id="modal-img">
+      </div>
+      <div class="product-modal-details">
+        <h2 id="modal-title"></h2>
+        <div class="product-price-tag">
+          <span id="modal-price"></span>
+        </div>
+        <p id="modal-desc"></p>
+
+        <div class="product-modal-actions">
+          <button class="btn btn-buy-now" id="modal-buy-btn">
+            <ion-icon name="logo-whatsapp"></ion-icon> Comprar ahora
+          </button>
+          <button class="btn btn-add-cart" id="modal-add-cart-btn">
+            <ion-icon name="cart-outline"></ion-icon> Añadir al Carrito
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </dialog>
