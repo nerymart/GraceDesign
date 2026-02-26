@@ -137,6 +137,18 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Check for deep-linking via URL parameters (?subcat=...)
+        const urlParams = new URLSearchParams(window.location.search);
+        const subcatParam = urlParams.get('subcat');
+
+        if (subcatParam) {
+            const targetBtn = document.querySelector(`.tab-btn[data-target="${subcatParam}"]`);
+            if (targetBtn) {
+                targetBtn.click();
+                return; // Let the click handler handle rendering
+            }
+        }
+
         const initialActive = document.querySelector('.tab-btn.active[data-target]');
 
         if (initialActive) {

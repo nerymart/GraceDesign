@@ -18,20 +18,47 @@ export function initSearch() {
                 return;
             }
 
-            // Search in productos
+            // 1. Search in productos
             const prodResults = siteData.productos.filter(p =>
                 p.name.toLowerCase().includes(query) ||
                 (p.desc && p.desc.toLowerCase().includes(query))
             ).map(p => ({ ...p, type: 'product' }));
 
-            // Search in catalogItems
+            // 2. Search in catalogItems
             const catalogResults = siteData.catalogItems.filter(item =>
                 item.name.toLowerCase().includes(query) ||
                 (item.category && item.category.toLowerCase().includes(query))
             ).map(item => ({ ...item, type: 'catalog' }));
 
-            // Combine and limit
-            const allResults = [...prodResults, ...catalogResults].slice(0, 10);
+            // 3. Search in Categories & Subcategories (NEW)
+            const sectionResults = [];
+            siteData.categories.forEach(cat => {
+                // Main category match
+                if (cat.name.toLowerCase().includes(query)) {
+                    sectionResults.push({
+                        name: cat.name,
+                        type: 'section',
+                        link: cat.link,
+                        image: cat.image,
+                        label: 'VER SECCIÓN'
+                    });
+                }
+                // Subcategory match
+                cat.subCategories.forEach(sub => {
+                    if (sub.name.toLowerCase().includes(query)) {
+                        sectionResults.push({
+                            name: sub.name,
+                            type: 'section',
+                            link: `${cat.link}?subcat=${sub.id}`,
+                            image: cat.image, // Use category image as placeholder
+                            label: 'IR A SECCIÓN'
+                        });
+                    }
+                });
+            });
+
+            // Combine and limit (prioritize sections, then products)
+            const allResults = [...sectionResults, ...prodResults, ...catalogResults].slice(0, 10);
 
             renderSearchResults(allResults);
         };
@@ -44,8 +71,18 @@ export function initSearch() {
                 results.forEach(item => {
                     const div = document.createElement('div');
                     div.className = 'search-result-item';
+
+                    let categoryLabel = '';
+                    let actionLabel = '';
+
+                    if (item.type === 'section') {
+                        categoryLabel = item.label || 'SECCIÓN';
+                        div.classList.add('section-result');
+                    } else {
+                        categoryLabel = item.type === 'product' ? 'Disponible' : (item.category || 'Catálogo');
+                    }
+
                     const img = item.image || (item.images ? item.images[0] : '');
-                    const categoryLabel = item.type === 'product' ? 'Disponible' : (item.category || 'Catálogo');
 
                     div.innerHTML = `
                         <img src="${img}" class="search-result-img" alt="${item.name}">
@@ -53,10 +90,13 @@ export function initSearch() {
                             <h4>${item.name}</h4>
                             <p>${categoryLabel.toUpperCase()}</p>
                         </div>
+                        ${item.type === 'section' ? '<ion-icon name="arrow-forward-outline" class="section-arrow"></ion-icon>' : ''}
                     `;
 
                     div.onclick = () => {
-                        if (item.type === 'product') {
+                        if (item.type === 'section') {
+                            window.location.href = item.link;
+                        } else if (item.type === 'product') {
                             openProductModal(item);
                         } else {
                             openJewelryModal(item);
