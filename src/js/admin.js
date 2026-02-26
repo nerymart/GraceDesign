@@ -392,6 +392,12 @@ export async function saveItem(type, index, filter = null) {
   const table = tableMap[type];
   if (!table) return;
 
+  const parseNumber = (val) => {
+    if (!val) return 0;
+    const cleanVal = val.toString().replace(',', '.');
+    return parseFloat(cleanVal) || 0;
+  };
+
   if (type === 'servicios') {
     itemData = {
       title: document.getElementById('edit-title').value,
@@ -403,7 +409,7 @@ export async function saveItem(type, index, filter = null) {
     itemData = {
       name: document.getElementById('edit-name').value,
       image: document.getElementById('edit-image').value,
-      price: parseInt(document.getElementById('edit-price').value)
+      price: parseNumber(document.getElementById('edit-price').value)
     };
   }
   else if (type === 'catalogo') {
@@ -448,9 +454,11 @@ export async function saveItem(type, index, filter = null) {
     itemData.id = items[index].id;
   }
 
+  console.log(`Guardando ítem en ${table}:`, itemData);
   const { error } = await supabase.from(table).upsert(itemData);
 
   if (error) {
+    console.error(`Error de Supabase al guardar en ${table}:`, error);
     alert('Error al guardar: ' + error.message);
   } else {
     await loadStorage();
@@ -459,7 +467,12 @@ export async function saveItem(type, index, filter = null) {
 }
 
 export async function saveSettings() {
-  const newRate = parseFloat(document.getElementById('a-conv-rate').value);
+  const rawRate = document.getElementById('a-conv-rate').value;
+  const cleanRate = rawRate.toString().replace(',', '.');
+  const newRate = parseFloat(cleanRate);
+
+  console.log('Intentando guardar tasa de cambio:', { rawRate, cleanRate, newRate });
+
   if (isNaN(newRate) || newRate <= 0) {
     alert('Por favor ingresa una tasa de cambio válida');
     return;
@@ -470,12 +483,14 @@ export async function saveSettings() {
     .upsert({ id: 'global', conversion_rate: newRate });
 
   if (error) {
+    console.error('Error de Supabase en saveSettings:', error);
     if (error.code === 'PGRST116' || error.message.includes('not found') || error.message.includes('relation')) {
-      alert('Error: La tabla "site_settings" no existe en Supabase. Por favor ejecuta el SQL proporcionado.');
+      alert('Error: La tabla "site_settings" no existe en Supabase o no hay permisos. Por favor verifica la base de datos.');
     } else {
       alert('Error al guardar ajustes: ' + error.message);
     }
   } else {
+    console.log('Ajustes guardados exitosamente');
     alert('Ajustes guardados correctamente');
     await loadStorage();
     renderAdminSection();

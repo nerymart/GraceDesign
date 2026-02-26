@@ -185,9 +185,9 @@ export async function loadStorage() {
 
         if (settings) {
             siteData.conversionRate = settings.conversion_rate;
-            console.log('Tasa de cambio cargada:', settings.conversion_rate);
+            console.log('Tasa de cambio cargada exitosamente:', settings.conversion_rate);
         } else {
-            console.warn('Tabla site_settings no encontrada o vacía. Usando tasa por defecto:', siteData.conversionRate);
+            console.warn('Configuración "global" no encontrada en site_settings. Usando tasa por defecto:', siteData.conversionRate);
         }
 
         if (categories && categories.length > 0) {
@@ -199,6 +199,7 @@ export async function loadStorage() {
 
         console.log('Sincronización con Supabase exitosa.');
     } catch (error) {
+        console.error('Error detallado al sincronizar con Supabase:', error);
         console.warn('Usando datos locales por defecto (tablas vacías o error de conexión).');
     }
 }
