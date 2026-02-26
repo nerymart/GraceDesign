@@ -365,7 +365,9 @@ export function showForm(type, index = null, filter = null) {
         <div class="form-group"><label>Nombre</label><input type="text" id="edit-name" value="${item.name || ''}"></div>
         <div class="form-group"><label>Categoría / SubID</label><input type="text" id="edit-category" value="${item.category || ''}" placeholder="Ej: bachiller-dama"></div>
         <div class="form-group"><label>Peso</label><input type="text" id="edit-peso" value="${item.peso || ''}"></div>
-        <div class="form-group"><label>Precio</label><input type="text" id="edit-precioDiseno" value="${item.precioDiseno || ''}"></div>
+        <div class="form-group"><label>Medida</label><input type="text" id="edit-medida" value="${item.medida || ''}"></div>
+        <div class="form-group"><label>Dimensiones</label><input type="text" id="edit-dimensiones" value="${item.dimensiones || ''}"></div>
+        <div class="form-group"><label>Precio</label><input type="text" id="edit-precioDiseno" value="${item.precio_diseno || item.precioDiseno || ''}"></div>
         ${createImageUploadZone('img1', item.images ? item.images[0] : (item.image || ''))}
       </div>
     </div>`;
@@ -447,6 +449,8 @@ export async function saveItem(type, index, filter = null) {
       category: document.getElementById('edit-category').value,
       images: [document.getElementById('edit-img1').value],
       peso: document.getElementById('edit-peso').value,
+      medida: document.getElementById('edit-medida').value,
+      dimensiones: document.getElementById('edit-dimensiones').value,
       precio_diseno: document.getElementById('edit-precioDiseno').value
     };
   }

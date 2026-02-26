@@ -131,8 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (path.includes('extranjera')) mainCategory = 'extranjera';
         else if (path.includes('personalizacion')) mainCategory = 'personalizacion';
 
-        if (siteData.catalogItems.length === 0 && retries < 15) {
-            setTimeout(() => initDefaultGallery(retries + 1), 200);
+        // Wait for siteData to be populated (Supabase response)
+        if ((!siteData.catalogItems || siteData.catalogItems.length === 0) && retries < 30) {
+            setTimeout(() => initDefaultGallery(retries + 1), 100);
             return;
         }
 
