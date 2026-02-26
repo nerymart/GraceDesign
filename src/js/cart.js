@@ -13,7 +13,12 @@ export function updateCartUI() {
     if (!cartItemsContainer) return;
 
     if (cart.length === 0) {
-        cartItemsContainer.innerHTML = `<p style="text-align: center;">Tu carrito está vacío.</p>`;
+        cartItemsContainer.innerHTML = `
+            <div class="cart-empty-state">
+                <ion-icon name="bag-handle-outline"></ion-icon>
+                <p>Tu carrito está vacío.</p>
+            </div>
+        `;
         if (cartTotalEl) cartTotalEl.textContent = formatCurrency(0);
     } else {
         cartItemsContainer.innerHTML = "";
@@ -23,19 +28,21 @@ export function updateCartUI() {
             const itemEl = document.createElement("div");
             itemEl.className = "cart-item";
             itemEl.innerHTML = `
-        <div class="cart-item-info">
-             <span class="cart-item-name">${item.name}</span>
-             <span class="cart-item-price">${formatCurrency(item.price)}</span>
-        </div>
-        <button class="remove-item" data-index="${index}">&times;</button>
-      `;
+                <div class="cart-item-info">
+                     <span class="cart-item-name">${item.name}</span>
+                     <span class="cart-item-price">${formatCurrency(item.price)}</span>
+                </div>
+                <button class="remove-item" data-index="${index}"><ion-icon name="trash-outline"></ion-icon></button>
+            `;
             cartItemsContainer.appendChild(itemEl);
         });
         if (cartTotalEl) cartTotalEl.textContent = formatCurrency(total);
 
         document.querySelectorAll(".remove-item").forEach(btn => {
             btn.addEventListener("click", (e) => {
-                const idx = parseInt(e.target.dataset.index);
+                const btnEl = e.target.closest('.remove-item');
+                if (!btnEl) return;
+                const idx = parseInt(btnEl.dataset.index);
                 cart.splice(idx, 1);
                 updateCartUI();
             });

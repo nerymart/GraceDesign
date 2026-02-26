@@ -191,50 +191,186 @@ dialog::backdrop {
    UNIVERSAL LIGHT MODALS (Forced for all modes)
    ========================================= */
 
-/* Base Dialog Styles - Forced to White */
-dialog,
-.modal-content,
-.login-container,
-.admin-dialog,
-.pdf-modal-container {
-  background-color: #FFFFFF !important;
-  color: #333333 !important;
-  border-radius: 12px !important;
-  border: 1px solid #ddd !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+/* --- ENHANCED CART MODAL --- */
+.cart-dialog {
+  max-width: 500px;
+  width: 95%;
+  border-radius: 20px !important;
+  overflow: hidden;
+  background-color: #fff !important;
+  border: none !important;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* Ensure ALL text inside modals is dark, even in Dark Mode */
-dialog *,
-.modal-content *,
-.login-container *,
-.admin-dialog * {
-  color: #333333 !important;
+.cart-container {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Specific button text color preservation */
-dialog .btn,
-.modal-content .btn,
-.login-container .btn {
-  color: #FFFFFF !important;
+.cart-header {
+  padding: 2.5rem 2rem 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
 }
 
-/* Icons inside modals should be dark/gold as intended */
-dialog ion-icon,
-.modal-content ion-icon {
-  color: inherit !important;
+.cart-header ion-icon {
+  font-size: 2.5rem;
+  color: var(--primary-gold);
+  margin-bottom: 1rem;
 }
 
-/* Cart Specifics */
-#cart-items {
-  border-top: 1px solid #eeeeee !important;
-  border-bottom: 1px solid #eeeeee !important;
+.cart-header h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  color: #0B1C2E !important;
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
-.cart-item-name,
-.cart-item-price,
+.cart-items-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Custom scrollbar for cart items */
+.cart-items-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cart-items-list::-webkit-scrollbar-track {
+  background: #f9f9f9;
+}
+
+.cart-items-list::-webkit-scrollbar-thumb {
+  background: #e0e0e0;
+  border-radius: 10px;
+}
+
+.cart-empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #888;
+}
+
+.cart-empty-state ion-icon {
+  font-size: 3.5rem;
+  opacity: 0.3;
+  margin-bottom: 1rem;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #fdfdfd;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+  border-color: var(--primary-gold);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.cart-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.cart-item-name {
+  font-weight: 700;
+  color: #333 !important;
+  font-size: 1.1rem;
+}
+
+.cart-item-price {
+  color: var(--primary-gold) !important;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.remove-item {
+  background: #fff;
+  border: 1px solid #eee;
+  color: #ff4757 !important;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.2rem;
+}
+
+.remove-item:hover {
+  background: #ff4757;
+  color: #fff !important;
+  border-color: #ff4757;
+  transform: rotate(90deg);
+}
+
+.cart-footer {
+  padding: 2rem;
+  background: #f9f9f9;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0 0.5rem;
+}
+
+.cart-total-row span:first-child {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #666 !important;
+}
+
 #cart-total {
-  color: #000000 !important;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #0B1C2E !important;
+}
+
+.btn-checkout {
+  width: 100%;
+  padding: 1.2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%) !important;
+  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2) !important;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-checkout:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3) !important;
+}
+
+.cart-note {
+  font-size: 0.85rem;
+  color: #888 !important;
+  text-align: center;
+  margin-top: 1rem;
 }
 
 /* Close Button Consistency */

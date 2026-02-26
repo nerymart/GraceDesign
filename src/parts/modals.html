@@ -91,22 +91,34 @@
 </dialog>
 
 <!-- Cart Modal -->
-<dialog id="cart-modal">
-  <div style="padding: 2rem; max-width: 500px; width: 100%; position: relative;">
-    <button class="close-modal" id="close-cart-modal" style="top: 1rem; right: 1rem;">&times;</button>
-    <h2 style="margin-bottom: 1.5rem; text-align: center;">Tu Carrito</h2>
-    <div id="cart-items"
-      style="max-height: 300px; overflow-y: auto; margin-bottom: 1.5rem; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 1rem 0;">
-      <!-- Items injected here -->
-      <p style="text-align: center; color: var(--text-muted);">Tu carrito está vacío.</p>
+<dialog id="cart-modal" class="cart-dialog">
+  <div class="cart-container">
+    <button class="close-modal" id="close-cart-modal">&times;</button>
+
+    <div class="cart-header">
+      <ion-icon name="cart-outline"></ion-icon>
+      <h2>Tu Carrito</h2>
     </div>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-      <h3>Total:</h3>
-      <h3 id="cart-total">$0 MXN</h3>
+
+    <div id="cart-items" class="cart-items-list">
+      <!-- Items dynamically injected -->
+      <div class="cart-empty-state">
+        <ion-icon name="bag-handle-outline"></ion-icon>
+        <p>Tu carrito está vacío.</p>
+      </div>
     </div>
-    <button class="btn" id="checkout-btn" style="width: 100%;"><ion-icon name="logo-whatsapp"></ion-icon>
-      Finalizar
-      Compra</button>
+
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Total:</span>
+        <span id="cart-total">$0.00</span>
+      </div>
+      <button class="btn btn-checkout" id="checkout-btn">
+        <ion-icon name="logo-whatsapp"></ion-icon>
+        Finalizar Compra
+      </button>
+      <p class="cart-note">Al finalizar, serás redirigido a WhatsApp para coordinar tu pedido.</p>
+    </div>
   </div>
 </dialog>
 
