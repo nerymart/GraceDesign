@@ -9,9 +9,8 @@ section {
   font-size: 2.5rem;
   margin-bottom: 3rem;
   position: relative;
-  display: inline-block;
-  left: 50%;
-  transform: translateX(-50%);
+  display: block;
+  width: 100%;
 }
 
 .section-title::after {

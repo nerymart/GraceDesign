@@ -24,188 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!tabBtns.length || !categoryTitle || !productGrid || !jewelryModal) return;
 
-    // Datos simulados (Mock data) para las subcategorías extendidas
-    const productsData = {
-        // --- GRADUACIÓN ---
-        'bachiller-dama': [
-            { img: 'https://images.unsplash.com/photo-1605100804763-247f6793148e?auto=format&fit=crop&q=80&w=500', title: 'Anillo Elegance Oro', price: '$350', badge: 'NUEVO', peso: '4.5g', medida: '6-8', dims: '12mm x 12mm' },
-            { img: 'https://images.unsplash.com/photo-1599643478514-4a5202336336?auto=format&fit=crop&q=80&w=500', title: 'Bachiller Zafiro Dama', price: '$420', peso: '5.2g', medida: '7', dims: '15mm x 15mm' }
-        ],
-        'bachiller-caballero': [
-            { img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=500', title: 'Sello Imperial Bachiller', price: '$450', badge: 'VENDIDO', badgeClass: 'badge-sold-out' },
-            { img: 'https://images.unsplash.com/photo-1635391108269-00a8aa0aa37e?auto=format&fit=crop&q=80&w=500', title: 'Plata Ónix Caballero', price: '$290' }
-        ],
-        'carreras-dama': [
-            { img: 'https://images.unsplash.com/photo-1604382354936-07c5d0ba4bea?auto=format&fit=crop&q=80&w=500', title: 'Anillo Profesional Medicina', price: '$520' },
-            { img: 'https://images.unsplash.com/photo-1629224316810-9d8805b95e76?auto=format&fit=crop&q=80&w=500', title: 'Carreras Oro Rosado', price: '$480' }
-        ],
-        'carreras-caballero': [
-            { img: 'https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&q=80&w=500', title: 'Anillo Ingeniero Titanio', price: '$490', badge: 'POPULAR' },
-            { img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=500', title: 'Derecho Clásico Oro', price: '$550' }
-        ],
-        'sexto-dama': [
-            { img: 'https://images.unsplash.com/photo-1589674781759-c21c37956a44?auto=format&fit=crop&q=80&w=500', title: '6to Grado Dama Corazón', price: '$120' }
-        ],
-        'sexto-caballero': [
-            { img: 'https://images.unsplash.com/photo-1604382354936-07c5d0ba4bea?auto=format&fit=crop&q=80&w=500', title: '6to Grado Caballero Plata', price: '$150' }
-        ],
-        'preescolar-dama': [
-            { img: 'https://images.unsplash.com/photo-1599643478514-4a5202336336?auto=format&fit=crop&q=80&w=500', title: 'Preescolar Niña Estrellas', price: '$95' }
-        ],
-        'preescolar-caballero': [
-            { img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=500', title: 'Preescolar Niño 10K', price: '$80' }
-        ],
-
-        // --- BODAS & COMPROMISO ---
-        // --- BODAS & COMPROMISO ---
-        'bodas-compromiso': [
-            { img: 'https://images.unsplash.com/photo-1605100804763-247f6793148e?auto=format&fit=crop&q=80&w=500', title: 'Solitario Diamante Corte Princesa', price: '$1,200', badge: 'PREMIUM', peso: '6.2g', medida: '7', dims: '6mm piedra' },
-            { img: 'https://images.unsplash.com/photo-1599643478514-4a5202336336?auto=format&fit=crop&q=80&w=500', title: 'Halo Diamante Oro Blanco', price: '$1,450', peso: '7.5g', medida: '6.5', dims: '8mm halo' },
-            { img: 'https://images.unsplash.com/photo-1604382354936-07c5d0ba4bea?auto=format&fit=crop&q=80&w=500', title: 'Solitario Zirconia Clásico', price: '$450', peso: '5.0g', medida: '8', dims: '5mm piedra' },
-            { img: 'https://images.unsplash.com/photo-1629224316810-9d8805b95e76?auto=format&fit=crop&q=80&w=500', title: 'Vintage Rose Zirconia', price: '$380', peso: '4.8g', medida: '7', dims: '6mm flor' }
-        ],
-        'bodas-alianzas': [
-            { img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=500', title: 'Alianza Clásica 18K', price: '$600', badge: 'POPULAR', peso: '8.0g', medida: '9', dims: '4mm ancho' },
-            { img: 'https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&q=80&w=500', title: 'Banda Texturizada Oro Amarillo', price: '$720', peso: '9.5g', medida: '10', dims: '5mm ancho' },
-            { img: 'https://images.unsplash.com/photo-1635391108269-00a8aa0aa37e?auto=format&fit=crop&q=80&w=500', title: 'Alianza Plata Esterlina', price: '$150', peso: '6.0g', medida: '8', dims: '4mm ancho' },
-            { img: 'https://images.unsplash.com/photo-1589674781759-c21c37956a44?auto=format&fit=crop&q=80&w=500', title: 'Set Nupcial Diamantes Dúo', price: '$1,800', badge: 'SET', peso: '12.0g', medida: '7', dims: 'Set 2 anillos' }
-        ],
-
-        // --- JOYAS EXTRANJERAS ---
-        'ext-pulseras-dama': [
-            { img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=500', title: 'Pulsera Tenis Diamantes', price: '$850', badge: 'ITALIA', peso: '8.5g', medida: '18cm', dims: '3mm diamantes' }
-        ],
-        'ext-pulseras-caballero': [
-            { img: 'https://images.unsplash.com/photo-1599643478514-4a5202336336?auto=format&fit=crop&q=80&w=500', title: 'Esclava Cubana 18K', price: '$1,200', peso: '22.0g', medida: '21cm', dims: '8mm ancho' }
-        ],
-        'ext-pulseras-nino': [
-            { img: 'https://images.unsplash.com/photo-1629224316810-9d8805b95e76?auto=format&fit=crop&q=80&w=500', title: 'Pulsera Identidad Italiana', price: '$180', peso: '4.2g', medida: '15cm', dims: 'Plate 20mm' }
-        ],
-        'ext-cadenas-dama': [
-            { img: 'https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&q=80&w=500', title: 'Gargantilla Cartier Fina', price: '$350', peso: '10.5g', medida: '45cm', dims: '2.5mm ancho' }
-        ],
-        'ext-cadenas-caballero': [
-            { img: 'https://images.unsplash.com/photo-1605100804763-247f6793148e?auto=format&fit=crop&q=80&w=500', title: 'Cadena Lomo Corvina', price: '$900', badge: 'PREMIUM', peso: '45.0g', medida: '60cm', dims: '6mm ancho' }
-        ],
-        'ext-cadenas-nino': [
-            { img: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=500', title: 'Cadena Fígaro Delgada', price: '$220', peso: '8.0g', medida: '40cm', dims: '2mm ancho' }
-        ],
-        'ext-anillos-dama': [
-            { img: 'https://images.unsplash.com/photo-1604382354936-07c5d0ba4bea?auto=format&fit=crop&q=80&w=500', title: 'Anillo Cocktail Rubí', price: '$650' }
-        ],
-        'ext-anillos-caballero': [
-            { img: 'https://images.unsplash.com/photo-1544391697-71c841e06fa5?auto=format&fit=crop&q=80&w=500', title: 'Sello Ónix Importado', price: '$480' }
-        ],
-        'ext-anillos-nino': [
-            { img: 'https://images.unsplash.com/photo-1635391108269-00a8aa0aa37e?auto=format&fit=crop&q=80&w=500', title: 'Anillo Inicial Esmalte', price: '$120' }
-        ],
-        'ext-dijes-dama': [
-            { img: 'https://images.unsplash.com/photo-1589674781759-c21c37956a44?auto=format&fit=crop&q=80&w=500', title: 'Medalla Virgen Finamente Grabada', price: '$290' }
-        ],
-        'ext-dijes-caballero': [
-            { img: 'https://images.unsplash.com/photo-1629853906663-95f70a2a4e40?auto=format&fit=crop&q=80&w=500', title: 'Cruz Bizantina Oro 18K', price: '$340' }
-        ],
-        'ext-dijes-nino': [
-            { img: 'https://images.unsplash.com/photo-1605100804763-247f6793148e?auto=format&fit=crop&q=80&w=500', title: 'Dije Angelito Bicolor', price: '$150' }
-        ],
-        'ext-aretes': [
-            { img: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=500', title: 'Arracadas Tubulares Italianas', price: '$420', badge: 'NUEVO' },
-            { img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=500', title: 'Broquel Diamante Corte', price: '$280' },
-            { img: 'https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&q=80&w=500', title: 'Topos Bolita Oro 14k', price: '$90' }
-        ],
-
-        // --- JOYAS NACIONALES ---
-        'nac-pulseras-dama': [
-            { img: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=500', title: 'Pulsera Tejida Filigrana', price: '$210', badge: 'ARTESANO', peso: '5.5g', medida: '18cm', dims: 'Bolas 4mm' }
-        ],
-        'nac-pulseras-caballero': [
-            { img: 'https://images.unsplash.com/photo-1629853906663-95f70a2a4e40?auto=format&fit=crop&q=80&w=500', title: 'Esclava Tejido Nacional', price: '$350', badge: 'HECHO A MANO' }
-        ],
-        'nac-pulseras-nino': [
-            { img: 'https://images.unsplash.com/photo-1544391697-71c841e06fa5?auto=format&fit=crop&q=80&w=500', title: 'Esclava Identidad Infantil', price: '$120' }
-        ],
-        'nac-cadenas-dama': [
-            { img: 'https://images.unsplash.com/photo-1605100804763-247f6793148e?auto=format&fit=crop&q=80&w=500', title: 'Cadena Fina Oro 10K', price: '$180' }
-        ],
-        'nac-cadenas-caballero': [
-            { img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=500', title: 'Cadena Tejido Cordón', price: '$450' }
-        ],
-        'nac-cadenas-nino': [
-            { img: 'https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&q=80&w=500', title: 'Cadena Infantil Oro 10K', price: '$110' }
-        ],
-        'nac-anillos-dama': [
-            { img: 'https://images.unsplash.com/photo-1629853906663-95f70a2a4e40?auto=format&fit=crop&q=80&w=500', title: 'Anillo Diseño Nacional', price: '$280', badge: 'LOCAL' }
-        ],
-        'nac-anillos-caballero': [
-            { img: 'https://images.unsplash.com/photo-1629224316810-9d8805b95e76?auto=format&fit=crop&q=80&w=500', title: 'Sello Nicaragüense Oro', price: '$400' }
-        ],
-        'nac-anillos-nino': [
-            { img: 'https://images.unsplash.com/photo-1589674781759-c21c37956a44?auto=format&fit=crop&q=80&w=500', title: 'Anillo Inicial Niño 10K', price: '$90' }
-        ],
-        'nac-dijes-dama': [
-            { img: 'https://images.unsplash.com/photo-1604382354936-07c5d0ba4bea?auto=format&fit=crop&q=80&w=500', title: 'Dije Escudo de Nicaragua', price: '$150' }
-        ],
-        'nac-dijes-caballero': [
-            { img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=500', title: 'Dije Cruz Tradicional', price: '$200' }
-        ],
-        'nac-dijes-nino': [
-            { img: 'https://images.unsplash.com/photo-1635391108269-00a8aa0aa37e?auto=format&fit=crop&q=80&w=500', title: 'Medalla Angelito Oro', price: '$120' }
-        ],
-        'nac-aretes': [
-            { img: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=500', title: 'Aretes Filigrana Oro', price: '$180', badge: 'ARTESANO' }
-        ],
-
-        // --- PERSONALIZACION 3D ---
-        'p3d-tejidos': [
-            { img: 'https://images.unsplash.com/photo-1599643478514-4a5202336336?auto=format&fit=crop&q=80&w=500', title: 'Pulsera Tejido Cubano Digno 3D', price: '$940', badge: 'A MEDIDA', peso: '25.5g', medida: 'Largo 21cm', dims: '10mm ancho' },
-            { img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=500', title: 'Candado Macizo Grabado Laser', price: '$400', peso: '12.0g', medida: 'Standard', dims: '20mm x 25mm' }
-        ],
-        'p3d-mesa': [
-            { img: 'https://images.unsplash.com/photo-1605100804763-247f6793148e?auto=format&fit=crop&q=80&w=500', title: 'Sello Mesa Cuadrado Zirconias', price: '$720', peso: '15.0g', medida: '10', dims: '18mm mesa' },
-            { img: 'https://images.unsplash.com/photo-1629224316810-9d8805b95e76?auto=format&fit=crop&q=80&w=500', title: 'Anillo Mesa Oval Monograma', price: '$650', peso: '14.2g', medida: '11', dims: '20mm x 15mm mesa' }
-        ],
-        'p3d-dijes': [
-            { img: 'https://images.unsplash.com/photo-1589674781759-c21c37956a44?auto=format&fit=crop&q=80&w=500', title: 'Dije Escudo Familiar 3D', price: '$580' }
-        ],
-        'p3d-alfabeto': [
-            { img: 'https://images.unsplash.com/photo-1604382354936-07c5d0ba4bea?auto=format&fit=crop&q=80&w=500', title: 'Inicial "A" Calada', price: '$120' }
-        ],
-        'p3d-variado': [
-            { img: 'https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?auto=format&fit=crop&q=80&w=500', title: 'Diseño Abstracto Fluid', price: '$350' }
-        ],
-        'p3d-15': [
-            { img: 'https://images.unsplash.com/photo-1635391108269-00a8aa0aa37e?auto=format&fit=crop&q=80&w=500', title: 'Anillo Quinceañera Corona 3D', price: '$400', badge: '15 AÑOS' }
-        ],
-        'p3d-figura': [
-            { img: 'https://images.unsplash.com/photo-1605100804763-247f6793148e?auto=format&fit=crop&q=80&w=500', title: 'Anillo Silueta Animal (Perro)', price: '$220' }
-        ],
-        'p3d-dijes-alfa': [
-            { img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=500', title: 'Dije Iniciales Entrelazadas', price: '$290' }
-        ],
-        'p3d-comp-finos': [
-            { img: 'https://images.unsplash.com/photo-1599643478514-4a5202336336?auto=format&fit=crop&q=80&w=500', title: 'Compromiso Micro-Pavé', price: '$1,200', badge: 'PREMIUM' }
-        ],
-        'p3d-casuales': [
-            { img: 'https://images.unsplash.com/photo-1629224316810-9d8805b95e76?auto=format&fit=crop&q=80&w=500', title: 'Churumbela Casual Uso Diario', price: '$180' }
-        ]
-    };
-
-    // Función para renderizar el HTML de los productos
+    // Updated renderProducts to use siteData.catalogItems
     const renderProducts = (category) => {
-        const siteDataProducts = siteData.catalogItems ? siteData.catalogItems.filter(item => item.category === category) : [];
-        const mappedSiteData = siteDataProducts.map(item => ({
-            img: item.images ? item.images[0] : item.image,
-            title: item.name,
-            price: item.precioDiseno || item.priceStr || item.price || '',
-            peso: item.peso,
-            medida: item.medida,
-            dims: item.dimensiones,
-            badge: item.badge || '',
-            badgeClass: item.badgeClass || ''
-        }));
-
-        const hardcodedProducts = productsData[category] || [];
-        const products = [...mappedSiteData, ...hardcodedProducts];
+        const products = siteData.catalogItems ? siteData.catalogItems.filter(item => item.category === category) : [];
 
         productGrid.innerHTML = ''; // Limpiar grid
 
@@ -215,26 +36,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         products.forEach(prod => {
+            const prodImg = prod.images ? prod.images[0] : (prod.image || '');
             const badgeHTML = prod.badge ? `<span class="product-badge ${prod.badgeClass || 'badge-sale'}">${prod.badge}</span>` : '';
 
             const card = document.createElement('div');
             card.className = 'product-card';
             card.innerHTML = `
                 <div class="product-image-container">
-                    <img src="${prod.img}" alt="${prod.title}" class="product-image">
+                    <img src="${prodImg}" alt="${prod.name || prod.title}" class="product-image">
                     ${badgeHTML}
                 </div>
                 <div class="product-details">
-                    <h3>${prod.title}</h3>
+                    <h3>${prod.name || prod.title}</h3>
                     <div class="price-container">
-                        <span class="current-price">${prod.price}</span>
+                        <span class="current-price">${prod.precioDiseno || prod.priceStr || prod.price || ''}</span>
                     </div>
                 </div>
             `;
 
             // Evento para abrir el modal
             card.addEventListener('click', () => {
-                openJewelryModal(prod);
+                openJewelryModal({
+                    img: prodImg,
+                    title: prod.name || prod.title,
+                    peso: prod.peso,
+                    medida: prod.medida,
+                    price: prod.precioDiseno || prod.priceStr || prod.price || '',
+                    dims: prod.dimensiones || prod.dims
+                });
             });
 
             productGrid.appendChild(card);

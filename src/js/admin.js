@@ -51,28 +51,45 @@ export function initAdmin() {
 
 window.currentAdminSection = 'nosotros';
 
-export function renderAdminSection() {
+export function renderAdminSection(filter = null) {
   const adminContent = document.getElementById('admin-content');
   if (!adminContent) return;
   adminContent.innerHTML = '';
   const section = window.currentAdminSection || 'nosotros';
-  const sectionTitle = { 'nosotros': 'Sección Nosotros', 'servicios': 'Servicios Disponibles', 'productos': 'Productos / Accesorios', 'catalogo': 'Catálogo de Diseños', 'categories': 'Imágenes de Categorías' }[section];
+  const sectionTitle = {
+    'nosotros': 'Sección Nosotros',
+    'servicios': 'Servicios Disponibles',
+    'productos': 'Productos / Accesorios',
+    'catalogo': 'Catálogo de Diseños',
+    'categories': 'Imágenes de Categorías',
+    'finishedWorks': 'Trabajos Realizados'
+  }[section];
+
   adminContent.innerHTML = `
     <div class="admin-header">
-      <h4>${sectionTitle}</h4>
-      ${section !== 'nosotros' && section !== 'categories' ? `<button class="btn" id="admin-add-new">+ Agregar Nuevo</button>` : ''}
+      ${filter ? `<button class="btn-back" id="back-to-prev" title="Volver"><ion-icon name="arrow-back-outline"></ion-icon></button>` : ''}
+      <h4>${sectionTitle} ${filter ? `(${filter})` : ''}</h4>
+      ${section !== 'nosotros' ? `<button class="btn" id="admin-add-new">+ Agregar Nuevo</button>` : ''}
     </div>
     <div id="admin-list-container"></div>
     <div id="admin-form-container"></div>
   `;
 
-  const addBtn = document.getElementById('admin-add-new');
-  if (addBtn) addBtn.onclick = () => showForm(section);
+  if (filter && document.getElementById('back-to-prev')) {
+    document.getElementById('back-to-prev').onclick = () => {
+      // Si estamos en catálogo filtrado, volvemos a las subcategorías o a categorías
+      // En este caso, volvemos a categorías porque es el flujo más común
+      renderAdminSection();
+    };
+  }
 
-  renderList();
+  const addBtn = document.getElementById('admin-add-new');
+  if (addBtn) addBtn.onclick = () => showForm(section, null, filter);
+
+  renderList(filter);
 }
 
-export function renderList() {
+export function renderList(filter = null) {
   const listContainer = document.getElementById('admin-list-container');
   if (!listContainer) return;
   listContainer.innerHTML = '';
@@ -90,32 +107,104 @@ export function renderList() {
     if (saveBtn) saveBtn.onclick = saveNosotros;
     return;
   }
-  const items = siteData[section === 'catalogo' ? 'catalogItems' : section];
+  let items = siteData[section === 'catalogo' ? 'catalogItems' : section];
+
+  // Aplicar filtro si existe
+  if (filter) {
+    items = items.filter(item => item.category === filter);
+  }
+
   const html = items.map((item, i) => `
     <div class="admin-item-row">
       <img src="${(item.image || (item.images ? item.images[0] : ''))}" alt="">
-      <div class="admin-item-info"><strong>${item.name || item.title}</strong><small>${item.priceStr || item.category || (section === 'categories' ? 'Botón Frontend' : 'Servicio')}</small></div>
+      <div class="admin-item-info">
+        <strong>${item.name || item.title}</strong>
+        <small>${item.priceStr || item.category || (section === 'categories' ? 'Botón Frontend' : (section === 'finishedWorks' ? item.type : 'Servicio'))}</small>
+      </div>
       <div class="action-btns">
+        ${section === 'categories' ? `<button class="btn-icon btn-gallery" data-index="${i}" title="Ver Subcategorías"><ion-icon name="images-outline"></ion-icon></button>` : ''}
         <button class="btn-icon btn-edit" data-index="${i}"><ion-icon name="create-outline"></ion-icon></button>
-        ${section !== 'categories' ? `<button class="btn-icon btn-delete" data-index="${i}"><ion-icon name="trash-outline"></ion-icon></button>` : ''}
+        <button class="btn-icon btn-delete" data-index="${i}"><ion-icon name="trash-outline"></ion-icon></button>
       </div>
     </div>
   `).join('');
   listContainer.innerHTML = `<div class="admin-table">${html}</div>`;
 
   listContainer.querySelectorAll('.btn-edit').forEach(btn => {
-    btn.onclick = () => showForm(section, parseInt(btn.dataset.index));
+    btn.onclick = () => {
+      const idx = parseInt(btn.dataset.index);
+      let realIndex = idx;
+      if (filter) {
+        const item = items[idx];
+        realIndex = siteData[section === 'catalogo' ? 'catalogItems' : section].indexOf(item);
+      }
+      showForm(section, realIndex, filter);
+    };
   });
+
   listContainer.querySelectorAll('.btn-delete').forEach(btn => {
-    btn.onclick = () => deleteItem(section, parseInt(btn.dataset.index));
+    btn.onclick = () => {
+      const idx = parseInt(btn.dataset.index);
+      let realIndex = idx;
+      if (filter) {
+        const item = items[idx];
+        realIndex = siteData[section === 'catalogo' ? 'catalogItems' : section].indexOf(item);
+      }
+      deleteItem(section, realIndex, filter);
+    };
+  });
+
+  listContainer.querySelectorAll('.btn-gallery').forEach(btn => {
+    btn.onclick = () => renderSubCategories(parseInt(btn.dataset.index));
   });
 }
 
-export function showForm(type, index = null) {
+export function renderSubCategories(categoryIndex) {
+  const category = siteData.categories[categoryIndex];
+  const subCategories = category.subCategories || [];
+
+  if (subCategories.length === 0) {
+    // Si no tiene subcategorías, vamos directamente al catálogo filtrado por su ID principal o nombre
+    renderAdminSection(category.id);
+    return;
+  }
+
+  const adminContent = document.getElementById('admin-content');
+  adminContent.innerHTML = `
+    <div class="admin-header">
+      <button class="btn-back" id="back-to-categories"><ion-icon name="arrow-back-outline"></ion-icon></button>
+      <h4>Subcategorías de ${category.name}</h4>
+    </div>
+    <div class="admin-grid">
+      ${subCategories.map(sub => `
+        <div class="admin-section-card clickable subcategory-card" data-subid="${sub.id}" style="cursor:pointer; padding: 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.2s;">
+          <div class="card-info">
+            <h5 style="margin:0; font-size: 1.1rem; color: #d4af37;">${sub.name}</h5>
+            <small style="opacity:0.6;">Ver galería de esta sección</small>
+          </div>
+          <ion-icon name="chevron-forward-outline" style="font-size: 1.5rem; color: #d4af37;"></ion-icon>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  document.getElementById('back-to-categories').onclick = () => renderAdminSection();
+  adminContent.querySelectorAll('.subcategory-card').forEach(card => {
+    card.onclick = () => {
+      // Al seleccionar subcategoría, vamos a catálogo filtrado
+      window.currentAdminSection = 'catalogo';
+      renderAdminSection(card.getAttribute('data-subid'));
+    };
+    card.onmouseover = () => { card.style.transform = 'translateX(10px)'; card.style.background = 'rgba(255,255,255,0.1)'; };
+    card.onmouseout = () => { card.style.transform = 'translateX(0)'; card.style.background = 'rgba(255,255,255,0.05)'; };
+  });
+}
+
+export function showForm(type, index = null, filter = null) {
   const isEdit = index !== null;
   const listContainer = document.getElementById('admin-list-container');
   const items = siteData[type === 'catalogo' ? 'catalogItems' : type];
-  const item = isEdit ? items[index] : {};
+  const item = isEdit ? items[index] : { category: filter };
   if (listContainer) listContainer.style.display = 'none';
   const header = document.querySelector('.admin-header');
   if (header) header.style.display = 'none';
@@ -139,17 +228,29 @@ export function showForm(type, index = null) {
     </div>` : type === 'categories' ? `
     <div class="admin-section-card">
       <div class="admin-inputs-grid">
-        <div class="form-group"><label>Categoría</label><input type="text" id="edit-name" value="${item.name || ''}" disabled></div>
+        <div class="form-group"><label>Nombre de Categoría</label><input type="text" id="edit-name" value="${item.name || ''}"></div>
+        <div class="form-group"><label>Enlace (.html)</label><input type="text" id="edit-link" value="${item.link || ''}" placeholder="./ejemplo.html"></div>
+        <div class="form-group full-width"><label>URL Imagen</label><input type="text" id="edit-image" value="${item.image || ''}"></div>
+      </div>
+    </div>` : type === 'finishedWorks' ? `
+    <div class="admin-section-card">
+      <div class="admin-inputs-grid">
+        <div class="form-group"><label>Nombre de la Pieza</label><input type="text" id="edit-name" value="${item.name || ''}"></div>
+        <div class="form-group"><label>Tipo de Prenda</label><input type="text" id="edit-type" value="${item.type || ''}" placeholder="Ej: Anillo, Pulsera"></div>
+        <div class="form-group"><label>Peso</label><input type="text" id="edit-weight" value="${item.weight || ''}"></div>
+        <div class="form-group"><label>Medida / Largo</label><input type="text" id="edit-size" value="${item.size || ''}"></div>
+        <div class="form-group"><label>Metal</label><input type="text" id="edit-metal" value="${item.metal || ''}"></div>
+        <div class="form-group"><label>Perlas</label><input type="text" id="edit-pearls" value="${item.pearls || ''}"></div>
         <div class="form-group full-width"><label>URL Imagen</label><input type="text" id="edit-image" value="${item.image || ''}"></div>
       </div>
     </div>` : `
     <div class="admin-section-card">
       <div class="admin-inputs-grid">
         <div class="form-group"><label>Nombre</label><input type="text" id="edit-name" value="${item.name || ''}"></div>
-        <div class="form-group"><label>Categoría</label><select id="edit-category"><option value="boda" ${item.category === 'boda' ? 'selected' : ''}>Boda</option><option value="compromiso" ${item.category === 'compromiso' ? 'selected' : ''}>Compromiso</option></select></div>
+        <div class="form-group"><label>Categoría / SubID</label><input type="text" id="edit-category" value="${item.category || ''}" placeholder="Ej: bachiller-dama"></div>
         <div class="form-group"><label>Peso</label><input type="text" id="edit-peso" value="${item.peso || ''}"></div>
         <div class="form-group"><label>Precio</label><input type="text" id="edit-precioDiseno" value="${item.precioDiseno || ''}"></div>
-        <div class="form-group"><label>Imagen 1</label><input type="text" id="edit-img1" value="${item.images ? item.images[0] : ''}"></div>
+        <div class="form-group full-width"><label>URL Imagen</label><input type="text" id="edit-img1" value="${item.images ? item.images[0] : (item.image || '')}"></div>
       </div>
     </div>`;
 
@@ -160,8 +261,8 @@ export function showForm(type, index = null) {
     <button class="admin-save-btn" id="form-save-btn">Guardar</button>
   `;
 
-  document.getElementById('form-cancel-btn').onclick = cancelEdit;
-  document.getElementById('form-save-btn').onclick = () => saveItem(type, index);
+  document.getElementById('form-cancel-btn').onclick = () => renderAdminSection(filter);
+  document.getElementById('form-save-btn').onclick = () => saveItem(type, index, filter);
 }
 
 export function cancelEdit() { renderAdminSection(); }
@@ -173,7 +274,7 @@ export function saveNosotros() {
   location.reload();
 }
 
-export function saveItem(type, index) {
+export function saveItem(type, index, filter = null) {
   const isEdit = index !== null;
   const items = siteData[type === 'catalogo' ? 'catalogItems' : type];
   let newItem = isEdit ? { ...items[index] } : { id: Date.now() };
@@ -196,18 +297,29 @@ export function saveItem(type, index) {
     newItem.precioDiseno = document.getElementById('edit-precioDiseno').value;
   }
   else if (type === 'categories') {
+    newItem.name = document.getElementById('edit-name').value;
+    newItem.link = document.getElementById('edit-link').value;
+    newItem.image = document.getElementById('edit-image').value;
+  }
+  else if (type === 'finishedWorks') {
+    newItem.name = document.getElementById('edit-name').value;
+    newItem.type = document.getElementById('edit-type').value;
+    newItem.weight = document.getElementById('edit-weight').value;
+    newItem.size = document.getElementById('edit-size').value;
+    newItem.metal = document.getElementById('edit-metal').value;
+    newItem.pearls = document.getElementById('edit-pearls').value;
     newItem.image = document.getElementById('edit-image').value;
   }
   if (isEdit) items[index] = newItem; else items.push(newItem);
   saveStorage();
-  location.reload();
+  renderAdminSection(filter);
 }
 
-export function deleteItem(type, index) {
+export function deleteItem(type, index, filter = null) {
   if (confirm('¿Eliminar?')) {
     const items = siteData[type === 'catalogo' ? 'catalogItems' : type];
     items.splice(index, 1);
     saveStorage();
-    location.reload();
+    renderAdminSection(filter);
   }
 }

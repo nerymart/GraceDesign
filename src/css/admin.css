@@ -47,7 +47,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: #f8fafc;
+  background: rgba(248, 250, 252, 0.8);
+  backdrop-filter: blur(20px);
   z-index: 9999;
   display: none;
   grid-template-columns: 280px 1fr;
@@ -58,7 +59,8 @@
 }
 
 .admin-sidebar {
-  background: linear-gradient(180deg, #0B1C2E 0%, #1a365d 100%) !important;
+  background: linear-gradient(180deg, rgba(11, 28, 46, 0.95) 0%, rgba(26, 54, 93, 0.95) 100%) !important;
+  backdrop-filter: blur(10px);
   border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
   display: grid !important;
   grid-template-rows: 80px 1fr auto !important;
@@ -83,8 +85,8 @@
 
 .sidebar-brand ion-icon {
   font-size: 2.2rem;
-  color: #fff;
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+  color: #d4af37;
+  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.4));
 }
 
 .sidebar-brand span {
@@ -108,14 +110,14 @@
   display: flex !important;
   align-items: center !important;
   gap: 1rem !important;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.6);
   padding: 1rem 1.2rem !important;
-  border-radius: 15px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 0.95rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.9rem;
   font-family: inherit;
   font-weight: 500;
   width: 100% !important;
@@ -124,33 +126,33 @@
 
 .nav-item ion-icon {
   font-size: 1.4rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.4);
   flex-shrink: 0;
   transition: all 0.3s ease;
 }
 
-.nav-item:hover ion-icon {
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
   color: #fff;
+  transform: translateX(8px);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.nav-item:hover ion-icon {
+  color: #d4af37;
   transform: scale(1.1);
 }
 
-.nav-item.active ion-icon {
-  color: #0B1C2E;
-  /* Dark blue contrast on gold background */
-}
-
-.nav-item:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-  transform: translateX(5px);
-}
-
 .nav-item.active {
-  background: linear-gradient(90deg, #d4af37 0%, #f5e6b5 100%);
-  color: #0B1C2E !important;
+  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+  color: #000 !important;
   font-weight: 700;
   border: none;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+}
+
+.nav-item.active ion-icon {
+  color: #000;
 }
 
 .sidebar-footer {
@@ -165,19 +167,19 @@
 
 .nav-item.logout {
   color: #ff6b6b;
-  border-color: rgba(255, 107, 107, 0.2);
+  border-color: rgba(255, 107, 107, 0.1);
 }
 
 .nav-item.logout:hover {
-  background: rgba(255, 107, 107, 0.15);
+  background: rgba(255, 107, 107, 0.1);
+  border-color: #ff6b6b;
   color: #ff6b6b;
 }
 
 .admin-main {
   padding: 3rem;
   overflow-y: auto;
-  background: #fdfbf7;
-  /* Warm cream background */
+  background: radial-gradient(circle at top right, #fdfbf7, #f1f5f9);
 }
 
 @keyframes fadeInCard {
@@ -282,59 +284,55 @@
 
 /* Edit Form Sections - Match Reference */
 .admin-section-card {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 2.5rem;
   margin-bottom: 2.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(11, 28, 46, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   animation: fadeInCard 0.5s ease-out forwards;
 }
 
 .admin-section-card:hover {
   box-shadow: 0 15px 45px rgba(0, 0, 0, 0.06);
-  transform: translateY(-2px);
-  transition: all 0.3s ease;
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.82);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .admin-section-card h6 {
   font-size: 1.3rem;
-  color: var(--dark-blue);
+  color: #0B1C2E;
   margin-bottom: 0.8rem;
   font-weight: 800;
   letter-spacing: -0.5px;
 }
 
-.admin-section-card p.section-subtitle {
-  color: #888;
-  font-size: 0.95rem;
-  margin-bottom: 2rem;
-}
-
-
 .admin-header h4 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-family: var(--font-heading);
-  color: var(--dark-blue);
-  background: linear-gradient(90deg, #0B1C2E 0%, #d4af37 100%);
+  color: #0B1C2E;
+  background: linear-gradient(135deg, #0B1C2E 0%, #d4af37 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin: 0;
 }
 
 .admin-header .btn {
-  background: linear-gradient(135deg, #d4af37 0%, #f5e6b5 100%) !important;
-  color: #0B1C2E !important;
+  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%) !important;
+  color: #000 !important;
   font-weight: 800 !important;
   border: none !important;
-  padding: 0.8rem 1.8rem !important;
-  border-radius: 99px !important;
+  padding: 0.8rem 2rem !important;
+  border-radius: 12px !important;
   box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2) !important;
   transition: all 0.3s ease !important;
 }
 
 .admin-header .btn:hover {
-  transform: translateY(-3px) scale(1.05);
+  transform: translateY(-3px) scale(1.02);
   box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3) !important;
 }
 
