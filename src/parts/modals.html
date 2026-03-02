@@ -1,24 +1,71 @@
 <!-- Finished Work Detail Modal -->
-<dialog id="work-detail-modal" class="work-detail-dialog">
+<dialog id="work-detail-modal" class="work-detail-dialog premium-modal">
   <div class="work-modal-container">
-    <button class="close-modal" id="close-work-modal" style="z-index: 10;">&times;</button>
+    <button class="close-modal" id="close-work-modal">&times;</button>
     <div class="work-modal-layout">
-      <div class="work-modal-img-container">
-        <img src="" alt="Prenda" id="work-modal-img">
-      </div>
-      <div class="work-modal-info">
-        <h2 id="work-modal-title">PULCERA</h2>
-        <div class="specs-list">
-          <div class="spec-item"><strong>Tipo de Prenda:</strong> <span id="work-spec-type"></span></div>
-          <div class="spec-item"><strong>Peso:</strong> <span id="work-spec-weight"></span></div>
-          <div class="spec-item"><strong>Medida/Largo:</strong> <span id="work-spec-size"></span></div>
-          <div class="spec-item"><strong>Tipo de Metal:</strong> <span id="work-spec-metal"></span></div>
-          <div class="spec-item"><strong>Descipcion:</strong> <span id="work-spec-pearls"></span></div>
+      <!-- Left: Column Media -->
+      <div class="work-modal-media">
+        <div class="work-carousel" id="work-carousel">
+          <div class="carousel-track" id="work-carousel-track">
+            <!-- Main Images injected here -->
+          </div>
+          <button class="carousel-nav-btn prev" id="work-prev-btn">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </button>
+          <button class="carousel-nav-btn next" id="work-next-btn">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </button>
+          <div class="carousel-indicator">
+            <span class="indicator-dot"></span>
+            <span class="carousel-counter" id="work-carousel-counter">1 / 1</span>
+          </div>
         </div>
-        <button class="btn btn-wa-quote" id="work-quote-btn"
-          style="background-color: #25D366; width: 100%; margin-top: 2rem; border-radius: 8px;">
-          <ion-icon name="logo-whatsapp"></ion-icon> Cotizar por WhatsApp
-        </button>
+        <div class="carousel-thumbnails" id="work-thumbnails">
+          <!-- Thumbnails injected here -->
+        </div>
+      </div>
+
+      <!-- Right: Column Details -->
+      <div class="work-modal-info">
+        <div class="info-header">
+          <h2 id="work-modal-title">NOMBRE DE PIEZA</h2>
+          <h3 id="work-modal-subtitle">Subtítulo / Tipo</h3>
+        </div>
+
+        <hr class="premium-divider">
+
+        <div class="premium-specs-grid">
+          <div class="spec-row">
+            <div class="spec-label"><ion-icon name="color-palette-outline"></ion-icon> Tipo de pieza</div>
+            <div class="spec-value" id="work-spec-type">--</div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-label"><ion-icon name="scale-outline"></ion-icon> Peso</div>
+            <div class="spec-value" id="work-spec-weight">--</div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-label"><ion-icon name="resize-outline"></ion-icon> Largo</div>
+            <div class="spec-value" id="work-spec-size">--</div>
+          </div>
+          <div class="spec-row">
+            <div class="spec-label"><ion-icon name="diamond-outline"></ion-icon> Metal</div>
+            <div class="spec-value" id="work-spec-metal">--</div>
+          </div>
+        </div>
+
+        <div class="work-description-section">
+          <p id="work-description-text">Cargando descripción detallada...</p>
+          <ul id="work-tech-list" class="tech-specs-list">
+            <!-- Tech specs will be injected here if needed -->
+          </ul>
+        </div>
+
+        <div class="modal-footer-actions">
+          <button class="btn btn-premium-wa" id="work-quote-btn">
+            <ion-icon name="sparkles-sharp"></ion-icon> Cotizar por WhatsApp
+          </button>
+          <p class="custom-note">*Personalizable con tus especificaciones favoritas</p>
+        </div>
       </div>
     </div>
   </div>
@@ -53,51 +100,79 @@
 </dialog>
 
 <!-- Category/Jewelry Modal -->
-<dialog id="jewelry-detail-modal" class="jewelry-detail-dialog">
+<dialog id="jewelry-detail-modal" class="jewelry-detail-dialog premium-jewelry-modal">
   <div class="jewelry-modal-container">
     <button class="close-modal" id="close-jewelry-modal">&times;</button>
 
     <div class="jewelry-modal-header">
       <h2 class="jewelry-main-title">DETALLES DEL DISEÑO</h2>
+      <div class="header-ornament">
+        <ion-icon name="star-sharp"></ion-icon>
+      </div>
     </div>
 
     <div class="jewelry-modal-content-grid">
-      <!-- Left side: Image and Back link -->
+      <!-- Left side: Media and Back link -->
       <div class="jewelry-modal-left">
         <button class="back-link-top" id="back-to-gallery-btn">
           <ion-icon name="arrow-back-outline"></ion-icon> Volver a la Galería
         </button>
-        <div class="jewelry-image-wrapper">
-          <img src="" alt="Joyas" id="jewelry-modal-img">
+
+        <div class="jewelry-carousel-area">
+          <div class="work-carousel" id="jewelry-carousel">
+            <div class="carousel-track" id="jewelry-carousel-track">
+              <!-- Images injected here -->
+            </div>
+            <button class="carousel-nav-btn prev" id="jewelry-prev-btn">
+              <ion-icon name="chevron-back-outline"></ion-icon>
+            </button>
+            <button class="carousel-nav-btn next" id="jewelry-next-btn">
+              <ion-icon name="chevron-forward-outline"></ion-icon>
+            </button>
+            <div class="carousel-indicator">
+              <span class="indicator-dot"></span>
+              <span class="carousel-counter" id="jewelry-carousel-counter">1 / 1</span>
+            </div>
+          </div>
+
+          <div class="carousel-thumbnails" id="jewelry-thumbnails">
+            <!-- Thumbnails injected here -->
+          </div>
         </div>
       </div>
 
       <!-- Right side: Details and CTA -->
       <div class="jewelry-modal-right">
+        <div class="info-tag" id="jewelry-modal-badge">DISEÑO EXCLUSIVO</div>
         <h2 id="jewelry-modal-title" class="product-title-display">NOMBRE DEL PRODUCTO</h2>
+        <h3 class="product-subtitle-display">DISEÑO EXCLUSIVO</h3>
 
-        <div class="specs-table">
+        <div class="premium-divider"></div>
+
+        <div class="premium-specs-grid">
           <div class="spec-row">
-            <span class="spec-label">Peso:</span>
-            <span class="spec-value" id="jewelry-spec-weight">--</span>
+            <div class="spec-label"><ion-icon name="scale-outline"></ion-icon> Peso:</div>
+            <div class="spec-value" id="jewelry-spec-weight">--</div>
           </div>
           <div class="spec-row">
-            <span class="spec-label">Medida:</span>
-            <span class="spec-value" id="jewelry-spec-size">--</span>
+            <div class="spec-label"><ion-icon name="resize-outline"></ion-icon> Medida:</div>
+            <div class="spec-value" id="jewelry-spec-size">--</div>
           </div>
           <div class="spec-row">
-            <span class="spec-label">Precio de Diseño:</span>
-            <span class="spec-value" id="jewelry-spec-price">--</span>
+            <div class="spec-label"><ion-icon name="cash-outline"></ion-icon> Precio:</div>
+            <div class="spec-value" id="jewelry-spec-price">--</div>
           </div>
           <div class="spec-row">
-            <span class="spec-label">Dimensiones:</span>
-            <span class="spec-value" id="jewelry-spec-dims">--</span>
+            <div class="spec-label"><ion-icon name="cube-outline"></ion-icon> Dimensiones:</div>
+            <div class="spec-value" id="jewelry-spec-dims">--</div>
           </div>
         </div>
 
-        <button class="btn btn-adquirir" id="jewelry-buy-btn">
+        <button class="btn btn-premium-wa" id="jewelry-buy-btn">
           <ion-icon name="logo-whatsapp"></ion-icon> Adquirir Diseño
         </button>
+
+        <p class="custom-note">* Personalizable según tu estilo</p>
       </div>
     </div>
   </div>

@@ -227,13 +227,114 @@ export let currentWorkModal = null;
 export function openWorkModal(work) {
   if (work) {
     currentWorkModal = work;
-    document.getElementById("work-modal-img").src = work.image;
+
+    // Elements
+    const track = document.getElementById("work-carousel-track");
+    const counterElement = document.getElementById("work-carousel-counter");
+    const thumbnailsContainer = document.getElementById("work-thumbnails");
+    const prevBtn = document.getElementById("work-prev-btn");
+    const nextBtn = document.getElementById("work-next-btn");
+
+    if (!track) return;
+
+    let images = work.images || [];
+    if (images.length === 0 && work.image) images = [work.image];
+    if (images.length === 0) images = ['grace_logo.png'];
+
+    const totalImages = images.length;
+    let currentIndex = 0;
+
+    // Render slides
+    track.innerHTML = images.map(img => `
+      <div class="carousel-slide">
+        <img src="${img}" alt="${work.name}">
+      </div>
+    `).join('');
+
+    // Render thumbnails
+    if (thumbnailsContainer) {
+      thumbnailsContainer.innerHTML = images.map((img, idx) => `
+        <div class="thumb-item ${idx === 0 ? 'active' : ''}" data-index="${idx}">
+          <img src="${img}" alt="thumbnail ${idx + 1}">
+        </div>
+      `).join('');
+
+      // Add thumbnail listeners
+      thumbnailsContainer.querySelectorAll('.thumb-item').forEach(thumb => {
+        thumb.onclick = () => {
+          currentIndex = parseInt(thumb.dataset.index);
+          updateCarousel();
+        };
+      });
+    }
+
+    const updateCarousel = () => {
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+      // Update counter
+      if (counterElement) {
+        counterElement.textContent = `${currentIndex + 1} / ${totalImages}`;
+      }
+
+      // Update thumbnails active state
+      if (thumbnailsContainer) {
+        thumbnailsContainer.querySelectorAll('.thumb-item').forEach((t, i) => {
+          t.classList.toggle('active', i === currentIndex);
+        });
+      }
+    };
+
+    // Nav buttons
+    if (prevBtn && nextBtn) {
+      const showNav = totalImages > 1;
+      prevBtn.style.display = showNav ? 'flex' : 'none';
+      nextBtn.style.display = showNav ? 'flex' : 'none';
+      if (counterElement) counterElement.parentElement.style.display = showNav ? 'flex' : 'none';
+
+      nextBtn.onclick = (e) => {
+        e.stopPropagation();
+        currentIndex = (currentIndex + 1) % totalImages;
+        updateCarousel();
+      };
+
+      prevBtn.onclick = (e) => {
+        e.stopPropagation();
+        currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+        updateCarousel();
+      };
+    }
+
+    // Reset position
+    updateCarousel();
+
+    // Map Details
     document.getElementById("work-modal-title").textContent = work.name;
-    document.getElementById("work-spec-type").textContent = work.type;
-    document.getElementById("work-spec-weight").textContent = work.weight;
-    document.getElementById("work-spec-size").textContent = work.size;
-    document.getElementById("work-spec-metal").textContent = work.metal;
-    document.getElementById("work-spec-pearls").textContent = work.pearls;
+    document.getElementById("work-modal-subtitle").textContent = work.type || 'Diseño Exclusivo';
+
+    document.getElementById("work-spec-type").textContent = work.type || '--';
+    document.getElementById("work-spec-weight").textContent = work.weight || '--';
+    document.getElementById("work-spec-size").textContent = work.size || '--';
+    document.getElementById("work-spec-metal").textContent = work.metal || 'Oro 10K / 14K';
+
+    // Description and tech specs
+    const descriptionElement = document.getElementById("work-description-text");
+    if (descriptionElement) {
+      descriptionElement.textContent = work.pearls || `Esta pieza de alta joyería ha sido trabajada artesanalmente con los más altos estándares de calidad. ${work.name} representa la elegancia y el detalle que nos caracteriza en Grace Designs.`;
+    }
+
+    // Optional: Render tech list if data exists (future proofing)
+    const techList = document.getElementById("work-tech-list");
+    if (techList) {
+      techList.innerHTML = '';
+      if (work.tech_specs) {
+        work.tech_specs.forEach(spec => {
+          const li = document.createElement('li');
+          li.textContent = spec;
+          techList.appendChild(li);
+        });
+      }
+    }
+
     document.getElementById("work-detail-modal").showModal();
   }
 }
@@ -268,23 +369,101 @@ const translations = {
 
 export function openJewelryModal(product) {
   const jewelryModal = document.getElementById('jewelry-detail-modal');
-  const modalImg = document.getElementById('jewelry-modal-img');
+  const track = document.getElementById('jewelry-carousel-track');
+  const counterElement = document.getElementById('jewelry-carousel-counter');
+  const thumbnailsContainer = document.getElementById('jewelry-thumbnails');
+  const prevBtn = document.getElementById('jewelry-prev-btn');
+  const nextBtn = document.getElementById('jewelry-next-btn');
+
   const modalTitle = document.getElementById('jewelry-modal-title');
   const specWeight = document.getElementById('jewelry-spec-weight');
   const specSize = document.getElementById('jewelry-spec-size');
   const specPrice = document.getElementById('jewelry-spec-price');
   const specDims = document.getElementById('jewelry-spec-dims');
   const jewelryBuyBtn = document.getElementById('jewelry-buy-btn');
+  const badge = document.getElementById('jewelry-modal-badge');
 
   if (!jewelryModal) return;
 
-  modalImg.src = product.img || product.image || (product.images ? product.images[0] : '');
+  // Handle Images
+  let images = product.images || [];
+  if (images.length === 0 && product.img) images = [product.img];
+  if (images.length === 0 && product.image) images = [product.image];
+  if (images.length === 0) images = ['grace_logo.png'];
+
+  const totalImages = images.length;
+  let currentIndex = 0;
+
+  // Render Slides
+  if (track) {
+    track.innerHTML = images.map(img => `
+      <div class="carousel-slide">
+        <img src="${img}" alt="${product.title || product.name}">
+      </div>
+    `).join('');
+  }
+
+  // Render Thumbnails
+  if (thumbnailsContainer) {
+    thumbnailsContainer.innerHTML = images.map((img, idx) => `
+      <div class="thumb-item ${idx === 0 ? 'active' : ''}" data-index="${idx}">
+        <img src="${img}" alt="thumbnail ${idx + 1}">
+      </div>
+    `).join('');
+
+    thumbnailsContainer.querySelectorAll('.thumb-item').forEach(thumb => {
+      thumb.onclick = () => {
+        currentIndex = parseInt(thumb.dataset.index);
+        updateCarousel();
+      };
+    });
+  }
+
+  const updateCarousel = () => {
+    if (track) track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+    if (counterElement) {
+      counterElement.textContent = `${currentIndex + 1} / ${totalImages}`;
+    }
+
+    if (thumbnailsContainer) {
+      thumbnailsContainer.querySelectorAll('.thumb-item').forEach((t, i) => {
+        t.classList.toggle('active', i === currentIndex);
+      });
+    }
+  };
+
+  // Nav Buttons
+  if (prevBtn && nextBtn) {
+    const showNav = totalImages > 1;
+    prevBtn.style.display = showNav ? 'flex' : 'none';
+    nextBtn.style.display = showNav ? 'flex' : 'none';
+    if (counterElement) counterElement.parentElement.style.display = showNav ? 'flex' : 'none';
+
+    nextBtn.onclick = (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex + 1) % totalImages;
+      updateCarousel();
+    };
+
+    prevBtn.onclick = (e) => {
+      e.stopPropagation();
+      currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+      updateCarousel();
+    };
+  }
+
+  updateCarousel();
+
+  // Map Details
   modalTitle.textContent = product.title || product.name || 'Sin Título';
+  if (badge) badge.textContent = product.badge || 'DISEÑO EXCLUSIVO';
+
   specWeight.textContent = product.peso || 'N/A';
   specSize.textContent = product.medida || 'A medida';
 
-  // Dynamic price for jewelry modal
-  const basePrice = parseFloat(product.price || product.precioDiseno || 0);
+  // Price calculation
+  const basePrice = parseFloat(product.price || product.precioDiseno || product.precio_diseno || 0);
   specPrice.textContent = basePrice > 0 ? formatCurrency(basePrice) : 'Por cotizar';
 
   specDims.textContent = product.dims || product.dimensiones || 'Variado';

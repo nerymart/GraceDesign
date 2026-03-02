@@ -2,6 +2,16 @@ import { siteData, loadStorage } from './data.js';
 import { supabase, uploadImage } from './supabase.js';
 
 export async function initAdmin() {
+  // Expose necessary functions to window early to avoid race conditions
+  window.handleFileSelect = handleFileSelect;
+  window.showForm = showForm;
+  window.saveNosotros = saveNosotros;
+  window.saveSettings = saveSettings;
+  window.saveItem = saveItem;
+  window.deleteItem = deleteItem;
+  window.cancelEdit = cancelEdit;
+  window.handleFileSelect = handleFileSelect;
+
   const loginModal = document.getElementById('login-modal');
   const adminDashboard = document.getElementById('admin-dashboard');
   const openLoginBtn = document.getElementById('open-login-btn');
@@ -70,15 +80,6 @@ export async function initAdmin() {
       renderAdminSection();
     };
   }
-
-  // Expose necessary functions to window for early event handlers if any
-  window.showForm = showForm;
-  window.saveNosotros = saveNosotros;
-  window.saveSettings = saveSettings; // Added for currency settings
-  window.saveItem = saveItem;
-  window.deleteItem = deleteItem;
-  window.cancelEdit = cancelEdit;
-  window.handleFileSelect = handleFileSelect;
 }
 
 function createImageUploadZone(id, currentImageUrl = '') {
@@ -95,6 +96,21 @@ function createImageUploadZone(id, currentImageUrl = '') {
         <div class="loading-overlay" id="loader-${id}">
           <ion-icon name="sync-outline" class="rotate"></ion-icon>
         </div>
+      </div>
+    </div>
+  `;
+}
+
+function createImageUploadZoneCompact(id, currentImageUrl = '') {
+  return `
+    <div class="image-upload-zone ${currentImageUrl ? 'has-file' : ''}" id="zone-${id}" onclick="document.getElementById('input-${id}').click()" style="padding: 1rem; min-height: 120px;">
+      <ion-icon name="cloud-upload-outline" style="font-size: 1.5rem;"></ion-icon>
+      <p style="font-size: 0.8rem; margin: 0;">Haz clic para foto</p>
+      <img src="${currentImageUrl}" id="preview-${id}" alt="Vista previa">
+      <input type="file" id="input-${id}" accept="image/*" onchange="handleFileSelect(event, '${id}')" style="display:none">
+      <input type="hidden" id="edit-${id}" value="${currentImageUrl}">
+      <div class="loading-overlay" id="loader-${id}">
+        <ion-icon name="sync-outline" class="rotate"></ion-icon>
       </div>
     </div>
   `;
@@ -343,7 +359,14 @@ export function showForm(type, index = null, filter = null) {
         <div class="form-group"><label>Medida / Largo</label><input type="text" id="edit-size" value="${item.size || ''}"></div>
         <div class="form-group"><label>Metal</label><input type="text" id="edit-metal" value="${item.metal || ''}"></div>
         <div class="form-group"><label>Perlas</label><input type="text" id="edit-pearls" value="${item.pearls || ''}"></div>
-        ${createImageUploadZone('image', item.image)}
+        <div class="form-group full-width">
+          <label>Fotos de la Pieza (Hasta 3)</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+            ${createImageUploadZoneCompact('image1', item.images ? item.images[0] : (item.image || ''))}
+            ${createImageUploadZoneCompact('image2', item.images ? item.images[1] : '')}
+            ${createImageUploadZoneCompact('image3', item.images ? item.images[2] : '')}
+          </div>
+        </div>
       </div>
     </div>` : type === 'promos' ? `
     <div class="admin-section-card">
@@ -368,7 +391,14 @@ export function showForm(type, index = null, filter = null) {
         <div class="form-group"><label>Medida</label><input type="text" id="edit-medida" value="${item.medida || ''}"></div>
         <div class="form-group"><label>Dimensiones</label><input type="text" id="edit-dimensiones" value="${item.dimensiones || ''}"></div>
         <div class="form-group"><label>Precio</label><input type="text" id="edit-precioDiseno" value="${item.precio_diseno || item.precioDiseno || ''}"></div>
-        ${createImageUploadZone('img1', item.images ? item.images[0] : (item.image || ''))}
+        <div class="form-group full-width">
+          <label>Fotos (Hasta 3)</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+            ${createImageUploadZoneCompact('img1', item.images ? item.images[0] : (item.image || ''))}
+            ${createImageUploadZoneCompact('img2', item.images ? item.images[1] : '')}
+            ${createImageUploadZoneCompact('img3', item.images ? item.images[2] : '')}
+          </div>
+        </div>
       </div>
     </div>`;
 
@@ -444,10 +474,16 @@ export async function saveItem(type, index, filter = null) {
     };
   }
   else if (type === 'catalogo') {
+    const images = [
+      document.getElementById('edit-img1').value,
+      document.getElementById('edit-img2').value,
+      document.getElementById('edit-img3').value
+    ].filter(img => img !== '');
+
     itemData = {
       name: document.getElementById('edit-name').value,
       category: document.getElementById('edit-category').value,
-      images: [document.getElementById('edit-img1').value],
+      images: images,
       peso: document.getElementById('edit-peso').value,
       medida: document.getElementById('edit-medida').value,
       dimensiones: document.getElementById('edit-dimensiones').value,
@@ -463,6 +499,12 @@ export async function saveItem(type, index, filter = null) {
     };
   }
   else if (type === 'finishedWorks') {
+    const images = [
+      document.getElementById('edit-image1').value,
+      document.getElementById('edit-image2').value,
+      document.getElementById('edit-image3').value
+    ].filter(img => img !== '');
+
     itemData = {
       name: document.getElementById('edit-name').value,
       type: document.getElementById('edit-type').value,
@@ -470,7 +512,8 @@ export async function saveItem(type, index, filter = null) {
       size: document.getElementById('edit-size').value,
       metal: document.getElementById('edit-metal').value,
       pearls: document.getElementById('edit-pearls').value,
-      image: document.getElementById('edit-image').value
+      images: images,
+      image: images[0] || ''
     };
   }
   else if (type === 'promos') {

@@ -50,110 +50,324 @@ dialog::backdrop {
   /* Ensure it's reachable */
 }
 
-/* --- WORK DETAIL MODAL --- */
-.work-detail-dialog {
-  max-width: 900px;
-  width: 90%;
-  padding: 0;
-  border-radius: 15px;
+/* --- PREMIUM WORK DETAIL MODAL --- */
+.premium-modal {
+  max-width: 1000px;
+  width: 95%;
+  background: transparent !important;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
 }
 
-.work-modal-container {
-  position: relative;
-  background: #fff !important;
-  border-radius: 15px;
+.premium-modal .work-modal-container {
+  background: #fff;
+  border-radius: 20px;
   overflow: hidden;
+  position: relative;
 }
 
-.work-modal-layout {
+.premium-modal .close-modal {
+  color: #999;
+  background: rgba(255, 255, 255, 0.9);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  top: 1.5rem;
+  right: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.premium-modal .close-modal:hover {
+  background: #fff;
+  color: #d4af37;
+  transform: rotate(90deg);
+}
+
+.premium-modal .work-modal-layout {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  min-height: 550px;
+  grid-template-columns: 1.2fr 1fr;
+  min-height: 600px;
 }
 
-.work-modal-img-container {
-  background: #f1f5f9;
+/* Left Media Column */
+.work-modal-media {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-right: 1px solid #eee;
+  position: relative;
+}
+
+.work-carousel {
+  width: 100%;
+  aspect-ratio: 1/1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-slide {
+  min-width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
-.work-modal-img-container img {
+.carousel-slide img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  /* Don't cut off the jewelry piece */
-  display: block;
+  object-fit: cover;
 }
 
-.work-modal-info {
+.carousel-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  z-index: 5;
+}
+
+.indicator-dot {
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  cursor: pointer;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+.carousel-nav-btn:hover {
+  background: #fff;
+  color: #d4af37;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-nav-btn.prev {
+  left: 1rem;
+}
+
+.carousel-nav-btn.next {
+  right: 1rem;
+}
+
+.carousel-thumbnails {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  padding: 0.5rem 0;
+  flex-wrap: wrap;
+}
+
+.thumb-item {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb-item:hover {
+  transform: translateY(-3px);
+}
+
+.thumb-item.active {
+  border-color: #d4af37;
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+}
+
+/* Right Details Column */
+.premium-modal .work-modal-info {
   padding: 3.5rem 3rem;
   display: flex;
   flex-direction: column;
   background: #fff;
 }
 
-.work-modal-info h2 {
-  margin-top: 0;
-  margin-bottom: 2rem;
+.info-header h2 {
   font-family: 'Cinzel', serif;
   font-size: 2.2rem;
-  color: #333 !important;
-  border-bottom: 2px solid var(--primary-gold);
-  padding-bottom: 0.8rem;
-  text-transform: uppercase;
+  margin: 0;
+  color: #1a1a1a;
+  letter-spacing: 1px;
 }
 
-.specs-list {
+.info-header h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  color: #b8860b;
+  margin: 0.5rem 0 0;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+.premium-divider {
+  width: 100%;
+  height: 1px;
+  background: #ebd9ac;
+  border: none;
+  margin: 1.5rem 0 2rem;
+}
+
+.premium-specs-grid {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  flex-grow: 1;
+  gap: 1.1rem;
+  margin-bottom: 2rem;
 }
 
-.spec-item {
-  font-size: 1.15rem;
-  color: #444 !important;
+.spec-row {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 0.8rem;
+  align-items: center;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid #fcfcfc;
 }
 
-.spec-item strong {
-  color: #0b1c2e !important;
+.spec-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.spec-label ion-icon {
+  font-size: 1.3rem;
+  color: #d4af37;
+}
+
+.spec-value {
+  color: #333;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.work-description-section {
+  color: #666;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+.tech-specs-list {
+  margin-top: 1rem;
+  padding-left: 1.2rem;
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.tech-specs-list li {
+  margin-bottom: 4px;
+}
+
+.modal-footer-actions {
+  margin-top: auto;
+}
+
+.btn-premium-wa {
+  width: 100%;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  padding: 1.1rem;
+  border-radius: 10px;
+  font-family: 'Cinzel', serif;
   font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.4s;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.btn-wa-quote {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  transition: all 0.3s ease;
+.btn-premium-wa:hover {
+  background: #d4af37;
+  color: #000;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(212, 175, 55, 0.2);
 }
 
-.btn-wa-quote:hover {
-  filter: brightness(1.1);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+.custom-note {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #bbb;
+  margin-top: 0.8rem;
+  font-style: italic;
 }
 
+/* Response Breakpoints */
 @media (max-width: 900px) {
-  .work-modal-layout {
+  .premium-modal .work-modal-layout {
     grid-template-columns: 1fr;
-    min-height: auto;
   }
 
-  .work-modal-img-container {
-    height: 350px;
+  .work-modal-media {
+    border-right: none;
+    border-bottom: 1px solid #eee;
   }
 
-  .work-modal-info {
+  .premium-modal .work-modal-info {
     padding: 2rem;
   }
 
-  .work-modal-info h2 {
-    font-size: 1.6rem;
+  .info-header h2 {
+    font-size: 1.7rem;
   }
 }
 
@@ -188,6 +402,7 @@ dialog::backdrop {
 
 /* =========================================
    DARK MODE REFINEMENT 
+========================================= */
 
 /* =========================================
    UNIVERSAL LIGHT MODALS (Forced for all modes)
@@ -573,40 +788,66 @@ dialog::backdrop {
   background: #525659 !important;
 }
 
-/* --- ENHANCED JEWELRY DETAIL MODAL --- */
-.jewelry-detail-dialog {
-  max-width: 950px;
+/* --- PREMIUM JEWELRY MODAL --- */
+.premium-jewelry-modal {
+  max-width: 1000px;
   width: 95%;
-  border-radius: 15px;
-  overflow: hidden;
-  background-color: #fff !important;
+  background: transparent !important;
 }
 
-.jewelry-modal-container {
-  padding: 2.5rem;
+.premium-jewelry-modal .jewelry-modal-container {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+}
+
+.premium-jewelry-modal .jewelry-modal-header {
+  padding: 2.5rem 1rem 1rem;
+  text-align: center;
+  background: #fff;
   position: relative;
 }
 
-.jewelry-modal-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.jewelry-main-title {
+.premium-jewelry-modal .jewelry-main-title {
   font-family: 'Cinzel', serif;
   font-size: 2.2rem;
-  color: #333 !important;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  color: #1a1a1a;
+  letter-spacing: 4px;
+  margin: 0;
+  font-weight: 700;
 }
 
-.jewelry-modal-content-grid {
+.header-ornament {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.header-ornament::before,
+.header-ornament::after {
+  content: "";
+  height: 1px;
+  width: 80px;
+  background: linear-gradient(to right, transparent, #d4af37, transparent);
+}
+
+.header-ornament ion-icon {
+  color: #d4af37;
+  font-size: 1.2rem;
+}
+
+.premium-jewelry-modal .jewelry-modal-content-grid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 3rem;
-  align-items: start;
+  grid-template-columns: 1.1fr 1fr;
+  padding: 1.5rem 2.5rem 3.5rem;
+  gap: 2.5rem;
 }
 
+/* Media Area */
 .jewelry-modal-left {
   display: flex;
   flex-direction: column;
@@ -614,149 +855,127 @@ dialog::backdrop {
 }
 
 .back-link-top {
-  background: none;
-  border: none;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1rem;
-  color: #666 !important;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #888;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
   cursor: pointer;
+  transition: all 0.3s;
   padding: 0;
-  transition: var(--transition);
+  width: fit-content;
 }
 
 .back-link-top:hover {
-  color: var(--primary-gold) !important;
+  color: #d4af37;
+  transform: translateX(-5px);
 }
 
-.jewelry-image-wrapper {
-  width: 100%;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-}
-
-.jewelry-image-wrapper img {
-  width: 100%;
-  aspect-ratio: 1/1;
-  object-fit: cover;
-  display: block;
-}
-
-.jewelry-modal-right {
+.jewelry-carousel-area {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
-.product-title-display {
+/* Info Column */
+.premium-jewelry-modal .jewelry-modal-right {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+}
+
+.info-tag {
+  background: #f9f4e8;
+  color: #b8860b;
+  padding: 5px 15px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+
+.premium-jewelry-modal .product-title-display {
   font-family: 'Cinzel', serif;
   font-size: 2.5rem;
-  color: #333 !important;
-  text-transform: uppercase;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 1rem;
+  color: #1a1a1a;
   margin: 0;
+  line-height: 1.1;
+  border: none;
+  padding: 0;
 }
 
-.specs-table {
+.product-subtitle-display {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  color: #d4af37;
+  letter-spacing: 2px;
+  margin: 0.5rem 0 0;
+  font-weight: 500;
+}
+
+.premium-jewelry-modal .premium-divider {
+  width: 100%;
+  height: 1px;
+  background: #ebd9ac;
+  margin: 1.5rem 0 2rem;
+}
+
+/* Specs */
+.premium-jewelry-modal .premium-specs-grid {
   display: flex;
   flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
 }
 
-.spec-row {
+.premium-jewelry-modal .spec-row {
   display: flex;
   justify-content: space-between;
-  padding: 1.2rem 0;
-  border-bottom: 1px solid #eee;
+  align-items: center;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #fcfcfc;
+}
+
+.premium-jewelry-modal .spec-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #888;
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.premium-jewelry-modal .spec-label ion-icon {
+  font-size: 1.4rem;
+  color: #d4af37;
+}
+
+.premium-jewelry-modal .spec-value {
+  color: #333;
+  font-weight: 600;
   font-size: 1.1rem;
 }
 
-.spec-label {
-  font-weight: 700;
-  color: #444 !important;
-}
-
-.spec-value {
-  color: #666 !important;
-}
-
-.btn-adquirir {
-  background-color: #2ecc71 !important;
-  /* Premium Green */
-  color: #fff !important;
-  width: 100%;
-  padding: 1.2rem;
-  font-size: 1.3rem;
-  font-weight: 700;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 1rem;
-}
-
-.btn-adquirir:hover {
-  background-color: #27ae60 !important;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+.premium-jewelry-modal .btn-premium-wa {
+  margin-top: auto;
 }
 
 @media (max-width: 900px) {
-  .jewelry-modal-container {
+  .premium-jewelry-modal .jewelry-modal-content-grid {
+    grid-template-columns: 1fr;
     padding: 1.5rem;
   }
 
-  .jewelry-modal-content-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  .premium-jewelry-modal .jewelry-main-title {
+    font-size: 1.6rem;
   }
 
-  .jewelry-main-title {
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .product-title-display {
-    font-size: 1.8rem;
-    padding-bottom: 0.5rem;
-  }
-
-  .jewelry-modal-container {
-    max-height: 85vh;
-    overflow-y: auto;
-  }
-
-  .spec-row {
-    padding: 0.8rem 0;
-    font-size: 1rem;
-  }
-
-  .btn-adquirir {
-    font-size: 1.1rem;
-    padding: 1rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .jewelry-detail-dialog {
-    width: 98%;
-  }
-
-  .jewelry-modal-container {
-    padding: 1rem;
-  }
-
-  .product-title-display {
-    font-size: 1.5rem;
-  }
-
-  .jewelry-main-title {
-    font-size: 1.2rem;
+  .premium-jewelry-modal .product-title-display {
+    font-size: 2rem;
   }
 }
