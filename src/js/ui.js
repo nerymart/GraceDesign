@@ -212,14 +212,47 @@ export function initProductModalListeners() {
   });
 }
 
+let worksLimit = 50;
+
 export function renderFinishedWorks() {
   const worksContainer = document.getElementById("works-grid");
   const showcaseContainer = document.getElementById("works-showcase");
+  const viewMoreBtn = document.getElementById("view-more-works-btn");
+
   if (!worksContainer || !showcaseContainer) return;
+
   const works = siteData.finishedWorks;
-  showcaseContainer.innerHTML = works.slice(0, 4).map(w => `<div class="showcase-item work-card" data-id="${w.id}"><img src="${w.image}"></div>`).join('');
-  worksContainer.innerHTML = works.slice(4, 12).map(w => `<div class="work-card" data-id="${w.id}"><img src="${w.image}"><div class="work-card-overlay"><span>Detalles</span></div></div>`).join('');
+
+  // Showcase Top 4
+  showcaseContainer.innerHTML = works.slice(0, 4).map(w => `
+    <div class="showcase-item work-card" data-id="${w.id}">
+      <img src="${w.image}">
+    </div>
+  `).join('');
+
+  // Grid items (showing according to worksLimit)
+  worksContainer.innerHTML = works.slice(4, worksLimit).map(w => `
+    <div class="work-card" data-id="${w.id}">
+      <img src="${w.image}">
+      <div class="work-card-overlay"><span>Detalles</span></div>
+    </div>
+  `).join('');
+
   attachWorkListeners();
+
+  // "View More" Button Logic
+  if (viewMoreBtn) {
+    // Hide button if no more works to show
+    if (works.length <= worksLimit) {
+      viewMoreBtn.parentElement.style.display = 'none';
+    } else {
+      viewMoreBtn.parentElement.style.display = 'block';
+      viewMoreBtn.onclick = () => {
+        worksLimit += 24; // Load 24 more on each click
+        renderFinishedWorks();
+      };
+    }
+  }
 }
 
 export let currentWorkModal = null;
