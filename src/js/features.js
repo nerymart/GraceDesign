@@ -30,10 +30,9 @@ export function initSearch() {
                 (item.category && item.category.toLowerCase().includes(query))
             ).map(item => ({ ...item, type: 'catalog' }));
 
-            // 3. Search in Categories & Subcategories (NEW)
+            // 3. Search in Categories & Subcategories
             const sectionResults = [];
             siteData.categories.forEach(cat => {
-                // Main category match
                 if (cat.name.toLowerCase().includes(query)) {
                     sectionResults.push({
                         name: cat.name,
@@ -43,22 +42,37 @@ export function initSearch() {
                         label: 'VER SECCIÓN'
                     });
                 }
-                // Subcategory match
                 cat.subCategories.forEach(sub => {
                     if (sub.name.toLowerCase().includes(query)) {
                         sectionResults.push({
                             name: sub.name,
                             type: 'section',
                             link: `${cat.link}?subcat=${sub.id}`,
-                            image: cat.image, // Use category image as placeholder
+                            image: cat.image,
                             label: 'IR A SECCIÓN'
                         });
                     }
                 });
             });
 
-            // Combine and limit (prioritize sections, then products)
-            const allResults = [...sectionResults, ...prodResults, ...catalogResults].slice(0, 10);
+            // 4. Search in finishedWorks (Prendas Realizadas)
+            const finishedResults = siteData.finishedWorks.filter(w => {
+                const name = (w.name || '').toLowerCase();
+                const type = (w.type || '').toLowerCase();
+                const metal = (w.metal || '').toLowerCase();
+
+                // Synonym check for "pulcera" -> "pulsera"
+                let searchTerms = [query];
+                if (query.includes('pulcera')) searchTerms.push(query.replace('pulcera', 'pulsera'));
+                if (query.includes('pulsera')) searchTerms.push(query.replace('pulsera', 'pulcera'));
+
+                return searchTerms.some(term =>
+                    name.includes(term) || type.includes(term) || metal.includes(term)
+                );
+            }).map(w => ({ ...w, type: 'finished' }));
+
+            // Combine and limit
+            const allResults = [...sectionResults, ...prodResults, ...catalogResults, ...finishedResults].slice(0, 10);
 
             renderSearchResults(allResults);
         };
@@ -78,6 +92,8 @@ export function initSearch() {
                     if (item.type === 'section') {
                         categoryLabel = item.label || 'SECCIÓN';
                         div.classList.add('section-result');
+                    } else if (item.type === 'finished') {
+                        categoryLabel = 'Trabajo Realizado';
                     } else {
                         categoryLabel = item.type === 'product' ? 'Disponible' : (item.category || 'Catálogo');
                     }
@@ -85,9 +101,9 @@ export function initSearch() {
                     const img = item.image || (item.images ? item.images[0] : '');
 
                     div.innerHTML = `
-                        <img src="${img}" class="search-result-img" alt="${item.name}">
+                        <img src="${img}" class="search-result-img" alt="${item.name || item.title}">
                         <div class="search-result-info">
-                            <h4>${item.name}</h4>
+                            <h4>${item.name || item.title}</h4>
                             <p>${categoryLabel.toUpperCase()}</p>
                         </div>
                         ${item.type === 'section' ? '<ion-icon name="arrow-forward-outline" class="section-arrow"></ion-icon>' : ''}
@@ -98,6 +114,8 @@ export function initSearch() {
                             window.location.href = item.link;
                         } else if (item.type === 'product') {
                             openProductModal(item);
+                        } else if (item.type === 'finished') {
+                            openWorkModal(item);
                         } else {
                             openJewelryModal(item);
                         }
