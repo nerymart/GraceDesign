@@ -114,11 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
             currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item =>
                 item.category === 'personalizacion' || p3dSubcats.includes(item.category)
             ) : [];
-        } else if (category === 'p3d-dijes-alfa') {
-            // Unificar "Alfabeto" con "Dijes Alfabeto"
-            currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item =>
-                item.category === 'p3d-dijes-alfa' || item.category === 'p3d-alfabeto'
-            ) : [];
         } else {
             currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item => item.category === category) : [];
         }

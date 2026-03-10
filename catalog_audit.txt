@@ -1,0 +1,22 @@
+=== CATALOG DISTRIBUTION ===
+
+Category: [bachiller-caballero]
+  Count: 17
+  Examples: JOHN, AMERICANO A, JORDIN, ROMANO, CENTURION, ANDY, TERRY, CD #2, ROBERT, JOE
+---------------------------
+Category: [bachiller-dama]
+  Count: 39
+  Examples: Leonor, ALIANZA, YARY , REYNA, MARQUEZ #01, OREON, ELI, CHERLY, HELLEN, MARQUEZ #02
+---------------------------
+Category: [bodas-compromiso]
+  Count: 24
+  Examples: CO1, CO2, CO3, CO4, CO6, CO7, CO9, CO11, CO12, CO13
+---------------------------
+Category: [p3d-alfabeto]
+  Count: 26
+  Examples: Letra X, LETRA S, Letra P, Letra R, Letra B, Letra A, Letra C, Letra D, Letra E, Letra F
+---------------------------
+Category: [p3d-casuales]
+  Count: 492
+  Examples: DR-2763, DR-3430, DR-3684, DR-4193, DR-4219, DR-4952, DR-5328, DR-5586, DR-5588, DR-5596
+---------------------------

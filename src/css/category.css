@@ -113,31 +113,65 @@
 }
 
 .tab-btn {
-    background: none;
-    border: none;
-    padding: 0.8rem 2rem;
-    font-size: 1.1rem;
-    color: #666;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 0.8rem 2.5rem 0.8rem 1.8rem;
+    font-size: 1rem;
+    color: var(--text-muted);
     font-weight: 600;
     cursor: pointer;
     border-radius: 30px;
-    transition: var(--transition);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
     white-space: nowrap;
-    /* Keep tab text inline */
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.tab-btn:hover {
-    color: var(--dark-blue);
-    background: rgba(212, 175, 55, 0.1);
+.tab-btn::after {
+    content: '↓';
+    font-family: Arial, sans-serif;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0.7;
+    margin-top: 2px;
+}
+
+/* Premium Crown Icon */
+.tab-btn::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23D4AF37" d="M512 112c0-26.51-21.49-48-48-48s-48 21.49-48 48c0 5.483 1.002 10.71 2.693 15.65L352 192l-64-128c11.05-11.05 11.05-28.95 0-40s-28.95-11.05-40 0s-11.05 28.95 0 40l-64 128L117.3 127.7c1.691-4.938 2.693-10.16 2.693-15.65c0-26.51-21.49-48-48-48s-48 21.49-48 48s21.49 48 48 48c5.483 0 10.71-1.002 15.65-2.693L128 352H384l40.35-194.7c4.938 1.691 10.16 2.693 15.65 2.693C490.5 160 512 138.5 512 112zM384 384H128v32c0 17.67 14.33 32 32 32h192c17.67 0 32-14.33 32-32V384z"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform 0.3s ease;
+}
+
+.tab-btn:hover::before {
+    transform: scale(1.2) rotate(-5deg);
+}
+
+.tab-btn:hover::after {
+    transform: translateY(3px);
+    opacity: 1;
 }
 
 .tab-btn.active,
 .tab-btn.selected {
     color: #fff;
     background: var(--dark-blue);
-    box-shadow: 0 4px 15px rgba(11, 28, 46, 0.3);
+    border-color: var(--primary-gold);
+    box-shadow: 0 6px 20px rgba(11, 28, 46, 0.4);
+}
+
+.tab-btn.active::after,
+.tab-btn.selected::after {
+    opacity: 1;
+    color: var(--primary-gold);
 }
 
 /* Dropdown specific styles */
