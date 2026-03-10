@@ -379,11 +379,22 @@ function attachWorkListeners() {
       openWorkModal(work);
     });
   });
+}
 
+export function initWorkModalListeners() {
+  const workModal = document.getElementById("work-detail-modal");
   const closeWorkModal = document.getElementById("close-work-modal");
-  if (closeWorkModal) closeWorkModal.onclick = () => document.getElementById("work-detail-modal").close();
-
   const quoteBtn = document.getElementById("work-quote-btn");
+
+  if (!workModal) return;
+
+  const closeModal = () => {
+    workModal.close();
+    document.body.style.overflow = '';
+  };
+
+  if (closeWorkModal) closeWorkModal.onclick = closeModal;
+
   if (quoteBtn) {
     quoteBtn.onclick = () => {
       if (currentWorkModal) {
@@ -393,6 +404,18 @@ function attachWorkListeners() {
       }
     };
   }
+
+  workModal.addEventListener('click', (e) => {
+    const dialogDimensions = workModal.getBoundingClientRect();
+    if (
+      e.clientX < dialogDimensions.left ||
+      e.clientX > dialogDimensions.right ||
+      e.clientY < dialogDimensions.top ||
+      e.clientY > dialogDimensions.bottom
+    ) {
+      closeModal();
+    }
+  });
 }
 
 const translations = {

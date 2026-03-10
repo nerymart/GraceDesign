@@ -11,6 +11,9 @@ export async function initAdmin() {
   window.deleteItem = deleteItem;
   window.cancelEdit = cancelEdit;
   window.handleFileSelect = handleFileSelect;
+  window.triggerBulkUpload = triggerBulkUpload;
+  window.handleBulkUpload = handleBulkUpload;
+  window.proceedBulkUpload = proceedBulkUpload;
 
   const loginModal = document.getElementById('login-modal');
   const adminDashboard = document.getElementById('admin-dashboard');
@@ -167,7 +170,15 @@ export function renderAdminSection(filter = null) {
     <div class="admin-header">
       ${filter ? `<button class="btn-back" id="back-to-prev" title="Volver"><ion-icon name="arrow-back-outline"></ion-icon></button>` : ''}
       <h4>${sectionTitle} ${filter ? `(${filter})` : ''}</h4>
-      ${(section !== 'nosotros' && section !== 'ajustes') ? `<button class="btn" id="admin-add-new">+ Agregar Nuevo</button>` : ''}
+      <div class="admin-header-actions">
+        ${(section === 'catalogo' || section === 'finishedWorks') ? `
+          <button class="btn btn-outline" onclick="triggerBulkUpload()" id="bulk-upload-btn">
+            <ion-icon name="cloud-upload-outline"></ion-icon> Carga Masiva
+          </button>
+          <input type="file" id="bulk-input" multiple accept="image/*" style="display:none" onchange="handleBulkUpload(event, '${section}', '${filter || ''}')">
+        ` : ''}
+        ${(section !== 'nosotros' && section !== 'ajustes') ? `<button class="btn" id="admin-add-new">+ Agregar Nuevo</button>` : ''}
+      </div>
     </div>
     <div id="admin-list-container"></div>
     <div id="admin-form-container"></div>
@@ -598,4 +609,146 @@ export async function deleteItem(type, index, filter = null) {
       renderAdminSection(filter);
     }
   }
+}
+
+export function triggerBulkUpload() {
+  const bulkInput = document.getElementById('bulk-input');
+  if (bulkInput) bulkInput.click();
+}
+
+export async function handleBulkUpload(event, type, filter = null) {
+  const files = Array.from(event.target.files);
+  if (files.length === 0) return;
+
+  // Si es catálogo y no hay filtro, pedir al usuario que seleccione uno
+  if (type === 'catalogo' && (!filter || filter === '')) {
+    window.pendingBulkFiles = files;
+    showBulkCategoryPicker(type);
+    event.target.value = ''; // Reset input
+    return;
+  }
+
+  await proceedBulkUpload(files, type, filter);
+  event.target.value = ''; // Reset input
+}
+
+export function showBulkCategoryPicker(type) {
+  const listContainer = document.getElementById('admin-list-container');
+  if (!listContainer) return;
+
+  // Recopilar todas las subcategorías (o categorías si no tienen subcategorías)
+  const allTargets = [];
+  siteData.categories.forEach(cat => {
+    if (cat.subCategories && cat.subCategories.length > 0) {
+      cat.subCategories.forEach(sub => {
+        allTargets.push({ id: sub.id, name: `${cat.name} > ${sub.name}` });
+      });
+    } else {
+      allTargets.push({ id: cat.id, name: cat.name });
+    }
+  });
+
+  listContainer.innerHTML = `
+    <div class="admin-section-card">
+      <h5 style="margin-bottom: 1.5rem; color: #d4af37;">Selecciona el destino para las ${window.pendingBulkFiles.length} imágenes:</h5>
+      <div class="admin-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+        ${allTargets.map(t => `
+          <button class="btn btn-outline" onclick="proceedBulkUpload(window.pendingBulkFiles, '${type}', '${t.id}')" 
+                  style="text-align: left; padding: 1rem; height: auto; font-size: 0.9rem; justify-content: flex-start; width: 100%;">
+            <ion-icon name="folder-outline" style="margin-right: 0.5rem;"></ion-icon>
+            ${t.name}
+          </button>
+        `).join('')}
+      </div>
+      <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+         <button class="btn btn-outline" onclick="renderAdminSection()" style="border-color: #ff6b6b; color: #ff6b6b;">Cancelar Subida</button>
+      </div>
+    </div>
+  `;
+}
+
+export async function proceedBulkUpload(files, type, filter) {
+  const confirmMsg = `¿Deseas subir ${files.length} imágenes al destino "${filter}" y crear automáticamente los registros correspondientes?
+El nombre de cada producto será el nombre del archivo.`;
+
+  if (!confirm(confirmMsg)) {
+    if (!window.currentAdminSection) renderAdminSection();
+    else renderAdminSection(filter);
+    return;
+  }
+
+  const tableMap = {
+    'catalogo': 'catalog_items',
+    'finishedWorks': 'finished_works'
+  };
+  const table = tableMap[type];
+  if (!table) return;
+
+  // Visual Feedback
+  const btn = document.getElementById('bulk-upload-btn');
+  const originalHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = `<ion-icon name="sync-outline" class="rotate"></ion-icon> Subiendo (0/${files.length})...`;
+
+  let successCount = 0;
+  let errorCount = 0;
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    try {
+      btn.innerHTML = `<ion-icon name="sync-outline" class="rotate"></ion-icon> Subiendo (${i + 1}/${files.length})...`;
+
+      // 1. Upload to Storage
+      const publicUrl = await uploadImage(file);
+
+      // 2. Prepare Data
+      const name = file.name.split('.').slice(0, -1).join('.'); // Filename without extension
+      let itemData = {};
+
+      if (type === 'catalogo') {
+        itemData = {
+          name: name,
+          category: filter,
+          images: [publicUrl],
+          peso: '--',
+          medida: '--',
+          precio_diseno: '--',
+          dimensiones: '--'
+        };
+      } else if (type === 'finishedWorks') {
+        itemData = {
+          name: name,
+          type: 'Pieza Graduación', // Default
+          weight: '--',
+          size: '--',
+          metal: 'Plata 925 / Oro 14k',
+          pearls: '--',
+          images: [publicUrl],
+          image: publicUrl
+        };
+      }
+
+      // 3. Insert into DB
+      const { error } = await supabase.from(table).insert(itemData);
+      if (error) throw error;
+
+      successCount++;
+    } catch (err) {
+      console.error(`Error en archivo ${file.name}:`, err);
+      errorCount++;
+    }
+  }
+
+  btn.innerHTML = originalHtml;
+  btn.disabled = false;
+
+  alert(`Proceso completado.\nÉxitos: ${successCount}\nErrores: ${errorCount}`);
+
+  if (successCount > 0) {
+    await loadStorage();
+    renderAdminSection(filter);
+  }
+
+  // Reset input
+  event.target.value = '';
 }

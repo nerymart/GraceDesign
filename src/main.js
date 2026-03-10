@@ -49,6 +49,7 @@ import {
   renderProducts,
   renderFinishedWorks,
   initProductModalListeners,
+  initWorkModalListeners,
   initGlobalUI
 } from './js/ui.js';
 import { initCartListeners } from './js/cart.js';
@@ -84,6 +85,7 @@ async function bootstrap() {
   initGlobalFeatures();
   initSearch();
   initJewelryModalListeners();
+  initWorkModalListeners();
   initGlobalUI();
 }
 

@@ -531,6 +531,22 @@
   margin: 0;
 }
 
+.admin-header-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-outline {
+  background: transparent !important;
+  border: 1px solid rgba(212, 175, 55, 0.5) !important;
+  color: #0B1C2E !important;
+}
+
+.btn-outline:hover {
+  background: rgba(212, 175, 55, 0.1) !important;
+}
+
 .admin-header .btn {
   background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%) !important;
   color: #000 !important;

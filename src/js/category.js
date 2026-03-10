@@ -25,6 +25,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const renderGridItems = () => {
+        // Actualizar contador dinámico con diseño profesional
+        const baseTitle = categoryTitle.getAttribute('data-base-title') || categoryTitle.textContent.split(' (')[0].trim();
+        if (!categoryTitle.hasAttribute('data-base-title')) {
+            categoryTitle.setAttribute('data-base-title', baseTitle);
+        }
+
+        categoryTitle.innerHTML = `
+            <span class="title-text">${baseTitle}</span>
+            <span class="title-badge">${currentCategoryProducts.length} DISEÑOS</span>
+        `;
+
         productGrid.innerHTML = ''; // Limpiar grid
 
         if (currentCategoryProducts.length === 0) {
