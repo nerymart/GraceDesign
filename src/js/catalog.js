@@ -103,8 +103,8 @@ export function showItemDetails(item) {
     </div>
   `;
 
-    const phone = "523312345678";
-    const message = `Hola, me interesa adquirir este diseño: ${item.name} (Ref: ${item.id}).`;
+    const phone = "50585052032";
+    const message = `Hola Grace Designs, me interesa adquirir este diseño: "${item.name}" (Ref: ${item.id}). ¿Está disponible para fabricación?`;
     const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
     let html = `

@@ -183,7 +183,7 @@ export function initProductModalListeners() {
     buyBtn.addEventListener('click', () => {
       if (!currentModalProduct) return;
       const phone = "50585052032";
-      let message = `Hola, me interesa comprar:\n- ${currentModalProduct.name} (${formatCurrency(currentModalProduct.price)})`;
+      let message = `Hola Grace Designs, me interesa comprar: "${currentModalProduct.name}" (${formatCurrency(currentModalProduct.price)}). ¿Me podrían brindar más información?`;
       window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
     });
   }
@@ -399,7 +399,7 @@ export function initWorkModalListeners() {
     quoteBtn.onclick = () => {
       if (currentWorkModal) {
         const phone = "50585052032";
-        const message = `Hola Grace Designs, me interesa cotizar un trabajo similar a: "${currentWorkModal.name}" (${currentWorkModal.type}). ¿Me podrían brindar más información?`;
+        const message = `Hola Grace Designs, me interesa cotizar un trabajo similar a este diseño: "${currentWorkModal.name}" (${currentWorkModal.type || 'Personalizado'}). ¿Me podrían brindar más información?`;
         window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
       }
     };
@@ -525,8 +525,8 @@ export function openJewelryModal(product) {
   specDims.textContent = product.dims || product.dimensiones || 'Variado';
 
   // Configurar Link de WhatsApp
-  const phoneNumber = '50588673708';
-  const message = `Hola Grace Designs, me interesa adquirir el diseño "${product.title || product.name}" que vi en la galería web. ¿Me podrían brindar más detalles?`;
+  const phoneNumber = '50585052032';
+  const message = `Hola Grace Designs, me interesa adquirir el diseño "${product.title || product.name}" que vi en la galería web (Ref: ${product.id || 'Web'}). ¿Me podrían brindar más detalles?`;
   jewelryBuyBtn.onclick = () => {
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
