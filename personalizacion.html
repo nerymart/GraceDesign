@@ -286,7 +286,7 @@
         </div>
 
         <!-- Product Catalog for the extra 10 categories -->
-        <section class="category-products p3d-view" id="p3d-products-section" style="display:none;">
+        <section class="category-products p3d-view" id="p3d-products-section">
             <div class="section-title-wrap">
                 <h2 class="section-title" id="current-category-title">Catálogo</h2>
             </div>
@@ -304,37 +304,6 @@
     <!-- Modular Entry Script -->
     <script type="module" src="/src/main.js"></script>
     <script type="module" src="/src/js/category.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const tabs = document.querySelectorAll('#nav-p3d .tab-btn');
-            const views = document.querySelectorAll('.p3d-view');
-            const productsSection = document.getElementById('p3d-products-section');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Update active tab styles (category.js also does this, but it's fine)
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-
-                    // Hide all static views
-                    const disenoView = document.getElementById('p3d-diseno');
-                    const modeladoView = document.getElementById('p3d-modelado');
-                    if (disenoView) disenoView.style.display = 'none';
-                    if (modeladoView) modeladoView.style.display = 'none';
-                    if (productsSection) productsSection.style.display = 'none';
-
-                    // Determine what to show
-                    const targetId = tab.getAttribute('data-target');
-                    if (targetId === 'p3d-diseno' || targetId === 'p3d-modelado') {
-                        const targetView = document.getElementById(targetId);
-                        if (targetView) targetView.style.display = 'block';
-                    } else {
-                        if (productsSection) productsSection.style.display = 'block';
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>

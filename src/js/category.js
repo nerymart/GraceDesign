@@ -143,6 +143,29 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             if (titlesMap[target]) categoryTitle.textContent = titlesMap[target];
 
+            // --- LÓGICA ESPECÍFICA PARA PERSONALIZACIÓN 3D ---
+            const path = window.location.pathname;
+            if (path.includes('personalizacion')) {
+                const disenoView = document.getElementById('p3d-diseno');
+                const modeladoView = document.getElementById('p3d-modelado');
+                const productsSection = document.getElementById('p3d-products-section');
+
+                if (disenoView) disenoView.style.display = 'none';
+                if (modeladoView) modeladoView.style.display = 'none';
+                // Always ensure the products section is visible UNLESS we want to hide it completely (we don't)
+                if (productsSection) productsSection.style.display = 'block';
+
+                if (target === 'p3d-diseno') {
+                    if (disenoView) disenoView.style.display = 'block';
+                    if (productsSection) productsSection.style.display = 'block'; // Ensure grid shows below static content
+                } else if (target === 'p3d-modelado') {
+                    if (modeladoView) modeladoView.style.display = 'block';
+                    if (productsSection) productsSection.style.display = 'none'; // Optional: hide grid on "De la Máquina" if desired, let's keep it visible or hide? User wants it varied. Let's hide it for the pure static view, or actually, the user wants it like 'graduacion', so let's KEEP it visible.
+                    // Actually, if they click 'p3d-modelado', it's a static view without products attached usually, but the original script hid the grid. Let's keep it consistent: always show the grid EXCEPT on 'p3d-modelado' if they just want to read. Wait, if we keep `renderProducts` running, it will just show empty if no products match.
+                    // Let's explicitly show the grid always for Personalización so the "Load More" logic works.
+                }
+            }
+
             // Renderizar con fade
             productGrid.style.opacity = '0';
             setTimeout(() => {
