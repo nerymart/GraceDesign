@@ -26,10 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderGridItems = () => {
         // Actualizar contador dinámico con diseño profesional
-        const baseTitle = categoryTitle.getAttribute('data-base-title') || categoryTitle.textContent.split(' (')[0].trim();
-        if (!categoryTitle.hasAttribute('data-base-title')) {
-            categoryTitle.setAttribute('data-base-title', baseTitle);
-        }
+        const baseTitle = categoryTitle.getAttribute('data-base-title') || categoryTitle.textContent.trim();
 
         categoryTitle.innerHTML = `
             <span class="title-text">${baseTitle}</span>
@@ -117,6 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
             currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item =>
                 item.category === 'personalizacion' || p3dSubcats.includes(item.category)
             ) : [];
+        } else if (category === 'p3d-dijes-alfa') {
+            // Unificar "Alfabeto" con "Dijes Alfabeto"
+            currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item =>
+                item.category === 'p3d-dijes-alfa' || item.category === 'p3d-alfabeto'
+            ) : [];
         } else {
             currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item => item.category === category) : [];
         }
@@ -182,11 +184,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Actualizar Título
+            let currentTitle = '';
             if (parentToggle) {
-                categoryTitle.textContent = parentToggle.textContent.trim() + ' - ' + btn.textContent;
+                currentTitle = parentToggle.textContent.trim() + ' - ' + btn.textContent;
             } else {
-                categoryTitle.textContent = btn.textContent;
+                currentTitle = btn.textContent;
             }
+            categoryTitle.textContent = currentTitle;
+            categoryTitle.setAttribute('data-base-title', currentTitle);
 
             // Mapear títulos específicos (ej. Bodas)
             const titlesMap = {
@@ -244,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const allCategorySubcats = categoryData?.subCategories.map(s => s.id) || [];
 
             categoryTitle.textContent = 'Colección Completa';
+            categoryTitle.setAttribute('data-base-title', 'Colección Completa');
 
             currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item =>
                 item.category === mainCategory || allCategorySubcats.includes(item.category)

@@ -92,10 +92,12 @@ export let siteData = {
                 { id: "p3d-tejidos", name: "Tejidos & Candados" },
                 { id: "p3d-mesa", name: "Anillos Mesa" },
                 { id: "p3d-dijes", name: "Dijes" },
+                { id: "p3d-alfabeto", name: "Alfabeto" },
                 { id: "p3d-variado", name: "Anillos Variados" },
                 { id: "p3d-15", name: "Anillos 15 Años" },
                 { id: "p3d-figura", name: "Anillos con Figura" },
                 { id: "p3d-dijes-alfa", name: "Dijes Alfabeto" },
+                { id: "p3d-comp-finos", name: "Compromiso Finos" },
                 { id: "p3d-casuales", name: "Anillos Casuales" }
             ]
         },
