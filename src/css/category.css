@@ -112,7 +112,8 @@
     color: #fff;
 }
 
-.tab-btn {
+/* Premium Button Styles - Scoped to specific pages */
+.premium-nav-page .tab-btn {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(212, 175, 55, 0.3);
     padding: 0.8rem 2.5rem 0.8rem 1.8rem;
@@ -131,7 +132,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.tab-btn::after {
+.premium-nav-page .tab-btn::after {
     content: '↓';
     font-family: Arial, sans-serif;
     font-size: 1.1rem;
@@ -141,7 +142,7 @@
 }
 
 /* Premium Crown Icon */
-.tab-btn::before {
+.premium-nav-page .tab-btn::before {
     content: '';
     width: 20px;
     height: 20px;
@@ -151,27 +152,63 @@
     transition: transform 0.3s ease;
 }
 
-.tab-btn:hover::before {
+.premium-nav-page .tab-btn:hover {
+    color: var(--dark-blue);
+    background: rgba(212, 175, 55, 0.15);
+    border-color: var(--primary-gold);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+}
+
+.premium-nav-page .tab-btn:hover::before {
     transform: scale(1.2) rotate(-5deg);
 }
 
-.tab-btn:hover::after {
+.premium-nav-page .tab-btn:hover::after {
     transform: translateY(3px);
     opacity: 1;
 }
 
-.tab-btn.active,
-.tab-btn.selected {
+.premium-nav-page .tab-btn.active,
+.premium-nav-page .tab-btn.selected {
     color: #fff;
     background: var(--dark-blue);
     border-color: var(--primary-gold);
     box-shadow: 0 6px 20px rgba(11, 28, 46, 0.4);
 }
 
-.tab-btn.active::after,
-.tab-btn.selected::after {
+.premium-nav-page .tab-btn.active::after,
+.premium-nav-page .tab-btn.selected::after {
     opacity: 1;
     color: var(--primary-gold);
+}
+
+/* Base styles for other pages */
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    color: #666;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.tab-btn:hover {
+    color: var(--dark-blue);
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.tab-btn.active,
+.tab-btn.selected {
+    color: #fff;
+    background: var(--dark-blue);
+    box-shadow: 0 4px 15px rgba(11, 28, 46, 0.3);
 }
 
 /* Dropdown specific styles */
@@ -330,11 +367,11 @@
 
 /* --- Mobile Adjustments --- */
 @media (max-width: 768px) {
-    .subcategory-tabs {
+    .premium-nav-page .subcategory-tabs {
         padding: 0 1rem;
     }
 
-    .tabs-container {
+    .premium-nav-page .tabs-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 0.8rem;
@@ -342,7 +379,7 @@
         border-bottom: none;
     }
 
-    .tab-btn {
+    .premium-nav-page .tab-btn {
         width: 100%;
         padding: 0.7rem 1rem;
         font-size: 0.85rem;
@@ -352,12 +389,12 @@
         /* Smoother corners for grid */
     }
 
-    .tab-btn::before {
+    .premium-nav-page .tab-btn::before {
         width: 16px;
         height: 16px;
     }
 
-    .tab-btn::after {
+    .premium-nav-page .tab-btn::after {
         font-size: 0.9rem;
     }
 
