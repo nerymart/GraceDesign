@@ -126,16 +126,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Manejador de clics en dropdown toggles
     const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    const tabsContainer = document.querySelector('.tabs-container');
+
     dropdownToggles.forEach(toggle => {
         toggle.addEventListener('click', function (e) {
             e.stopPropagation();
             const parentTab = this.parentElement;
+            const wasActive = parentTab.classList.contains('active');
 
-            if (parentTab.classList.contains('active')) {
-                parentTab.classList.remove('active');
-            } else {
-                document.querySelectorAll('.dropdown-tab').forEach(tab => tab.classList.remove('active'));
+            // 1. Close ALL first
+            document.querySelectorAll('.dropdown-tab').forEach(tab => tab.classList.remove('active'));
+            if (tabsContainer) tabsContainer.classList.remove('dropdown-open');
+
+            // 2. If it wasn't active, open it
+            if (!wasActive) {
                 parentTab.classList.add('active');
+                if (tabsContainer) tabsContainer.classList.add('dropdown-open');
             }
         });
     });
@@ -143,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cerrar dropdown si se hace click fuera
     document.addEventListener('click', () => {
         document.querySelectorAll('.dropdown-tab').forEach(tab => tab.classList.remove('active'));
+        if (tabsContainer) tabsContainer.classList.remove('dropdown-open');
     });
 
     // Manejador de clics en botones de subcategoría (data-target)
@@ -150,17 +157,34 @@ document.addEventListener('DOMContentLoaded', () => {
     filterBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
+            const isSubTab = btn.classList.contains('sub-tab-btn');
+            const wasActive = btn.classList.contains('active');
 
+            // Reset all
             document.querySelectorAll('.dropdown-toggle').forEach(t => t.classList.remove('selected'));
             filterBtns.forEach(b => b.classList.remove('active'));
 
+            const dropdownTab = btn.closest('.dropdown-tab');
+
+            // --- IMMEDIATE FOLDING LOGIC ---
+            // When a sub-option is clicked, we fold the menu and show all buttons again
+            if (isSubTab) {
+                if (dropdownTab) {
+                    dropdownTab.classList.remove('active');
+                    if (tabsContainer) tabsContainer.classList.remove('dropdown-open');
+                }
+                // No adding 'active' here if we want to "reset" the visual state
+                // or keep it if we want the red color to persist (behind the fold)
+            }
+
             btn.classList.add('active');
 
-            const dropdownTab = btn.closest('.dropdown-tab');
             let parentToggle = null;
             if (dropdownTab) {
                 parentToggle = dropdownTab.querySelector('.dropdown-toggle');
                 if (parentToggle) parentToggle.classList.add('selected');
+
+                // For safety, ensure it folds on desktop too (already handled by block above)
                 dropdownTab.classList.remove('active');
             }
 

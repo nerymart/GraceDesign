@@ -249,7 +249,6 @@
     border-color: transparent transparent var(--absolute-white) transparent;
 }
 
-.dropdown-tab:hover .dropdown-menu,
 .dropdown-tab.active .dropdown-menu {
     display: flex;
     flex-direction: column;
@@ -286,6 +285,12 @@
     background-color: var(--dark-blue);
     color: #fff;
     box-shadow: none;
+}
+
+/* Global removal of crown/arrow for sub-buttons in premium pages */
+.premium-nav-page .sub-tab-btn::before,
+.premium-nav-page .sub-tab-btn::after {
+    display: none !important;
 }
 
 /* Ensure empty states look okay */
@@ -367,47 +372,125 @@
 
 /* --- Mobile Adjustments --- */
 @media (max-width: 768px) {
+
+    /* Global containment for navigation on mobile */
+    .premium-nav-page .subcategory-tabs,
+    .premium-nav-page .tabs-container,
+    .premium-nav-page .dropdown-tab,
+    .premium-nav-page .dropdown-menu,
+    .premium-nav-page .tab-btn {
+        box-sizing: border-box !important;
+    }
+
     .premium-nav-page .subcategory-tabs {
-        padding: 0 1rem;
+        padding: 0 0.8rem;
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    /* Accordion Logic: Hide other items when a dropdown is open */
+    .premium-nav-page .tabs-container.dropdown-open>*:not(.active) {
+        display: none !important;
+    }
+
+    .premium-nav-page .tabs-container.dropdown-open .dropdown-tab.active {
+        grid-column: 1 / -1;
+        width: 100%;
+        margin: 0;
     }
 
     .premium-nav-page .tabs-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0.8rem;
+        gap: 0.6rem;
         padding-bottom: 1rem;
         border-bottom: none;
+        width: 100%;
+        margin: 0 auto;
     }
 
-    .premium-nav-page .tab-btn {
+    /* Target ONLY top-level buttons for premium styles */
+    .premium-nav-page .tab-btn:not(.sub-tab-btn),
+    .premium-nav-page .dropdown-toggle {
         width: 100%;
-        padding: 0.7rem 1rem;
-        font-size: 0.85rem;
+        padding: 0.7rem 0.4rem;
+        font-size: 0.82rem;
         justify-content: center;
-        gap: 0.5rem;
+        gap: 0.35rem;
         border-radius: 12px;
-        /* Smoother corners for grid */
+    }
+
+    /* SUB-BUTTONS: Keep them simple and clean */
+    .premium-nav-page .sub-tab-btn {
+        background: rgba(255, 255, 255, 0.95) !important;
+        border: 1px solid rgba(11, 28, 46, 0.1) !important;
+        color: var(--dark-blue) !important;
+        padding: 0.85rem 0.5rem !important;
+        margin: 0.4rem 0 !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+        justify-content: center !important;
+        width: 100% !important;
+        display: flex !important;
+        text-align: center !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .premium-nav-page .sub-tab-btn.active,
+    .premium-nav-page .sub-tab-btn.selected {
+        background: #D32F2F !important;
+        /* Premium Red */
+        color: white !important;
+        border-color: #B71C1C !important;
+        box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3) !important;
+    }
+
+    /* Specific fix for PDF button in Bodas to span full width and center */
+    .premium-nav-page #view-engagement-pdf {
+        grid-column: 1 / -1;
+        width: 100%;
+        margin: 0.5rem auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.7rem 1rem !important;
+        /* Ensure enough space */
+    }
+
+    .premium-nav-page #view-engagement-pdf::after {
+        display: none !important;
+        /* No dropdown arrow for PDF */
+    }
+
+    .premium-nav-page #view-engagement-pdf ion-icon {
+        font-size: 1.2rem;
+        margin-left: 0.5rem;
+    }
+
+    /* REMOVE crown and arrow from sub-buttons to avoid clutter */
+    .premium-nav-page .sub-tab-btn::before,
+    .premium-nav-page .sub-tab-btn::after {
+        display: none !important;
     }
 
     .premium-nav-page .tab-btn::before {
-        width: 16px;
-        height: 16px;
+        width: 13px;
+        height: 13px;
+        flex-shrink: 0;
     }
 
     .premium-nav-page .tab-btn::after {
-        font-size: 0.9rem;
+        font-size: 0.75rem;
+        flex-shrink: 0;
     }
 
     .dropdown-tab {
         width: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center;
-    }
-
-    .dropdown-toggle {
-        width: 100%;
-        justify-content: center;
     }
 
     .dropdown-menu {
@@ -416,35 +499,25 @@
         transform: none;
         box-shadow: none;
         background-color: transparent;
-        margin-top: 0.5rem;
+        margin: 0.5rem 0 0 0;
         padding: 0;
-    }
-
-    .dropdown-menu::before {
         display: none;
     }
 
-    .dropdown-tab:hover .dropdown-menu,
     .dropdown-tab.active .dropdown-menu {
-        animation: fadeIn 0.3s ease forwards;
+        display: block;
+        animation: fadeInMobile 0.35s ease-out forwards;
     }
 
-    @keyframes fadeIn {
+    @keyframes fadeInMobile {
         from {
             opacity: 0;
-            transform: translateY(-10px);
+            transform: translateY(-8px);
         }
 
         to {
             opacity: 1;
             transform: translateY(0);
         }
-    }
-
-    .sub-tab-btn {
-        text-align: center;
-        border-radius: 30px;
-        margin-bottom: 0.5rem;
-        background-color: rgba(255, 255, 255, 0.8);
     }
 }
