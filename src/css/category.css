@@ -330,6 +330,37 @@
 
 /* --- Mobile Adjustments --- */
 @media (max-width: 768px) {
+    .subcategory-tabs {
+        padding: 0 1rem;
+    }
+
+    .tabs-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+        padding-bottom: 1rem;
+        border-bottom: none;
+    }
+
+    .tab-btn {
+        width: 100%;
+        padding: 0.7rem 1rem;
+        font-size: 0.85rem;
+        justify-content: center;
+        gap: 0.5rem;
+        border-radius: 12px;
+        /* Smoother corners for grid */
+    }
+
+    .tab-btn::before {
+        width: 16px;
+        height: 16px;
+    }
+
+    .tab-btn::after {
+        font-size: 0.9rem;
+    }
+
     .dropdown-tab {
         width: 100%;
         display: flex;
