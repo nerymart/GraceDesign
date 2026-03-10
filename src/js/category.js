@@ -13,18 +13,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializar listeners del modal una sola vez
     initJewelryModalListeners();
 
-    // Función para renderizar productos por subcategoría
-    const renderProducts = (category) => {
-        const products = siteData.catalogItems ? siteData.catalogItems.filter(item => item.category === category) : [];
+    // -- PAGINATION LOGIC --
+    let currentCategoryProducts = [];
+    let currentDisplayLimit = 50;
 
+    const renderGridItems = () => {
         productGrid.innerHTML = ''; // Limpiar grid
 
-        if (products.length === 0) {
-            productGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888; font-size: 1.2rem; margin-top: 2rem;">No hay productos disponibles en esta categoría.</p>';
+        if (currentCategoryProducts.length === 0) {
+            productGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888; font-size: 1.2rem; margin-top: 2rem;">No hay productos disponibles.</p>';
             return;
         }
 
-        products.forEach(prod => {
+        const itemsToShow = currentCategoryProducts.slice(0, currentDisplayLimit);
+
+        itemsToShow.forEach(prod => {
             const prodImg = prod.images ? prod.images[0] : (prod.image || '');
             const badgeHTML = prod.badge ? `<span class="product-badge ${prod.badgeClass || 'badge-sale'}">${prod.badge}</span>` : '';
 
@@ -43,13 +46,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            // Evento para abrir el modal (ahora usando la función global de ui.js)
             card.addEventListener('click', () => {
                 openJewelryModal(prod);
             });
 
             productGrid.appendChild(card);
         });
+
+        // "Load More" Button Logic
+        const existingBtnContainer = document.getElementById('category-load-more-container');
+        if (existingBtnContainer) {
+            existingBtnContainer.remove();
+        }
+
+        if (currentCategoryProducts.length > currentDisplayLimit) {
+            const btnContainer = document.createElement('div');
+            btnContainer.id = 'category-load-more-container';
+            btnContainer.style.cssText = 'grid-column: 1/-1; text-align: center; margin-top: 2rem; margin-bottom: 2rem;';
+
+            const loadMoreBtn = document.createElement('button');
+            loadMoreBtn.className = 'btn btn-outline';
+            loadMoreBtn.innerHTML = 'Ver Más Diseños';
+
+            loadMoreBtn.onclick = () => {
+                currentDisplayLimit += 50;
+                renderGridItems();
+            };
+
+            btnContainer.appendChild(loadMoreBtn);
+            productGrid.appendChild(btnContainer);
+        }
+    };
+
+    // Función para renderizar productos por subcategoría
+    const renderProducts = (category) => {
+        currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item => item.category === category) : [];
+        currentDisplayLimit = 50; // Reset limit on category change
+        renderGridItems();
     };
 
     // --- LÓGICA DE NAVEGACIÓN Y FILTROS ---
@@ -159,33 +192,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             categoryTitle.textContent = 'Colección Completa';
 
-            const allProducts = siteData.catalogItems ? siteData.catalogItems.filter(item =>
+            currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item =>
                 item.category === mainCategory || allCategorySubcats.includes(item.category)
             ) : [];
-
-            productGrid.innerHTML = '';
-            if (allProducts.length === 0) {
-                productGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888; font-size: 1.2rem; margin-top: 2rem;">No hay productos disponibles.</p>';
-            } else {
-                allProducts.forEach(prod => {
-                    const prodImg = prod.images ? prod.images[0] : (prod.image || '');
-                    const card = document.createElement('div');
-                    card.className = 'product-card';
-                    card.innerHTML = `
-                        <div class="product-image-container">
-                            <img src="${prodImg}" alt="${prod.name}" class="product-image">
-                        </div>
-                        <div class="product-details">
-                            <h3>${prod.name}</h3>
-                            <div class="price-container">
-                                <span class="current-price">${prod.precioDiseno || ''}</span>
-                            </div>
-                        </div>
-                    `;
-                    card.onclick = () => openJewelryModal(prod);
-                    productGrid.appendChild(card);
-                });
-            }
+            currentDisplayLimit = 50; // Reset limit
+            renderGridItems();
         }
     };
 
