@@ -97,7 +97,7 @@ export let siteData = {
                 { id: "p3d-15", name: "Anillos 15 Años" },
                 { id: "p3d-figura", name: "Anillos con Figura" },
                 { id: "p3d-dijes-alfa", name: "Dijes Alfabeto" },
-                { id: "p3d-comp-finos", name: "Compromiso Finos" },
+                { id: "p3d-comp-finos", name: "Anillos Promesa" },
                 { id: "p3d-casuales", name: "Anillos Casuales" }
             ]
         },
