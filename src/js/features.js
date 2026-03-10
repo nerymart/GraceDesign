@@ -43,7 +43,8 @@ export function initSearch() {
                     });
                 }
                 cat.subCategories.forEach(sub => {
-                    if (sub.name.toLowerCase().includes(query)) {
+                    const subName = sub.name.toLowerCase();
+                    if (subName.includes(query) || query.includes(subName)) {
                         sectionResults.push({
                             name: sub.name,
                             type: 'section',

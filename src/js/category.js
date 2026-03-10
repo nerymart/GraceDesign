@@ -1,5 +1,5 @@
 import '../css/category.css';
-import { siteData } from './data.js';
+import { siteData, formatCurrency } from './data.js';
 import { openJewelryModal, initJewelryModalListeners } from './ui.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,6 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentCategoryProducts = [];
     let currentDisplayLimit = 50;
 
+    // Listen for currency changes to re-render prices
+    document.addEventListener('currencyChanged', () => {
+        if (currentCategoryProducts.length > 0) {
+            renderGridItems();
+        }
+    });
+
     const renderGridItems = () => {
         productGrid.innerHTML = ''; // Limpiar grid
 
@@ -31,6 +38,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const prodImg = prod.images ? prod.images[0] : (prod.image || '');
             const badgeHTML = prod.badge ? `<span class="product-badge ${prod.badgeClass || 'badge-sale'}">${prod.badge}</span>` : '';
 
+            // Handle price formatting
+            let displayPrice = '';
+            if (prod.price !== undefined && prod.price !== null) {
+                displayPrice = formatCurrency(prod.price);
+            } else if (prod.precioDiseno) {
+                // Determine if it's already formatted or just a number
+                if (!isNaN(parseFloat(prod.precioDiseno)) && isFinite(prod.precioDiseno)) {
+                    displayPrice = formatCurrency(parseFloat(prod.precioDiseno));
+                } else {
+                    displayPrice = prod.precioDiseno;
+                }
+            }
+
             const card = document.createElement('div');
             card.className = 'product-card';
             card.innerHTML = `
@@ -41,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="product-details">
                     <h3>${prod.name || prod.title}</h3>
                     <div class="price-container">
-                        <span class="current-price">${prod.precioDiseno || prod.priceStr || prod.price || ''}</span>
+                        <span class="current-price">${displayPrice}</span>
                     </div>
                 </div>
             `;
@@ -80,7 +100,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Función para renderizar productos por subcategoría
     const renderProducts = (category) => {
-        currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item => item.category === category) : [];
+        if (category === 'p3d-diseno' || category === 'p3d-modelado') {
+            const p3dCatData = siteData.categories ? siteData.categories.find(c => c.id === 'personalizacion') : null;
+            const p3dSubcats = p3dCatData ? p3dCatData.subCategories.map(s => s.id) : [];
+            currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item =>
+                item.category === 'personalizacion' || p3dSubcats.includes(item.category)
+            ) : [];
+        } else {
+            currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item => item.category === category) : [];
+        }
+
         currentDisplayLimit = 50; // Reset limit on category change
         renderGridItems();
     };
@@ -129,6 +158,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const target = btn.getAttribute('data-target');
 
+            // --- P3D VISIBILITY LOGIC ---
+            const p3dViews = document.querySelectorAll('.p3d-view');
+            if (p3dViews.length > 0) {
+                p3dViews.forEach(v => v.classList.remove('active'));
+
+                if (target === 'p3d-diseno') {
+                    document.getElementById('p3d-diseno')?.classList.add('active');
+                    document.getElementById('p3d-modelado')?.classList.add('active');
+                }
+                document.getElementById('p3d-products-section')?.classList.add('active');
+            }
+
             // Actualizar Título
             if (parentToggle) {
                 categoryTitle.textContent = parentToggle.textContent.trim() + ' - ' + btn.textContent;
@@ -143,28 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             if (titlesMap[target]) categoryTitle.textContent = titlesMap[target];
 
-            // --- LÓGICA ESPECÍFICA PARA PERSONALIZACIÓN 3D ---
-            const path = window.location.pathname;
-            if (path.includes('personalizacion')) {
-                const disenoView = document.getElementById('p3d-diseno');
-                const modeladoView = document.getElementById('p3d-modelado');
-                const productsSection = document.getElementById('p3d-products-section');
-
-                if (disenoView) disenoView.style.display = 'none';
-                if (modeladoView) modeladoView.style.display = 'none';
-                // Always ensure the products section is visible UNLESS we want to hide it completely (we don't)
-                if (productsSection) productsSection.style.display = 'block';
-
-                if (target === 'p3d-diseno') {
-                    if (disenoView) disenoView.style.display = 'block';
-                    if (productsSection) productsSection.style.display = 'block'; // Ensure grid shows below static content
-                } else if (target === 'p3d-modelado') {
-                    if (modeladoView) modeladoView.style.display = 'block';
-                    if (productsSection) productsSection.style.display = 'none'; // Optional: hide grid on "De la Máquina" if desired, let's keep it visible or hide? User wants it varied. Let's hide it for the pure static view, or actually, the user wants it like 'graduacion', so let's KEEP it visible.
-                    // Actually, if they click 'p3d-modelado', it's a static view without products attached usually, but the original script hid the grid. Let's keep it consistent: always show the grid EXCEPT on 'p3d-modelado' if they just want to read. Wait, if we keep `renderProducts` running, it will just show empty if no products match.
-                    // Let's explicitly show the grid always for Personalización so the "Load More" logic works.
-                }
-            }
 
             // Renderizar con fade
             productGrid.style.opacity = '0';

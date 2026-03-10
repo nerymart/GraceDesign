@@ -87,16 +87,18 @@ export let siteData = {
             link: "./personalizacion.html",
             image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=600",
             subCategories: [
-                { id: "p3d-tejidos", name: "Tejidos" },
-                { id: "p3d-mesa", name: "Mesa" },
+                { id: "p3d-diseno", name: "Diseño 3D" },
+                { id: "p3d-modelado", name: "Modelado 3D" },
+                { id: "p3d-tejidos", name: "Tejidos & Candados" },
+                { id: "p3d-mesa", name: "Anillos Mesa" },
                 { id: "p3d-dijes", name: "Dijes" },
                 { id: "p3d-alfabeto", name: "Alfabeto" },
-                { id: "p3d-variado", name: "Variado" },
-                { id: "p3d-15", name: "15 Años" },
-                { id: "p3d-figura", name: "Figuras" },
+                { id: "p3d-variado", name: "Anillos Variados" },
+                { id: "p3d-15", name: "Anillos 15 Años" },
+                { id: "p3d-figura", name: "Anillos con Figura" },
                 { id: "p3d-dijes-alfa", name: "Dijes Alfabeto" },
-                { id: "p3d-comp-finos", name: "Compromiso Fino" },
-                { id: "p3d-casuales", name: "Casuales" }
+                { id: "p3d-comp-finos", name: "Compromiso Finos" },
+                { id: "p3d-casuales", name: "Anillos Casuales" }
             ]
         },
         {
