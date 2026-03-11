@@ -1,5 +1,5 @@
 import '../css/category.css';
-import { siteData, formatCurrency } from './data.js';
+import { siteData, formatCurrency, loadCategoryItems } from './data.js';
 import { openJewelryModal, initJewelryModalListeners } from './ui.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -106,19 +106,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Función para renderizar productos por subcategoría
-    const renderProducts = (category) => {
+    // Función para mezclar array aleatoriamente (Fisher-Yates)
+    const shuffleArray = (arr) => {
+        const shuffled = [...arr];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    };
+
+    // Función para cargar y renderizar productos por subcategoría desde Supabase
+    const renderProducts = async (category) => {
+        // Mostrar indicador de carga
+        productGrid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#aaa;padding:3rem;font-size:1.1rem;">Cargando diseños...</p>';
+        productGrid.style.opacity = '1';
+
+        let categoriesToFetch;
         if (category === 'p3d-diseno' || category === 'p3d-modelado') {
             const p3dCatData = siteData.categories ? siteData.categories.find(c => c.id === 'personalizacion') : null;
-            const p3dSubcats = p3dCatData ? p3dCatData.subCategories.map(s => s.id) : [];
-            currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item =>
-                item.category === 'personalizacion' || p3dSubcats.includes(item.category)
-            ) : [];
+            categoriesToFetch = p3dCatData ? p3dCatData.subCategories.map(s => s.id) : [category];
         } else {
-            currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item => item.category === category) : [];
+            categoriesToFetch = [category];
         }
 
-        currentDisplayLimit = 50; // Reset limit on category change
+        const items = await loadCategoryItems(categoriesToFetch);
+        currentCategoryProducts = shuffleArray(items);
+        currentDisplayLimit = 50;
         renderGridItems();
     };
 
@@ -222,8 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Renderizar con fade
             productGrid.style.opacity = '0';
-            setTimeout(() => {
-                renderProducts(target);
+            setTimeout(async () => {
+                await renderProducts(target);
                 productGrid.style.opacity = '1';
             }, 200);
         });
@@ -241,8 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (path.includes('extranjera')) mainCategory = 'extranjera';
         else if (path.includes('personalizacion')) mainCategory = 'personalizacion';
 
-        // Wait for siteData to be populated (Supabase response)
-        if ((!siteData.catalogItems || siteData.catalogItems.length === 0) && retries < 30) {
+        // Esperar a que las categorías estén cargadas (loadStorage ya las trae)
+        if ((!siteData.categories || siteData.categories.length === 0) && retries < 30) {
             setTimeout(() => initDefaultGallery(retries + 1), 100);
             return;
         }
@@ -266,15 +280,17 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (mainCategory) {
             const categoryData = siteData.categories.find(c => c.id === mainCategory);
             const allCategorySubcats = categoryData?.subCategories.map(s => s.id) || [];
+            const allCats = [mainCategory, ...allCategorySubcats];
 
             categoryTitle.textContent = 'Colección Completa';
             categoryTitle.setAttribute('data-base-title', 'Colección Completa');
 
-            currentCategoryProducts = siteData.catalogItems ? siteData.catalogItems.filter(item =>
-                item.category === mainCategory || allCategorySubcats.includes(item.category)
-            ) : [];
-            currentDisplayLimit = 50; // Reset limit
-            renderGridItems();
+            productGrid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#aaa;padding:3rem;font-size:1.1rem;">Cargando diseños...</p>';
+            loadCategoryItems(allCats).then(items => {
+                currentCategoryProducts = shuffleArray(items);
+                currentDisplayLimit = 50;
+                renderGridItems();
+            });
         }
     };
 

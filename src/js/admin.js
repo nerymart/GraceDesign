@@ -1,4 +1,4 @@
-import { siteData, loadStorage } from './data.js';
+import { siteData, loadStorage, loadCategoryItems } from './data.js';
 import { supabase, uploadImage } from './supabase.js';
 
 export async function initAdmin() {
@@ -195,7 +195,14 @@ export function renderAdminSection(filter = null) {
   const addBtn = document.getElementById('admin-add-new');
   if (addBtn) addBtn.onclick = () => showForm(section, null, filter);
 
-  renderList(filter);
+  if (section === 'catalogo') {
+    // Cargar ítems de esta subcategoría desde Supabase bajo demanda
+    const listContainer = document.getElementById('admin-list-container');
+    if (listContainer) listContainer.innerHTML = '<p style="text-align:center;padding:2rem;color:rgba(255,255,255,0.5);">Cargando diseños...</p>';
+    loadCategoryItems(filter ? [filter] : []).then(() => renderList(filter));
+  } else {
+    renderList(filter);
+  }
 }
 
 export function renderList(filter = null) {
@@ -537,19 +544,31 @@ export async function saveItem(type, index, filter = null) {
     };
   }
 
-  if (isEdit) {
-    itemData.id = items[index].id;
-  }
+  try {
+    let data, error;
 
-  console.log(`Guardando ítem en ${table}:`, itemData);
-  const { error } = await supabase.from(table).upsert(itemData);
+    if (isEdit) {
+      // Edición: actualizar registro existente por ID
+      itemData.id = items[index].id;
+      console.log(`Actualizando ítem en ${table}:`, itemData);
+      ({ data, error } = await supabase.from(table).update(itemData).eq('id', itemData.id).select());
+    } else {
+      // Nuevo: insertar registro (sin id para que Supabase lo genere)
+      console.log(`Insertando nuevo ítem en ${table}:`, itemData);
+      ({ data, error } = await supabase.from(table).insert(itemData).select());
+    }
 
-  if (error) {
-    console.error(`Error de Supabase al guardar en ${table}:`, error);
-    alert('Error al guardar: ' + error.message);
-  } else {
-    await loadStorage();
-    renderAdminSection(filter);
+    if (error) {
+      console.error(`Error de Supabase al guardar en ${table}:`, error);
+      alert('Error al guardar: ' + error.message);
+    } else {
+      console.log(`Guardado exitoso en ${table}:`, data);
+      await loadStorage();
+      renderAdminSection(filter);
+    }
+  } catch (err) {
+    console.error(`Error inesperado al guardar en ${table}:`, err);
+    alert('Error inesperado: ' + err.message);
   }
 }
 
@@ -745,10 +764,8 @@ El nombre de cada producto será el nombre del archivo.`;
   alert(`Proceso completado.\nÉxitos: ${successCount}\nErrores: ${errorCount}`);
 
   if (successCount > 0) {
+    console.log('Recargando almacenamiento después de carga masiva...');
     await loadStorage();
     renderAdminSection(filter);
   }
-
-  // Reset input
-  event.target.value = '';
 }

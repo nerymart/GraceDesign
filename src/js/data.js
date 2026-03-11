@@ -153,7 +153,6 @@ export async function loadStorage() {
             { data: about },
             { data: servicios, error: sErr },
             { data: productos },
-            { data: catalogItems },
             { data: finishedWorks },
             { data: categories },
             { data: subcategories },
@@ -163,7 +162,6 @@ export async function loadStorage() {
             supabase.from('site_about').select('*').single(),
             supabase.from('services').select('*'),
             supabase.from('products').select('*'),
-            supabase.from('catalog_items').select('*'),
             supabase.from('finished_works').select('*'),
             supabase.from('categories').select('*'),
             supabase.from('subcategories').select('*'),
@@ -181,7 +179,7 @@ export async function loadStorage() {
         }
         if (servicios && servicios.length > 0) siteData.servicios = servicios;
         if (productos && productos.length > 0) siteData.productos = productos;
-        if (catalogItems && catalogItems.length > 0) siteData.catalogItems = catalogItems.map(i => ({ ...i, precioDiseno: i.precio_diseno, images: i.images || [] }));
+        // catalog_items se carga bajo demanda por categoría (ver loadCategoryItems)
         if (finishedWorks && finishedWorks.length > 0) siteData.finishedWorks = finishedWorks;
         if (promos && promos.length > 0) siteData.promos = promos;
 
@@ -208,6 +206,40 @@ export async function loadStorage() {
 
 export async function saveStorage() {
     console.log('Supabase Mode: Los datos se guardan directamente en la nube desde el admin.');
+}
+
+// Carga ítems de catálogo bajo demanda para una o varias categorías
+export async function loadCategoryItems(categories) {
+    try {
+        const catArray = Array.isArray(categories) ? categories : [categories];
+        const validCats = catArray.filter(Boolean);
+
+        let query = supabase
+            .from('catalog_items')
+            .select('*')
+            .order('id', { ascending: false });
+
+        if (validCats.length === 1) {
+            query = query.eq('category', validCats[0]);
+        } else if (validCats.length > 1) {
+            query = query.in('category', validCats);
+        }
+
+        const { data, error } = await query;
+        if (error) throw error;
+
+        const items = (data || []).map(i => ({
+            ...i,
+            precioDiseno: i.precio_diseno || i.precioDiseno || '--',
+            images: i.images || [i.image].filter(Boolean) || []
+        }));
+
+        siteData.catalogItems = items;
+        return items;
+    } catch (error) {
+        console.error('Error cargando ítems de categoría:', error);
+        return [];
+    }
 }
 
 // Helper para obtener el precio con formato según la moneda actual
