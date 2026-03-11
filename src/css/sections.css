@@ -288,15 +288,20 @@ section {
 .product-image-container {
   position: relative;
   width: 100%;
-  aspect-ratio: 4/5;
+  aspect-ratio: 1 / 1;
   margin-bottom: 0.8rem;
+  background-color: #f8f8f8; /* Light background for transparent renders */
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
+  object-fit: contain; /* Prevents cropping of jewelry models, adds padding instead */
   cursor: pointer;
   transition: var(--transition);
 }
@@ -338,6 +343,14 @@ section {
   color: #333;
   margin-bottom: 0.3rem;
   font-weight: 600;
+  
+  /* Text Overflow Control */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 2.8rem; /* Enough height for exactly 2 lines */
 }
 
 .price-container {
