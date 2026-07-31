@@ -10,6 +10,17 @@ export let siteData = {
     conversionRate: 36.5,
     servicios: [
         {
+            title: "¿Buscas el anillo perfecto para un momento inolvidable?",
+            videoSrc: "/video.mp4",
+            image: "service_repair.jpg",
+            desc: "En Joyería Grace diseñamos anillos de graduación, compromiso y piezas totalmente personalizadas con acabados de alta calidad.",
+            features: [
+                { icon: "phone-portrait-outline", text: "Explora nuestro catálogo desde tu celular de forma fácil, rápida y segura" },
+                { icon: "sparkles-outline", text: "Piezas elaboradas con dedicación, precisión y atención a cada detalle" },
+                { icon: "location-outline", text: "Visítanos en el barrio San Francisco. ¡Será un gusto atenderte!" }
+            ]
+        },
+        {
             title: "Reparación de Joyas",
             image: "service_jewelry.jpg",
             desc: "Expertos en devolverle la vida a tus piezas más queridas.",
@@ -37,16 +48,6 @@ export let siteData = {
                 { icon: "cube-outline", text: "Modelado CAD de alta precisión" },
                 { icon: "print-outline", text: "Prototipado en resina 3D" },
                 { icon: "color-wand-outline", text: "Renderizado fotorrealista" }
-            ]
-        },
-        {
-            title: "Relojería de Alta Gama",
-            image: "service_watch.jpg",
-            desc: "Cuidado especializado para tus cronómetros de precisión.",
-            features: [
-                { icon: "watch-outline", text: "Mantenimiento preventivo" },
-                { icon: "time-outline", text: "Calibración de maquinaria" },
-                { icon: "build-outline", text: "Cambio de piezas originales" }
             ]
         }
     ],
