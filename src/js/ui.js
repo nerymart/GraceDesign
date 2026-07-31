@@ -58,8 +58,8 @@ export function renderServices() {
       <div class="service-image-container video-container">
         <video src="${service.videoSrc}" autoplay loop muted playsinline preload="auto" class="service-video"></video>
         <div class="video-audio-badge">
-          <ion-icon name="volume-mute-outline"></ion-icon>
-          <span>Con audio</span>
+          <ion-icon name="volume-medium-outline"></ion-icon>
+          <span>Toca para audio 🔊</span>
         </div>
       </div>
     ` : `
@@ -100,16 +100,29 @@ export function renderServices() {
             });
           }
           if (badgeIcon) badgeIcon.setAttribute('name', 'volume-high-outline');
-          if (badgeText) badgeText.textContent = 'Sonando';
+          if (badgeText) badgeText.textContent = 'Sonando 🔊';
           card.classList.add('audio-active');
         };
 
         const disableAudio = () => {
           videoEl.muted = true;
-          if (badgeIcon) badgeIcon.setAttribute('name', 'volume-mute-outline');
-          if (badgeText) badgeText.textContent = 'Con audio';
+          if (badgeIcon) badgeIcon.setAttribute('name', 'volume-medium-outline');
+          if (badgeText) badgeText.textContent = 'Toca para audio 🔊';
           card.classList.remove('audio-active');
         };
+
+        // Auto unmute audio on very first user gesture anywhere on page
+        const autoUnmuteOnFirstGesture = () => {
+          if (videoEl && videoEl.muted) {
+            enableAudio();
+          }
+          document.removeEventListener('click', autoUnmuteOnFirstGesture);
+          document.removeEventListener('touchstart', autoUnmuteOnFirstGesture);
+          document.removeEventListener('keydown', autoUnmuteOnFirstGesture);
+        };
+        document.addEventListener('click', autoUnmuteOnFirstGesture, { once: true });
+        document.addEventListener('touchstart', autoUnmuteOnFirstGesture, { once: true });
+        document.addEventListener('keydown', autoUnmuteOnFirstGesture, { once: true });
 
         // Attempt muted autoplay immediately
         playMuted();
