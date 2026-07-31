@@ -56,6 +56,10 @@ export function renderServices() {
     ` : service.videoSrc ? `
       <div class="service-image-container video-container">
         <video src="${service.videoSrc}" ${service.image ? `poster="${service.image}"` : ''} autoplay loop muted playsinline class="service-video"></video>
+        <div class="video-audio-badge">
+          <ion-icon name="volume-mute-outline"></ion-icon>
+          <span>Con audio</span>
+        </div>
       </div>
     ` : `
       <div class="service-image-container">
@@ -73,6 +77,48 @@ export function renderServices() {
       `;
     servicesContainer.appendChild(card);
 
+    if (service.videoSrc) {
+      const videoEl = card.querySelector('video');
+      const badgeIcon = card.querySelector('.video-audio-badge ion-icon');
+      const badgeText = card.querySelector('.video-audio-badge span');
+
+      if (videoEl) {
+        const enableAudio = () => {
+          videoEl.muted = false;
+          const playPromise = videoEl.play();
+          if (playPromise !== undefined) playPromise.catch(() => {});
+          if (badgeIcon) badgeIcon.setAttribute('name', 'volume-high-outline');
+          if (badgeText) badgeText.textContent = 'Sonando';
+          card.classList.add('audio-active');
+        };
+
+        const disableAudio = () => {
+          videoEl.muted = true;
+          if (badgeIcon) badgeIcon.setAttribute('name', 'volume-mute-outline');
+          if (badgeText) badgeText.textContent = 'Con audio';
+          card.classList.remove('audio-active');
+        };
+
+        // Scroll observer: audio plays while card is visible, stops when scrolled away
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              enableAudio();
+            } else {
+              disableAudio();
+            }
+          });
+        }, { threshold: 0.35 });
+
+        observer.observe(card);
+
+        // Click / tap toggle manually
+        card.addEventListener('click', () => {
+          if (videoEl.muted) enableAudio();
+          else disableAudio();
+        });
+      }
+    }
   });
 }
 
