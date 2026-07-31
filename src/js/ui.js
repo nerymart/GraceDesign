@@ -26,7 +26,7 @@ export function renderServices() {
   siteData.servicios.forEach((service) => {
     const card = document.createElement("div");
     card.className = "service-card";
-    if (service.videoSrc) {
+    if (service.youtubeId || service.videoSrc) {
       card.classList.add("service-card-video");
     }
 
@@ -42,13 +42,20 @@ export function renderServices() {
       </ul>
     ` : '';
 
-    const mediaHtml = service.videoSrc ? `
+    const mediaHtml = service.youtubeId ? `
+      <div class="service-image-container video-container youtube-container">
+        <iframe
+          src="https://www.youtube.com/embed/${service.youtubeId}?autoplay=1&mute=0&loop=1&playlist=${service.youtubeId}&controls=0&modestbranding=1&rel=0&playsinline=1"
+          class="service-video youtube-iframe"
+          frameborder="0"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen
+          title="${service.title}"
+        ></iframe>
+      </div>
+    ` : service.videoSrc ? `
       <div class="service-image-container video-container">
         <video src="${service.videoSrc}" ${service.image ? `poster="${service.image}"` : ''} autoplay loop muted playsinline class="service-video"></video>
-        <div class="video-audio-badge">
-          <ion-icon name="volume-mute-outline"></ion-icon>
-          <span>Con audio</span>
-        </div>
       </div>
     ` : `
       <div class="service-image-container">
@@ -66,49 +73,6 @@ export function renderServices() {
       `;
     servicesContainer.appendChild(card);
 
-    if (service.videoSrc) {
-      const videoEl = card.querySelector('video');
-      const badgeIcon = card.querySelector('.video-audio-badge ion-icon');
-      const badgeText = card.querySelector('.video-audio-badge span');
-
-      if (videoEl) {
-        const enableAudio = () => {
-          videoEl.muted = false;
-          const playPromise = videoEl.play();
-          if (playPromise !== undefined) playPromise.catch(() => {});
-          if (badgeIcon) badgeIcon.setAttribute('name', 'volume-high');
-          if (badgeText) badgeText.textContent = 'Sonando';
-          card.classList.add('audio-active');
-        };
-
-        const disableAudio = () => {
-          videoEl.muted = true;
-          if (badgeIcon) badgeIcon.setAttribute('name', 'volume-mute-outline');
-          if (badgeText) badgeText.textContent = 'Con audio';
-          card.classList.remove('audio-active');
-        };
-
-        // Scroll observer: Automatically play audio while user is observing card on screen
-        // Automatically cuts audio as soon as user scrolls down or past the card
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              enableAudio();
-            } else {
-              disableAudio();
-            }
-          });
-        }, { threshold: 0.35 });
-
-        observer.observe(card);
-
-        // Click / tap toggle manually
-        card.addEventListener('click', () => {
-          if (videoEl.muted) enableAudio();
-          else disableAudio();
-        });
-      }
-    }
   });
 }
 

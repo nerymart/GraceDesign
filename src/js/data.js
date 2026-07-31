@@ -11,7 +11,7 @@ export let siteData = {
     servicios: [
         {
             title: "¿Buscas el anillo perfecto para un momento inolvidable?",
-            videoSrc: "/video.mp4",
+            youtubeId: "MzNQQUygbh0",
             image: "service_repair.jpg",
             desc: "En Joyería Grace diseñamos anillos de graduación, compromiso y piezas totalmente personalizadas con acabados de alta calidad.",
             features: [
