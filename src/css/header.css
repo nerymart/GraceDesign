@@ -1,16 +1,33 @@
 /* HEADER & HERO */
 /* Header & Nav */
 /* Header Layout */
+#header-part {
+    position: relative;
+    width: 100%;
+    z-index: 1000;
+}
+
 .main-header {
     position: relative;
     width: 100%;
     z-index: 1000;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     background-color: var(--dark-blue);
+    padding-top: 75px;
+}
+
+@media (max-width: 768px) {
+    .main-header {
+        padding-top: 65px;
+    }
 }
 
 /* Top Bar */
 .top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10000;
     background-color: var(--dark-blue);
     color: #fff;
     display: flex;
@@ -18,6 +35,7 @@
     align-items: center;
     padding: 0.1rem 3%;
     height: 75px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     transition: background-color 0.3s ease;
 }
 

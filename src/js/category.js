@@ -1,6 +1,16 @@
 import '../css/category.css';
 import { siteData, formatCurrency, loadCategoryItems } from './data.js';
 import { openJewelryModal, initJewelryModalListeners } from './ui.js';
+import { addToCart } from './cart.js';
+import initialLikesData from '../data/likes.json';
+
+function getCategoryItemBaseLikes(id) {
+    const numericId = typeof id === 'number' ? id : String(id).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    if (initialLikesData && initialLikesData.items && initialLikesData.items[numericId]) {
+        return initialLikesData.items[numericId];
+    }
+    return ((numericId * 13 + 29) % 65) + 25;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     // Referencias a los elementos
@@ -46,18 +56,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const prodImg = prod.images ? prod.images[0] : (prod.image || '');
             const badgeHTML = prod.badge ? `<span class="product-badge ${prod.badgeClass || 'badge-sale'}">${prod.badge}</span>` : '';
 
-            // Handle price formatting
+            // Handle price formatting & numeric price
             let displayPrice = '';
+            let numericPrice = 0;
             if (prod.price !== undefined && prod.price !== null) {
+                numericPrice = prod.price;
                 displayPrice = formatCurrency(prod.price);
             } else if (prod.precioDiseno) {
-                // Determine if it's already formatted or just a number
                 if (!isNaN(parseFloat(prod.precioDiseno)) && isFinite(prod.precioDiseno)) {
-                    displayPrice = formatCurrency(parseFloat(prod.precioDiseno));
+                    numericPrice = parseFloat(prod.precioDiseno);
+                    displayPrice = formatCurrency(numericPrice);
                 } else {
+                    numericPrice = parseFloat(String(prod.precioDiseno).replace(/[^0-9.]/g, '')) || 0;
                     displayPrice = prod.precioDiseno;
                 }
             }
+
+            const itemId = prod.id || prod.name;
+            const workLikeId = `cat_${itemId}`;
+            const isLiked = localStorage.getItem(`grace_like_${workLikeId}`) === 'true';
+            const baseLikes = getCategoryItemBaseLikes(itemId);
+            const count = baseLikes + (isLiked ? 1 : 0);
 
             const card = document.createElement('div');
             card.className = 'product-card';
@@ -65,6 +84,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="product-image-container">
                     <img src="${prodImg}" alt="${prod.name || prod.title}" class="product-image">
                     ${badgeHTML}
+                    <div class="card-action-bar">
+                        <button class="work-like-btn ${isLiked ? 'liked' : ''}" data-like-id="${workLikeId}" aria-label="Dar Me Gusta">
+                            <div class="like-btn-left">
+                                <ion-icon name="${isLiked ? 'heart' : 'heart-outline'}"></ion-icon>
+                                <span>Likes</span>
+                            </div>
+                            <div class="like-btn-divider"></div>
+                            <span class="like-count">${count}</span>
+                        </button>
+                        <button class="work-cart-icon-btn" aria-label="Agregar al Carrito" title="Agregar al Carrito">
+                            <ion-icon name="cart-outline"></ion-icon>
+                        </button>
+                    </div>
                 </div>
                 <div class="product-details">
                     <h3>${prod.name || prod.title}</h3>
@@ -74,7 +106,51 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            card.addEventListener('click', () => {
+            // Like button click
+            const likeBtn = card.querySelector('.work-like-btn');
+            if (likeBtn) {
+                likeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const currentlyLiked = localStorage.getItem(`grace_like_${workLikeId}`) === 'true';
+                    const newLikedState = !currentlyLiked;
+                    localStorage.setItem(`grace_like_${workLikeId}`, newLikedState);
+
+                    const newCount = baseLikes + (newLikedState ? 1 : 0);
+                    likeBtn.classList.toggle('liked', newLikedState);
+                    const icon = likeBtn.querySelector('ion-icon');
+                    if (icon) icon.setAttribute('name', newLikedState ? 'heart' : 'heart-outline');
+                    const countEl = likeBtn.querySelector('.like-count');
+                    if (countEl) countEl.textContent = newCount;
+                });
+            }
+
+            // Cart icon button click
+            const cartBtn = card.querySelector('.work-cart-icon-btn');
+            if (cartBtn) {
+                cartBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    addToCart({
+                        id: prod.id,
+                        name: prod.name || prod.title,
+                        price: numericPrice,
+                        image: prodImg
+                    });
+
+                    // Add visual feedback
+                    cartBtn.classList.add('added');
+                    const iconEl = cartBtn.querySelector('ion-icon');
+                    if (iconEl) iconEl.setAttribute('name', 'checkmark-circle');
+
+                    setTimeout(() => {
+                        cartBtn.classList.remove('added');
+                        if (iconEl) iconEl.setAttribute('name', 'cart-outline');
+                    }, 1500);
+                });
+            }
+
+            // Click on card opens jewelry modal
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.work-like-btn') || e.target.closest('.work-cart-icon-btn')) return;
                 openJewelryModal(prod);
             });
 

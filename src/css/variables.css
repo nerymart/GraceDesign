@@ -23,7 +23,7 @@ body {
   background-color: var(--dark-black);
   color: var(--light-gray);
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* Typography */

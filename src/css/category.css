@@ -521,3 +521,50 @@
         }
     }
 }
+
+/* Category Cart Button */
+.category-cart-btn {
+  width: 100%;
+  margin-top: 0.8rem;
+  background: var(--dark-blue, #0B1C2E);
+  color: #FFFFFF;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 25px;
+  padding: 0.6rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 12px rgba(11, 28, 46, 0.15);
+}
+
+.category-cart-btn:hover {
+  background: #12283F;
+  border-color: var(--primary-gold, #D4AF37);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.3);
+}
+
+.category-cart-btn ion-icon {
+  font-size: 1.15rem;
+  color: var(--primary-gold, #D4AF37);
+  transition: transform 0.3s ease;
+}
+
+.category-cart-btn:hover ion-icon {
+  transform: scale(1.15);
+}
+
+.category-cart-btn.added {
+  background: #27ae60 !important;
+  border-color: #27ae60 !important;
+  color: #FFFFFF !important;
+}
+
+.category-cart-btn.added ion-icon {
+  color: #FFFFFF !important;
+}

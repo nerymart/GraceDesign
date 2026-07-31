@@ -1,5 +1,6 @@
 import { siteData, formatCurrency, setCurrency } from './data.js';
 import { addToCart, updateCartUI } from './cart.js';
+import initialLikesData from '../data/likes.json';
 
 export let productsShown = 8;
 
@@ -55,7 +56,7 @@ export function renderServices() {
       </div>
     ` : service.videoSrc ? `
       <div class="service-image-container video-container">
-        <video src="${service.videoSrc}" ${service.image ? `poster="${service.image}"` : ''} autoplay loop muted playsinline class="service-video"></video>
+        <video src="${service.videoSrc}" autoplay loop muted playsinline preload="auto" class="service-video"></video>
         <div class="video-audio-badge">
           <ion-icon name="volume-mute-outline"></ion-icon>
           <span>Con audio</span>
@@ -71,7 +72,7 @@ export function renderServices() {
         ${mediaHtml}
         <div class="service-info">
           <h3>${service.title}</h3>
-          <p class="service-main-desc">${service.desc}</p>
+          <p class="service-main-desc">${service.desc || service.description || ''}</p>
           ${featuresHtml}
         </div>
       `;
@@ -83,10 +84,21 @@ export function renderServices() {
       const badgeText = card.querySelector('.video-audio-badge span');
 
       if (videoEl) {
+        const playMuted = () => {
+          videoEl.muted = true;
+          const promise = videoEl.play();
+          if (promise !== undefined) promise.catch(() => {});
+        };
+
         const enableAudio = () => {
           videoEl.muted = false;
           const playPromise = videoEl.play();
-          if (playPromise !== undefined) playPromise.catch(() => {});
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {
+              videoEl.muted = true;
+              videoEl.play().catch(() => {});
+            });
+          }
           if (badgeIcon) badgeIcon.setAttribute('name', 'volume-high-outline');
           if (badgeText) badgeText.textContent = 'Sonando';
           card.classList.add('audio-active');
@@ -99,20 +111,28 @@ export function renderServices() {
           card.classList.remove('audio-active');
         };
 
-        // Scroll observer: audio plays while card is visible, stops when scrolled away
+        // Attempt muted autoplay immediately
+        playMuted();
+
+        // Scroll observer: play muted when card is visible, pause when scrolled away
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
-              enableAudio();
+              if (card.classList.contains('audio-active')) {
+                enableAudio();
+              } else {
+                playMuted();
+              }
             } else {
               disableAudio();
+              videoEl.pause();
             }
           });
-        }, { threshold: 0.35 });
+        }, { threshold: 0.25 });
 
         observer.observe(card);
 
-        // Click / tap toggle manually
+        // Click / tap toggle audio manually
         card.addEventListener('click', () => {
           if (videoEl.muted) enableAudio();
           else disableAudio();
@@ -138,11 +158,46 @@ export function renderProducts() {
   const tallPromo = siteData.promos.find(p => p.type === 'tall');
 
   if (tallPromo) {
+    const rawTitle = tallPromo.title || 'APARTA HOY Y PAGA A TU RITMO';
+
+    // Split into two lines: "APARTA HOY" and "Y PAGA A TU RITMO"
+    // Try to split at "Y PAGA" if it exists
+    const splitMatch = rawTitle.match(/^(.*?HOY)\s+(Y\s+PAGA.*)/i);
+    let line1Html, line2Html;
+
+    if (splitMatch) {
+      // Line 1: "APARTA HOY" — smaller, lighter, with HOY in gold
+      line1Html = splitMatch[1].replace(/\bHOY\b/gi, '<span class="promo-gold">HOY</span>');
+      // Line 2: "Y PAGA A TU RITMO" — larger, bold
+      line2Html = splitMatch[2].toUpperCase();
+    } else {
+      line1Html = rawTitle.replace(/\bHOY\b/gi, '<span class="promo-gold">HOY</span>');
+      line2Html = '';
+    }
+
     content.push(`
-      <div class="feature-card tall">
-        <span class="tagline">${tallPromo.tagline}</span>
-        <h2>${tallPromo.title}</h2>
+      <div class="feature-card tall promo-card-luxury" id="gold-promo-card">
+        <canvas class="gold-confetti-canvas"></canvas>
+        ${tallPromo.tagline ? `<span class="tagline">${tallPromo.tagline}</span>` : ''}
+        <div class="promo-title-block">
+          <p class="promo-line1">${line1Html}</p>
+          ${line2Html ? `<p class="promo-line2">${line2Html}</p>` : ''}
+        </div>
         <img src="${tallPromo.image_url}" class="feature-decor promo-img-tall" alt="Promo">
+        <div class="promo-buttons-container">
+          <a href="./graduacion.html" class="promo-pill-btn catalog-btn">
+            <span>Ver Catálogo</span>
+            <div class="btn-icon-circle">
+              <ion-icon name="arrow-forward-outline"></ion-icon>
+            </div>
+          </a>
+          <a href="https://wa.me/50585052032?text=Hola,%20me%20gustar%C3%ADa%20apartar%20mi%20joya%20de%20la%20promoci%C3%B3n" target="_blank" rel="noopener" class="promo-pill-btn reserve-btn">
+            <span>APARTA EL TUYO</span>
+            <div class="btn-icon-circle">
+              <ion-icon name="logo-whatsapp"></ion-icon>
+            </div>
+          </a>
+        </div>
       </div>
     `);
   }
@@ -183,6 +238,7 @@ export function renderProducts() {
 
   productsContainer.innerHTML = content.join('');
   attachProductModalListeners();
+  initGoldConfetti();
 
   const viewMoreBtn = document.getElementById("view-more-btn");
   if (viewMoreBtn) {
@@ -201,6 +257,167 @@ export function renderProducts() {
       const p = siteData.productos.find(p => p.id === id);
       if (p) addToCart(p);
     };
+  });
+}
+
+export function initGoldConfetti() {
+  const card = document.getElementById('gold-promo-card');
+  if (!card) return;
+
+  const canvas = card.querySelector('.gold-confetti-canvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let animationId = null;
+
+  const goldColors = [
+    '#FFD700', // Bright Gold
+    '#D4AF37', // Metallic Gold
+    '#FFF8DC', // Cream Gold
+    '#F7D070', // Light Gold
+    '#DAA520', // Goldenrod
+    '#B8860B', // Dark Gold
+    '#FFFFFF'  // Diamond sparkle
+  ];
+
+  function resizeCanvas() {
+    canvas.width = card.offsetWidth;
+    canvas.height = card.offsetHeight;
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function createParticle(x, y, isExplosion = false) {
+    const angle = isExplosion ? Math.random() * Math.PI * 2 : (Math.PI / 2 + (Math.random() - 0.5));
+    const speed = isExplosion ? Math.random() * 9 + 4 : Math.random() * 3 + 1;
+    return {
+      x: x !== undefined ? x : Math.random() * canvas.width,
+      y: y !== undefined ? y : -10,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - (isExplosion ? Math.random() * 5 + 2 : 0),
+      color: goldColors[Math.floor(Math.random() * goldColors.length)],
+      size: Math.random() * 8 + 4,
+      rotation: Math.random() * Math.PI * 2,
+      rotationSpeed: (Math.random() - 0.5) * 0.25,
+      gravity: 0.16,
+      drag: 0.97,
+      alpha: 1,
+      decay: isExplosion ? Math.random() * 0.012 + 0.007 : Math.random() * 0.005 + 0.002,
+      shape: Math.random() > 0.4 ? 'rect' : (Math.random() > 0.5 ? 'star' : 'circle')
+    };
+  }
+
+  function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, color) {
+    let rot = Math.PI / 2 * 3;
+    let x = cx;
+    let y = cy;
+    let step = Math.PI / spikes;
+
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - outerRadius);
+    for (let i = 0; i < spikes; i++) {
+      x = cx + Math.cos(rot) * outerRadius;
+      y = cy + Math.sin(rot) * outerRadius;
+      ctx.lineTo(x, y);
+      rot += step;
+
+      x = cx + Math.cos(rot) * innerRadius;
+      y = cy + Math.sin(rot) * innerRadius;
+      ctx.lineTo(x, y);
+      rot += step;
+    }
+    ctx.lineTo(cx, cy - outerRadius);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
+
+  function launchBurst(originX, originY, count = 70) {
+    resizeCanvas();
+    const x = originX !== undefined ? originX : canvas.width / 2;
+    const y = originY !== undefined ? originY : canvas.height / 2;
+    for (let i = 0; i < count; i++) {
+      particles.push(createParticle(x, y, true));
+    }
+    if (!animationId) {
+      animate();
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.vx *= p.drag;
+      p.vy *= p.drag;
+      p.vy += p.gravity;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rotation += p.rotationSpeed;
+      p.alpha -= p.decay;
+
+      if (p.alpha <= 0 || p.y > canvas.height + 30) {
+        particles.splice(i, 1);
+        continue;
+      }
+
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.alpha);
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation);
+
+      if (p.shape === 'rect') {
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+      } else if (p.shape === 'star') {
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color;
+        drawStar(ctx, 0, 0, 5, p.size, p.size / 2, p.color);
+      } else {
+        ctx.beginPath();
+        ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    if (particles.length > 0) {
+      animationId = requestAnimationFrame(animate);
+    } else {
+      animationId = null;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  // Trigger confetti burst on scroll into view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        launchBurst(canvas.width / 2, canvas.height * 0.35, 75);
+        setTimeout(() => {
+          launchBurst(canvas.width / 2, canvas.height * 0.65, 55);
+        }, 320);
+        observer.unobserve(card);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(card);
+
+  // Trigger burst on click or tap
+  card.addEventListener('click', (e) => {
+    const rect = card.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+    launchBurst(clickX, clickY, 80);
   });
 }
 
@@ -283,6 +500,29 @@ export function initProductModalListeners() {
 
 let worksLimit = 50;
 
+function getWorkBaseLikes(id) {
+  if (initialLikesData && initialLikesData.items && initialLikesData.items[id]) {
+    return initialLikesData.items[id];
+  }
+  return ((id * 17 + 37) % 65) + 24;
+}
+
+function getLikeButtonHtml(workId) {
+  const isLiked = localStorage.getItem(`grace_like_${workId}`) === 'true';
+  const baseLikes = getWorkBaseLikes(workId);
+  const count = baseLikes + (isLiked ? 1 : 0);
+  return `
+    <button class="work-like-btn ${isLiked ? 'liked' : ''}" data-id="${workId}" aria-label="Dar Me Gusta">
+      <div class="like-btn-left">
+        <ion-icon name="${isLiked ? 'heart' : 'heart-outline'}"></ion-icon>
+        <span>Likes</span>
+      </div>
+      <div class="like-btn-divider"></div>
+      <span class="like-count">${count}</span>
+    </button>
+  `;
+}
+
 export function renderFinishedWorks() {
   const worksContainer = document.getElementById("works-grid");
   const showcaseContainer = document.getElementById("works-showcase");
@@ -290,12 +530,13 @@ export function renderFinishedWorks() {
 
   if (!worksContainer || !showcaseContainer) return;
 
-  const works = siteData.finishedWorks;
+  const works = siteData.finishedWorks || [];
 
   // Showcase Top 4
   showcaseContainer.innerHTML = works.slice(0, 4).map(w => `
     <div class="showcase-item work-card" data-id="${w.id}">
       <img src="${w.image}">
+      ${getLikeButtonHtml(w.id)}
     </div>
   `).join('');
 
@@ -304,6 +545,7 @@ export function renderFinishedWorks() {
     <div class="work-card" data-id="${w.id}">
       <img src="${w.image}">
       <div class="work-card-overlay"><span>Detalles</span></div>
+      ${getLikeButtonHtml(w.id)}
     </div>
   `).join('');
 
@@ -443,9 +685,30 @@ export function openWorkModal(work) {
 
 function attachWorkListeners() {
   document.querySelectorAll('.work-card').forEach(card => {
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.work-like-btn')) return;
       const work = siteData.finishedWorks.find(w => w.id === parseInt(card.dataset.id));
       openWorkModal(work);
+    });
+  });
+
+  document.querySelectorAll('.work-like-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      const id = parseInt(btn.dataset.id);
+      const isLiked = localStorage.getItem(`grace_like_${id}`) === 'true';
+      const newLikedState = !isLiked;
+      localStorage.setItem(`grace_like_${id}`, newLikedState);
+
+      const baseLikes = getWorkBaseLikes(id);
+      const currentCount = baseLikes + (newLikedState ? 1 : 0);
+
+      btn.classList.toggle('liked', newLikedState);
+      const icon = btn.querySelector('ion-icon');
+      if (icon) icon.setAttribute('name', newLikedState ? 'heart' : 'heart-outline');
+      const countEl = btn.querySelector('.like-count');
+      if (countEl) countEl.textContent = currentCount;
     });
   });
 }
