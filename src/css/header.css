@@ -42,30 +42,24 @@
 .logo-area {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1.5rem;
 }
 
 .logo-link {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    background: transparent;
-    padding: 0;
-    height: 60px;
-    transition: transform 0.3s ease;
-}
-
-.logo-link:hover {
-    transform: scale(1.05);
 }
 
 .header-logo {
-    height: 100%;
-    max-height: 60px;
+    height: 95px;
     width: auto;
-    object-fit: contain;
-    display: block;
-    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    z-index: 10;
+}
+
+.header-logo:hover {
+    transform: scale(1.05);
 }
 
 .home-icon-btn {
@@ -842,15 +836,8 @@ body.dark-mode .toggle-thumb {
         display: contents;
     }
 
-    .logo-link {
-        height: 48px;
-        padding: 0;
-        background: transparent;
-    }
-
     .header-logo {
-        height: 100%;
-        max-height: 44px;
+        height: 55px;
         width: auto;
     }
 
