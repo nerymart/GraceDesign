@@ -59,7 +59,7 @@ export function renderServices() {
         <video src="${service.videoSrc}" autoplay loop muted playsinline preload="auto" class="service-video"></video>
         <div class="video-audio-badge">
           <ion-icon name="volume-medium-outline"></ion-icon>
-          <span>Pasa el cursor para audio 🔊</span>
+          <span>Toca para activar audio 🔊</span>
         </div>
       </div>
     ` : `
@@ -107,27 +107,14 @@ export function renderServices() {
         const disableAudio = () => {
           videoEl.muted = true;
           if (badgeIcon) badgeIcon.setAttribute('name', 'volume-medium-outline');
-          if (badgeText) badgeText.textContent = 'Pasa el cursor para audio 🔊';
+          if (badgeText) badgeText.textContent = 'Toca para activar audio 🔊';
           card.classList.remove('audio-active');
         };
-
-        // Auto unmute audio on very first user gesture anywhere on page
-        const autoUnmuteOnFirstGesture = () => {
-          if (videoEl && videoEl.muted) {
-            enableAudio();
-          }
-          document.removeEventListener('click', autoUnmuteOnFirstGesture);
-          document.removeEventListener('touchstart', autoUnmuteOnFirstGesture);
-          document.removeEventListener('keydown', autoUnmuteOnFirstGesture);
-        };
-        document.addEventListener('click', autoUnmuteOnFirstGesture, { once: true });
-        document.addEventListener('touchstart', autoUnmuteOnFirstGesture, { once: true });
-        document.addEventListener('keydown', autoUnmuteOnFirstGesture, { once: true });
 
         // Attempt muted autoplay immediately
         playMuted();
 
-        // Scroll observer: play muted when card is visible, pause when scrolled away
+        // Scroll observer: play when card is visible, pause when scrolled away
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -145,26 +132,14 @@ export function renderServices() {
 
         observer.observe(card);
 
-        // YouTube-style Hover Audio Preview:
-        // 1. Mouse enter / Hover on card: IMMEDIATELY enable audio!
-        card.addEventListener('mouseenter', () => {
-          enableAudio();
-        });
-
-        // 2. Mouse leave / Hover off card: Return to muted mode
-        card.addEventListener('mouseleave', () => {
-          disableAudio();
-        });
-
-        // 3. Touch start on mobile: Enable audio on touch
-        card.addEventListener('touchstart', () => {
-          enableAudio();
-        }, { passive: true });
-
-        // Click / tap toggle audio manually
-        card.addEventListener('click', () => {
-          if (videoEl.muted) enableAudio();
-          else disableAudio();
+        // Click / tap once to turn audio ON permanently (and tap again to turn OFF)
+        card.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (videoEl.muted) {
+            enableAudio();
+          } else {
+            disableAudio();
+          }
         });
       }
     }
